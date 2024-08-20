@@ -2,37 +2,40 @@ import {
   BeforeInsert,
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   PrimaryColumn,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { generateNanoId } from "../utils/utils";
 import { IsBoolean, IsEmail, IsOptional, IsString } from "class-validator";
 
-@Entity("User")
-export class User {
+@Entity("Member")
+export class Member {
   @BeforeInsert()
   generateId() {
-    this.userId = generateNanoId(22);
+    this.memberId = generateNanoId(22);
   }
 
   @PrimaryColumn()
-  userId!: string;
+  memberId!: string;
 
   @Column({ nullable: true })
   @IsString({ message: "fireBaseId must be a string" })
-  @IsOptional() // Optional if the field is nullable
+  @IsOptional()
   fireBaseId!: string;
 
   @Column()
   @IsString({ message: "First name must be a string" })
-  firstName!: string;
+  fistName!: string;
 
   @Column()
   @IsString({ message: "Last name must be a string" })
   lastName!: string;
+
+  @Column({ default: false })
+  @IsBoolean({ message: "Admin attribute must be a boolean" })
+  @IsOptional()
+  isAdmin?: boolean;
 
   @Column({ unique: true })
   @IsEmail({}, { message: "Invalid email format" })
@@ -56,12 +59,4 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt!: Date;
-
-  @DeleteDateColumn()
-  deletedAt!: Date;
-
-  @Column({ default: false })
-  @IsOptional()
-  @IsBoolean()
-  isDeleted!: boolean;
 }

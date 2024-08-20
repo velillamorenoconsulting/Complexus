@@ -23,3 +23,15 @@ export class ValidateError extends CustomBaseError {
     super(`Validation Error(s): ${errors}`, 400);
   }
 }
+
+export class ApplicationError extends CustomBaseError {
+  constructor(public message: string) {
+    super(message, 500);
+  }
+}
+
+export class UnauthorizedError extends CustomBaseError {
+  constructor(public message: string) {
+    super("Unauthorized: " + message, 401);
+  }
+}

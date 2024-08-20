@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm";
 import { User } from "./entities/user.entity";
+import { Member } from "./entities/member.entity";
 
 const { DB_PASSWORD, DB_USER, DB_HOST, DB_PORT, DB_NAME } = process.env;
 let dataSource: DataSource | null = null;
@@ -17,7 +18,7 @@ export async function getDataSource(): Promise<DataSource> {
     database: DB_NAME,
     synchronize: true,
     logging: true,
-    entities: [User],
+    entities: [User, Member],
     migrationsTransactionMode: "none",
     timeTravelQueries: false,
     ssl: true,

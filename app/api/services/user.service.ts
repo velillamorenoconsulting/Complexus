@@ -22,6 +22,18 @@ export class UserService {
     return user;
   }
 
+  async getUserByEmail(userEmail: string): Promise<User> {
+    const user = await this.userRepository.findByEmail(userEmail);
+    if (!user) throw new NotFoundError("User");
+    return user;
+  }
+
+  async updateUser(userId: string, payload: Partial<User>): Promise<User> {
+    const user = await this.userRepository.findById(userId);
+    if (!user) throw new NotFoundError("User");
+    return this.userRepository.updateById(userId, payload);
+  }
+
   async createUser(user: any): Promise<User> {
     const userReceivedAttributes = {
       ...user,
@@ -39,5 +51,17 @@ export class UserService {
       throw new ValidateError(constraints);
     }
     return this.userRepository.create(userToCreate);
+  }
+
+  async deleteUser(userId: string, isSoft: boolean = true): Promise<string> {
+    const user = await this.userRepository.findById(userId);
+    if (!user) throw new NotFoundError("User");
+    let deleted: number;
+    if (isSoft) {
+      deleted = await this.userRepository.softDeleteUser(userId);
+    } else {
+      deleted = await this.userRepository.deleteUser(userId);
+    }
+    return user.userId;
   }
 }
