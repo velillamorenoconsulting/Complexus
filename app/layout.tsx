@@ -2,16 +2,8 @@ import type { Metadata } from "next";
 import "reflect-metadata";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { AppDataSource } from "./server/database";
 
 const inter = Inter({ subsets: ["latin"] });
-AppDataSource.initialize()
-  .then(() => {
-    console.log("DB connection stablished");
-  })
-  .catch((err) => {
-    console.log("DB connection ERROR", err);
-  });
 
 export const metadata: Metadata = {
   title: "Create Next App",
