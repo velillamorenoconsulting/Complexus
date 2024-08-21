@@ -4,9 +4,10 @@ import { UnauthorizedError } from "../../utils/errors";
 
 const secret = process.env.JWT_SECRET ?? "";
 
-export function generateToken(payload: User): string {
+export function generateToken(payload: any): string {
   const user = {
-    userId: payload.userId,
+    userId: payload.userId ?? undefined,
+    memberId: payload.memberId ?? undefined,
     firebaseId: payload.fireBaseId,
     name: payload.firstName + " " + payload.lastName,
     email: payload.email,

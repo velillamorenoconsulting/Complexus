@@ -1,7 +1,7 @@
 import { Repository } from "typeorm";
 import { User } from "../entities/user.entity";
 import { getDataSource } from "../database";
-import { ApplicationError } from "../utils/errors";
+import { DatabaseError } from "../utils/errors";
 
 export class UserRepostitory {
   private repository: Repository<User> | null = null;
@@ -31,7 +31,7 @@ export class UserRepostitory {
   async updateById(userId: string, user: Partial<User>): Promise<User> {
     await this.init();
     const { affected } = await this.repository!.update({ userId }, user);
-    if (!affected) throw new ApplicationError("Unable to erase from DB");
+    if (!affected) throw new DatabaseError();
     const updatedUser = await this.findById(userId);
     return updatedUser!;
   }
@@ -45,7 +45,7 @@ export class UserRepostitory {
   async deleteUser(userId: string): Promise<number> {
     await this.init();
     const { affected } = await this.repository!.delete({ userId });
-    if (!affected) throw new ApplicationError("Unable to erase from DB");
+    if (!affected) throw new DatabaseError();
     return affected;
   }
 
@@ -53,7 +53,7 @@ export class UserRepostitory {
     await this.init();
     await this.repository!.update({ userId }, { isDeleted: true });
     const { affected } = await this.repository!.softDelete({ userId });
-    if (!affected) throw new ApplicationError("Unable to modify from DB");
+    if (!affected) throw new DatabaseError();
     return affected;
   }
 }

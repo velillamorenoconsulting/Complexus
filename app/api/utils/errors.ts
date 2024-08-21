@@ -35,3 +35,9 @@ export class UnauthorizedError extends CustomBaseError {
     super("Unauthorized: " + message, 401);
   }
 }
+
+export class DatabaseError extends CustomBaseError {
+  constructor() {
+    super("Data Connection Error", 500);
+  }
+}

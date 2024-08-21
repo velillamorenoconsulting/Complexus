@@ -1,12 +1,14 @@
-import { instanceToPlain } from "class-transformer";
-import { RegisterBody } from "../dtos/register.dto";
+import { plainToInstance } from "class-transformer";
+import { UserRegisterBody, MemberRegisterBody } from "../dtos/register.dto";
 import { validateOrReject } from "class-validator";
-import { ValidateError } from "../../utils/errors";
+import { LoginType } from "../../types/auth.types";
 
-export const validateUserRegister = (userInfo: any): void => {
-  const body = instanceToPlain(RegisterBody, userInfo);
-  validateOrReject(body);
-  if (userInfo.password.length < 7) {
-    throw new ValidateError(["Password too short. No less than 6 characters"]);
+export const validateRegister = (userInfo: any, type: LoginType): void => {
+  let entity: UserRegisterBody | MemberRegisterBody;
+  if (type === "member") {
+    entity = plainToInstance(MemberRegisterBody, userInfo);
+  } else {
+    entity = plainToInstance(UserRegisterBody, userInfo);
   }
+  validateOrReject(entity);
 };

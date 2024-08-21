@@ -2,6 +2,7 @@ import {
   BeforeInsert,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   PrimaryColumn,
   UpdateDateColumn,
@@ -59,4 +60,12 @@ export class Member {
 
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  @DeleteDateColumn()
+  deletedAt!: Date;
+
+  @Column({ default: false })
+  @IsOptional()
+  @IsBoolean()
+  isDeleted!: boolean;
 }
