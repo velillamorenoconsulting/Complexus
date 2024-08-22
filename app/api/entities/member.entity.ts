@@ -4,11 +4,13 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { generateNanoId } from "../utils/utils";
 import { IsBoolean, IsEmail, IsOptional, IsString } from "class-validator";
+import { Purchase } from "./purchase.entity";
 
 @Entity("Member")
 export class Member {
@@ -68,4 +70,9 @@ export class Member {
   @IsOptional()
   @IsBoolean()
   isDeleted!: boolean;
+
+  @OneToMany(() => Purchase, (purchase) => purchase.memberBuyer, {
+    nullable: true,
+  })
+  purchases!: Purchase[] | null;
 }
