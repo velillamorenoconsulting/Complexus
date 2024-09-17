@@ -31,19 +31,19 @@ export class Item {
   @IsString()
   title!: string;
 
-  @Column()
+  @Column("jsonb", { nullable: true })
   @IsArray()
   images!: string[];
 
   @Column()
   @IsEnum(ItemType)
-  itemType!: ItemType;
+  itemType!: string;
 
   @Column()
   @IsString()
   description!: string;
 
-  @Column({ default: [] })
+  @Column("jsonb", { default: [] })
   @IsArray()
   additionalDescription!: string[];
 

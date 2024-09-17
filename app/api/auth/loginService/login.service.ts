@@ -2,8 +2,9 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { UserService } from "../../services/user.service";
 import { auth } from "../firebase";
 import { UnauthorizedError } from "../../utils/errors";
-import { generateToken } from "../utils/jwt";
 import { MemberService } from "../../services/member.service";
+import { User } from "../../entities/user.entity";
+import { Member } from "../../entities/member.entity";
 
 export class LoginService {
   private readonly userService: UserService;
@@ -20,7 +21,7 @@ export class LoginService {
   }: {
     email: string;
     password: string;
-  }): Promise<string> {
+  }): Promise<User> {
     if (!email || !password) throw new UnauthorizedError("Bad credentials");
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -29,7 +30,7 @@ export class LoginService {
     }
     const userInfo = await this.userService.getUserByEmail(email);
     if (userInfo.isDeleted) throw new UnauthorizedError("Not Allowed");
-    return generateToken(userInfo);
+    return userInfo;
   }
 
   async loginMember({
@@ -38,7 +39,7 @@ export class LoginService {
   }: {
     email: string;
     password: string;
-  }): Promise<string> {
+  }): Promise<Member> {
     if (!email || !password) throw new UnauthorizedError("Bad credentials");
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -47,6 +48,6 @@ export class LoginService {
     }
     const memberInfo = await this.memberService.getMemberByEmail(email);
     if (memberInfo.isDeleted) throw new UnauthorizedError("Not Allowed");
-    return generateToken(memberInfo);
+    return memberInfo;
   }
 }
