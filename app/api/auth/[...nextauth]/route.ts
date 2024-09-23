@@ -35,7 +35,7 @@ const handler = NextAuth({
             return null;
           }
         } catch (error: any) {
-          console.error("Login error: ", error);
+          console.log(error);
           return null;
         }
       },

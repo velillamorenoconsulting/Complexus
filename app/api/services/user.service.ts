@@ -22,10 +22,13 @@ export class UserService {
     return user;
   }
 
-  async getUserByEmail(userEmail: string): Promise<User> {
+  async getUserByEmail(
+    userEmail: string,
+    throwError: boolean = true
+  ): Promise<User> {
     const user = await this.userRepository.findByEmail(userEmail);
-    if (!user) throw new NotFoundError("User");
-    return user;
+    if (!user && throwError) throw new NotFoundError("User");
+    return user as User;
   }
 
   async updateUser(userId: string, payload: Partial<User>): Promise<User> {

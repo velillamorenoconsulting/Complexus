@@ -2,7 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { UserService } from "../../services/user.service";
 import { auth } from "../firebase";
 import { validateRegister } from "../utils/validateUserInfo";
-import { ValidateError } from "../../utils/errors";
+import { ApplicationError, ValidateError } from "../../utils/errors";
 import { User } from "../../entities/user.entity";
 import { Member } from "../../entities/member.entity";
 import { LoginType } from "../../types/auth.types";
@@ -18,6 +18,13 @@ export class RegisterService {
 
   async registerUser(userInfo: any): Promise<User> {
     validateRegister(userInfo, LoginType.USER);
+    const existentUser = await this.userService.getUserByEmail(
+      userInfo.email,
+      false
+    );
+    if (existentUser) {
+      throw new ApplicationError("Email already registered");
+    }
     const userCreated = await this.userService.createUser(userInfo);
     let fireBaseId: string = "";
     try {

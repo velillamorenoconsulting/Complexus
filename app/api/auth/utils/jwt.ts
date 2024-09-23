@@ -21,6 +21,7 @@ export function verifyToken(token: string): User {
     const decoded = jwt.verify(token, secret);
     return decoded as User;
   } catch (error) {
+    console.log(error);
     throw new UnauthorizedError("Invalid token");
   }
 }
