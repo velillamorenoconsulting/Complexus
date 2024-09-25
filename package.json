@@ -10,9 +10,10 @@
   },
   "dependencies": {
     "@nextui-org/react": "^2.4.8",
+    "axios": "^1.7.7",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
-    "firebase": "^10.13.0",
+    "firebase": "^10.13.1",
     "framer-motion": "^11.5.4",
     "jsonwebtoken": "^9.0.2",
     "nanoid": "^5.0.7",

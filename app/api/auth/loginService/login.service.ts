@@ -5,6 +5,8 @@ import { UnauthorizedError } from "../../utils/errors";
 import { MemberService } from "../../services/member.service";
 import { User } from "../../entities/user.entity";
 import { Member } from "../../entities/member.entity";
+import { SignedUser } from "../../types/auth.types";
+import { generateToken } from "../utils/jwt";
 
 export class LoginService {
   private readonly userService: UserService;
@@ -21,16 +23,27 @@ export class LoginService {
   }: {
     email: string;
     password: string;
-  }): Promise<User> {
+  }): Promise<SignedUser> {
     if (!email || !password) throw new UnauthorizedError("Bad credentials");
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const fireBaseAuth = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      if (!fireBaseAuth.user.emailVerified) {
+        throw new UnauthorizedError("Verification missing");
+      }
     } catch (error: any) {
-      throw new UnauthorizedError("Bad credentials");
+      throw new UnauthorizedError(error.message ?? "Bad credentials");
     }
     const userInfo = await this.userService.getUserByEmail(email);
     if (userInfo.isDeleted) throw new UnauthorizedError("Not Allowed");
-    return userInfo;
+    const signedUser = {
+      ...userInfo,
+      token: generateToken(userInfo),
+    };
+    return signedUser;
   }
 
   async loginMember({

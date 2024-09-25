@@ -2,6 +2,7 @@
 import { Button, Input } from "@nextui-org/react";
 import React, { useState } from "react";
 import { validateRegisterErrors } from "@/app/utils/login-register/errorValidator";
+import axios from "axios";
 
 export type RegisterFormValues = {
   email: string | null;
@@ -24,6 +25,7 @@ export default function RegisterForm({ changeSelection }: ComponentProps) {
     password: null,
     name: null,
   });
+  const [generalError, setError] = useState<string | null>(null);
 
   const handleFormChanges = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValues({
@@ -37,12 +39,47 @@ export default function RegisterForm({ changeSelection }: ComponentProps) {
       }),
     });
   };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!formValues.name) {
+      alert("Wrong input");
+      return;
+    }
+    const splittedName = formValues.name.split(" ");
+    const firstName = splittedName[0];
+    const lastName = splittedName.length > 1 ? splittedName[1] : "";
+    try {
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/register`,
+        {
+          firstName,
+          lastName,
+          email: formValues.email,
+          password: formValues.password,
+        }
+      );
+    } catch (error: any) {
+      const message =
+        error.response.data?.error === "Email already registered"
+          ? "Este correo ya existe"
+          : "Error. Intenta nuevamente más tarde";
+      setError(message);
+    }
+  };
+
   return (
     <div className="flex flex-col h-full justify-between">
-      <form className="text-white flex flex-col gap-3 h-[80%] justify-evenly">
+      <form
+        className="text-white flex flex-col gap-3 h-[80%] justify-evenly"
+        onSubmit={handleSubmit}
+      >
         <div>
           <h2 className="text-2xl text-center font-black">Registro</h2>
         </div>
+        {generalError && (
+          <p className="text-red-600 text-center">{generalError}</p>
+        )}
         <div className="flex flex-col gap-5">
           <Input
             id="name"
@@ -92,7 +129,20 @@ export default function RegisterForm({ changeSelection }: ComponentProps) {
           />
         </div>
         <div className="flex justify-center">
-          <Button fullWidth radius="full" className="dark">
+          <Button
+            fullWidth
+            radius="full"
+            className="dark"
+            type="submit"
+            isDisabled={
+              !formValues.email ||
+              !!errors.email ||
+              !formValues.password ||
+              !!errors.password ||
+              !formValues.name ||
+              !!errors.name
+            }
+          >
             Registrarse
           </Button>
         </div>

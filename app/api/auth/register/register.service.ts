@@ -1,4 +1,7 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { UserService } from "../../services/user.service";
 import { auth } from "../firebase";
 import { validateRegister } from "../utils/validateUserInfo";
@@ -33,6 +36,7 @@ export class RegisterService {
         userCreated.email,
         userInfo.password
       );
+      await sendEmailVerification(userAuth.user);
       fireBaseId = userAuth.user.uid;
     } catch (error: any) {
       await this.userService.deleteUser(userCreated.userId, false);

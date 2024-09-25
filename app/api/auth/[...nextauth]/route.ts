@@ -1,8 +1,13 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { LoginService } from "../loginService/login.service";
 import { verifyToken } from "../utils/jwt";
-import { NextAuthOptions } from "next-auth";
+import { NextAuthOptions, Session } from "next-auth";
 import NextAuth from "next-auth/next";
+import {
+  CustomJWT,
+  SignedUser,
+  SignedUserResponse,
+} from "../../types/auth.types";
 
 const handler = NextAuth({
   providers: [
@@ -25,9 +30,9 @@ const handler = NextAuth({
           const loginService = new LoginService();
           const userInfo = await loginService.loginUser(credentials);
           const userPayload = {
-            id: new Date().toISOString(),
-            userInfo,
-            token: userInfo,
+            id: userInfo.userId,
+            email: userInfo.email,
+            token: userInfo.token,
           };
           if (userInfo) {
             return userPayload;
@@ -35,8 +40,7 @@ const handler = NextAuth({
             return null;
           }
         } catch (error: any) {
-          console.log(error);
-          return null;
+          throw new Error(error.message);
         }
       },
     }),
@@ -68,7 +72,6 @@ const handler = NextAuth({
             return null;
           }
         } catch (error: any) {
-          console.error("Login error: ", error);
           return null;
         }
       },
@@ -77,6 +80,23 @@ const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
+  },
+  callbacks: {
+    jwt: ({ token, user }) => {
+      if (user) {
+        token.accessToken = (user as SignedUserResponse).token;
+      }
+      return token;
+    },
+    session: ({ session, token }): Session => {
+      session.user = {
+        name: token.sub,
+        email: token.email,
+        // @ts-expect-error forced attribute
+        accessToken: token.accessToken as CustomJWT,
+      };
+      return session;
+    },
   },
 });
 

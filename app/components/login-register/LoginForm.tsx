@@ -2,7 +2,7 @@
 import { Button, Input, Tab, Tabs } from "@nextui-org/react";
 import React, { Key, useEffect, useState } from "react";
 import { validateLoginErrors } from "@/app/utils/login-register/errorValidator";
-import { SignInResponse, signIn, useSession } from "next-auth/react";
+import { SignInResponse, signIn, signOut, useSession } from "next-auth/react";
 import CompLoading from "../CompLoading";
 import { useStore } from "@/app/store/zustand";
 
@@ -48,6 +48,7 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
       }),
     });
   };
+  console.log(data);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,6 +58,7 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
       email: formValues.email,
       password: formValues.password,
     });
+    console.log(result);
     isLoading(false);
     setError(handleError(result));
     if (result?.ok) {
@@ -68,7 +70,11 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
   const handleError = (error?: SignInResponse): string | null => {
     if (error?.ok) return null;
     else if (error?.status === 401) {
-      return "Credenciales Incorrectas";
+      if (error?.error?.includes("credential")) {
+        return "Credenciales Incorrectas";
+      } else if (error.error === "Verification missing") {
+        return "Aún no has verificado tu correo";
+      } else return null;
     } else return "Ha ocurrido un error. Intenta nuevamente luego";
   };
   return (
@@ -155,6 +161,17 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
         >
           Registrate
         </p>
+        {isLogged && (
+          <p
+            onClick={() => {
+              signOut({ redirect: false });
+              switchLogged(false);
+              alert("Logged out :c");
+            }}
+          >
+            X
+          </p>
+        )}
       </div>
     </div>
   );
