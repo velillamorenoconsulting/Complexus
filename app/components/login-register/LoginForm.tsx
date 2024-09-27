@@ -27,7 +27,7 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
   const [generalError, setError] = useState<string | null>(null);
   const [loading, isLoading] = useState<boolean>(false);
   const [loginType, setLoginType] = useState<string>("user");
-  const { isLogged, switchLogged } = useStore();
+  const { switchLogged, setAuthOptions } = useStore();
   const { status, data } = useSession();
 
   useEffect(() => {
@@ -48,7 +48,6 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
       }),
     });
   };
-  console.log(data);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,11 +57,11 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
       email: formValues.email,
       password: formValues.password,
     });
-    console.log(result);
     isLoading(false);
     setError(handleError(result));
     if (result?.ok) {
       switchLogged(true);
+      setAuthOptions({ isVisible: false });
       alert("Logged!");
     }
   };
@@ -161,17 +160,6 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
         >
           Registrate
         </p>
-        {isLogged && (
-          <p
-            onClick={() => {
-              signOut({ redirect: false });
-              switchLogged(false);
-              alert("Logged out :c");
-            }}
-          >
-            X
-          </p>
-        )}
       </div>
     </div>
   );

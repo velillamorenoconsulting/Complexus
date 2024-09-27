@@ -30,7 +30,7 @@ const handler = NextAuth({
           const loginService = new LoginService();
           const userInfo = await loginService.loginUser(credentials);
           const userPayload = {
-            id: userInfo.userId,
+            id: `${userInfo.firstName} ${userInfo.lastName}`,
             email: userInfo.email,
             token: userInfo.token,
           };
