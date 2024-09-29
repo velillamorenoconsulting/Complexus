@@ -16,7 +16,7 @@ export default function AuthComponent({ type }: ComponentProps) {
     setSelected(selection);
   };
   return (
-    <div className="w-screen h-screen flex justify-center items-center bg-black/50 p-10 absolute top-0 left-0">
+    <div className="w-screen h-screen flex justify-center items-center bg-black/50 p-10 absolute top-0 left-0 z-50">
       <Card
         radius="sm"
         className="w-full max-w-[450px] h-full max-h-[600px] text-white dark"
@@ -25,7 +25,7 @@ export default function AuthComponent({ type }: ComponentProps) {
           <img
             src="/icons/close.svg"
             alt="close"
-            className="w-7 absolute right-3 top-3 z-10 hover:cursor-pointer"
+            className="w-7 absolute right-3 top-3 hover:cursor-pointer"
             onClick={() => setAuthOptions({ isVisible: false })}
           />
           {selected === "login" ? (

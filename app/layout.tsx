@@ -32,10 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${comorantFont.variable} ${raleWay.variable}`}>
-        <Providers>
-          <NavaBar style="light" />
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

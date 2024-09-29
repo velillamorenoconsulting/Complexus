@@ -6,3 +6,5 @@ export type validPagesList =
   | "events"
   | "services"
   | "contact";
+
+export type ThemeType = "dark" | "light";

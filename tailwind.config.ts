@@ -10,8 +10,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        slideInFromRight: {
+          "0%": { transform: "translateX(100%)", opacity: "0" },
+          "100%": { transform: "translateX(0)", opacity: "1" },
+        },
+      },
+      animation: {
+        slideIn: "slideInFromRight 0.5s ease-out",
+      },
       screens: {
         xs: "500px",
+        mdl: "870px",
         "3xl": "2000px",
       },
       fontFamily: {

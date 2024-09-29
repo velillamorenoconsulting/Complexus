@@ -1,8 +1,10 @@
 "use client";
-import { useState } from "react";
 import AuthComponent from "../components/login-register/AuthComponent";
 import BurgerMenu from "../components/navBar/BurgerMenu";
 import { useStore } from "../store/zustand";
+import RowMenu from "../components/navBar/RowMenu";
+import Image from "next/image";
+import UserAvatar from "../components/navBar/UserAvatar";
 
 type ComponentProps = {
   style: "dark" | "light";
@@ -11,24 +13,38 @@ type ComponentProps = {
 export default function NavaBar({ style }: ComponentProps) {
   const { authOptions } = useStore();
   return (
-    <nav className="w-screen bg-transparent p-10 absolute top-0">
+    <nav className="w-screen bg-transparent p-10 absolute top-0 z-20">
       <div className="flex flex-row justify-between items-center">
-        <div className="flex flex-row lg:flex-col gap-28 lg:gap-0">
-          <div
-            id="Main"
-            className={`font-comorant font-bold text-3xl ${
-              style === "dark" ? "text-black" : "text-white"
-            }`}
-          >
-            Complexus
+        <div className="flex flex-row lg:flex-col md:gap-16 mdl:gap-28 lg:gap-5 lg:text-lg">
+          <div className="flex flex-row gap-3">
+            <Image
+              src={`${style === "light" ? "/logow.svg" : "/logob.svg"}`}
+              alt="logo"
+              width={500}
+              height={500}
+              className="w-10"
+            />
+            <h2
+              className={`text-3xl lg:text-4xl font-comorant hidden sm:block ${
+                style === "light" ? "text-white" : "text-black"
+              }`}
+            >
+              Complexus
+            </h2>
           </div>
-          <div id="text-menu" className="flex-row hidden sm:flex">
-            <p>Hello 1</p>
-            <p>Hello 2</p>
+          <div
+            id="row-menu"
+            className="flex-row hidden md:flex relative items-center"
+          >
+            <RowMenu style={style} />
           </div>
         </div>
-        <div className="hidden sm:block">Avatar</div>
-        <div id="burger-menu" className="flex sm:hidden">
+        <div className="hidden md:flex justify-center">
+          <div className="lg:hidden">
+            <UserAvatar style={style} />
+          </div>
+        </div>
+        <div id="burger-menu" className="flex md:hidden z-10">
           <BurgerMenu style={style} />
         </div>
       </div>
