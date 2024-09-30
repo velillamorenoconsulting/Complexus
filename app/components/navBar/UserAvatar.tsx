@@ -8,6 +8,7 @@ import {
   DropdownMenu,
   DropdownSection,
   DropdownTrigger,
+  User,
 } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -20,14 +21,14 @@ type ComponentProps = {
 export default function UserAvatar({ style }: ComponentProps) {
   const authPaths = ["login", "register"];
   const { setAuthOptions } = useStore();
-  const { data } = useSession();
+  const session = useSession();
   return (
     <div>
       <Dropdown className="dark text-white font-raleway" radius="sm">
         <DropdownTrigger>
           <Image
             src={
-              data?.user?.image ?? isDarkTheme(style)
+              session.data?.user?.image ?? isDarkTheme(style)
                 ? "/icons/user-defaultb.svg"
                 : "/icons/user-default.svg"
             }
@@ -44,14 +45,28 @@ export default function UserAvatar({ style }: ComponentProps) {
               setAuthOptions({ isVisible: true, type: key as any });
           }}
         >
-          <DropdownSection>
-            <DropdownItem key="login">
-              <p>Iniciar sesión</p>
-            </DropdownItem>
-            <DropdownItem key="register">
-              <p>Registro</p>
-            </DropdownItem>
-          </DropdownSection>
+          {session.status !== "authenticated" ? (
+            <DropdownSection>
+              <DropdownItem key="login">
+                <p>Iniciar sesión</p>
+              </DropdownItem>
+              <DropdownItem key="register">
+                <p>Registro</p>
+              </DropdownItem>
+            </DropdownSection>
+          ) : (
+            <DropdownSection>
+              <DropdownItem>
+                <User
+                  name={session.data?.user?.name}
+                  description={session.data?.user?.email}
+                  avatarProps={{
+                    src: session.data?.user?.image ?? "/icons/user-default.svg",
+                  }}
+                />
+              </DropdownItem>
+            </DropdownSection>
+          )}
         </DropdownMenu>
       </Dropdown>
     </div>

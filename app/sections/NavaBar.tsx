@@ -5,6 +5,7 @@ import { useStore } from "../store/zustand";
 import RowMenu from "../components/navBar/RowMenu";
 import Image from "next/image";
 import UserAvatar from "../components/navBar/UserAvatar";
+import DesktopAvatar from "../components/navBar/DesktopAvatar";
 
 type ComponentProps = {
   style: "dark" | "light";
@@ -42,6 +43,9 @@ export default function NavaBar({ style }: ComponentProps) {
         <div className="hidden md:flex justify-center">
           <div className="lg:hidden">
             <UserAvatar style={style} />
+          </div>
+          <div className="hidden lg:block">
+            <DesktopAvatar style={style} />
           </div>
         </div>
         <div id="burger-menu" className="flex md:hidden z-10">
