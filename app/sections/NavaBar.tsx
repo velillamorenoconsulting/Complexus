@@ -14,9 +14,9 @@ type ComponentProps = {
 export default function NavaBar({ style }: ComponentProps) {
   const { authOptions } = useStore();
   return (
-    <nav className="w-screen bg-transparent p-10 absolute top-0 z-20">
+    <nav className="w-full bg-transparent p-10 absolute top-0 z-20">
       <div className="flex flex-row justify-between items-center">
-        <div className="flex flex-row lg:flex-col md:gap-16 mdl:gap-28 lg:gap-5 lg:text-lg">
+        <div className="flex flex-row lg:flex-col md:gap-16 lg:gap-5 lg:text-lg">
           <div className="flex flex-row gap-3">
             <Image
               src={`${style === "light" ? "/logow.svg" : "/logob.svg"}`}

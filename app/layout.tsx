@@ -31,9 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${comorantFont.variable} ${raleWay.variable} overflow-x-hidden`}
-      >
+      <body className={`${comorantFont.variable} ${raleWay.variable}`}>
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -13,7 +13,7 @@ export default function RowMenu({ style }: ComponentProps) {
     <div
       className={`z-10 ${
         isDarkTheme(style) ? "text-black" : "text-white"
-      } flex flex-row gap-5 font-raleway md:text-sm mdl:text-md`}
+      } flex flex-row gap-5 font-raleway md:text-sm lg:text-md`}
     >
       <Link href="/" className="hover:cursor-pointer">
         Home

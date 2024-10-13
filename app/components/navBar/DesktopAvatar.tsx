@@ -17,6 +17,7 @@ import {
   ModalFooter,
 } from "@nextui-org/react";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 type ComponentProps = {
@@ -25,6 +26,7 @@ type ComponentProps = {
 
 export default function DesktopAvatar({ style }: ComponentProps) {
   const session = useSession();
+  const redirect = useRouter();
   const { setAuthOptions } = useStore();
   const [isOpen, setOpen] = useState<boolean>(false);
   return (
@@ -49,10 +51,18 @@ export default function DesktopAvatar({ style }: ComponentProps) {
               />
             </DropdownTrigger>
             <DropdownMenu className="font-raleway">
-              <DropdownItem>
+              <DropdownItem
+                textValue="a"
+                onClick={() => redirect.push("/dashboard")}
+              >
+                Panel de control
+              </DropdownItem>
+              <DropdownItem textValue="b">
                 <Divider />
               </DropdownItem>
-              <DropdownItem onClick={() => setOpen(true)}>Salir</DropdownItem>
+              <DropdownItem onClick={() => setOpen(true)} textValue="c">
+                Cerrar sesión
+              </DropdownItem>
             </DropdownMenu>
           </Dropdown>
           <Modal

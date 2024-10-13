@@ -3,8 +3,14 @@ import React from "react";
 export default function HomeA() {
   return (
     <div className="h-screen relative">
-      <div className="h-full absolute z-0">
-        <video autoPlay muted loop playsInline className="object-cover h-full">
+      <div className="h-full absolute z-0 overflow-y-hidden">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="object-cover h-full ar-16-9:w-full ar-16-9:h-auto"
+        >
           <source src="/HomeVideo.mp4" type="video/mp4" />
         </video>
       </div>

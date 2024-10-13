@@ -21,12 +21,17 @@ const config: Config = {
       },
       screens: {
         xs: "500px",
-        mdl: "870px",
         "3xl": "2000px",
+        "4xl": "2300px",
+        "ar-16-9": { raw: "(min-aspect-ratio: 16/9)" },
       },
       fontFamily: {
         comorant: "var(--font-comorant)",
         raleway: "var(--font-raleway)",
+      },
+      spacing: {
+        navbar: "120px",
+        navbard: "166px",
       },
       fontSize: {
         md: [

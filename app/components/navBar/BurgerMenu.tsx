@@ -13,7 +13,7 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { removePathNameSlash } from "@/app/utils/utils";
 
 type ComponentProps = {
@@ -23,6 +23,7 @@ type ComponentProps = {
 export default function BurgerMenu({ style }: ComponentProps) {
   const session = useSession();
   const pathName = usePathname();
+  const redirect = useRouter();
   const { setAuthOptions } = useStore();
   const [isLogged, setLogged] = useState<boolean>(
     session.status === "authenticated"
@@ -59,6 +60,7 @@ export default function BurgerMenu({ style }: ComponentProps) {
           {session.status === "authenticated" ? (
             <DropdownItem>
               <User
+                onClick={() => redirect.push("/dashboard")}
                 name={session.data.user?.name}
                 description={session.data.user?.email}
                 avatarProps={{
