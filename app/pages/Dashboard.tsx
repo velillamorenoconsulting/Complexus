@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 type PageStatus = "loading" | "done";
 
@@ -12,6 +13,18 @@ export default function Dashboard() {
   const session = useSession();
   useEffect(() => {
     if (session.status === "unauthenticated") {
+      Swal.fire({
+        title: "Sin Acceso",
+        text: "Deberás iniciar sesión para visualizar esta sección",
+        icon: "warning",
+        timer: 2000,
+        color: "#ffffff",
+        background: "#1E1E1E",
+        showConfirmButton: false,
+        customClass: {
+          title: "font-raleway",
+        },
+      });
       redirect("/");
     }
   }, [session]);

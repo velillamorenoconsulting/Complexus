@@ -5,6 +5,7 @@ import { validateLoginErrors } from "@/app/utils/login-register/errorValidator";
 import { SignInResponse, signIn, signOut, useSession } from "next-auth/react";
 import CompLoading from "../CompLoading";
 import { useStore } from "@/app/store/zustand";
+import Swal from "sweetalert2";
 
 export type LoginFormValues = {
   email: string | null;
@@ -62,7 +63,17 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
     if (result?.ok) {
       switchLogged(true);
       setAuthOptions({ isVisible: false });
-      alert("Logged!");
+      Swal.fire({
+        title: "¡Bienvenido/a!",
+        icon: "success",
+        timer: 1000,
+        color: "#ffffff",
+        background: "#1E1E1E",
+        showConfirmButton: false,
+        customClass: {
+          title: "font-raleway",
+        },
+      });
     }
   };
 

@@ -19,6 +19,7 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 
 type ComponentProps = {
   style: ThemeType;
@@ -45,7 +46,7 @@ export default function DesktopAvatar({ style }: ComponentProps) {
                 avatarProps={{
                   src: session.data.user?.image ?? "/icons/user-default.svg",
                 }}
-                className={`dark ${
+                className={`dark hover:cursor-pointer ${
                   isDarkTheme(style) ? "text-black" : "text-white"
                 }`}
               />
@@ -77,7 +78,22 @@ export default function DesktopAvatar({ style }: ComponentProps) {
                 </p>
               </ModalBody>
               <ModalFooter content="center">
-                <Button onClick={() => signOut({ redirect: false })}>
+                <Button
+                  onClick={() => {
+                    signOut({ redirect: false });
+                    Swal.fire({
+                      title: "Sesión finalizada",
+                      icon: "success",
+                      timer: 1000,
+                      color: "#ffffff",
+                      background: "#1E1E1E",
+                      showConfirmButton: false,
+                      customClass: {
+                        title: "font-raleway",
+                      },
+                    });
+                  }}
+                >
                   Aceptar
                 </Button>
                 <Button onClick={() => setOpen(false)}>Cancelar</Button>

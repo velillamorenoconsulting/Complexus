@@ -12,6 +12,7 @@ import {
 } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 type ComponentProps = {
@@ -22,6 +23,7 @@ export default function UserAvatar({ style }: ComponentProps) {
   const authPaths = ["login", "register"];
   const { setAuthOptions } = useStore();
   const session = useSession();
+  const redirect = useRouter();
   return (
     <div>
       <Dropdown className="dark text-white font-raleway" radius="sm">
@@ -33,8 +35,8 @@ export default function UserAvatar({ style }: ComponentProps) {
                 : "/icons/user-default.svg"
             }
             alt="user-menu"
-            width={500}
-            height={500}
+            width={250}
+            height={250}
             className="w-10 hover:cursor-pointer"
           />
         </DropdownTrigger>
@@ -56,7 +58,7 @@ export default function UserAvatar({ style }: ComponentProps) {
             </DropdownSection>
           ) : (
             <DropdownSection>
-              <DropdownItem>
+              <DropdownItem onClick={() => redirect.push("/dashboard")}>
                 <User
                   name={session.data?.user?.name}
                   description={session.data?.user?.email}

@@ -15,6 +15,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { removePathNameSlash } from "@/app/utils/utils";
+import Swal from "sweetalert2";
 
 type ComponentProps = {
   style: "dark" | "light";
@@ -82,13 +83,19 @@ export default function BurgerMenu({ style }: ComponentProps) {
             </Link>
           </DropdownItem>
           <DropdownItem key={CurrentPage.EVENTS}>
-            <p className="font-raleway text-md">Eventos</p>
+            <Link href="/events" className="font-raleway text-md">
+              <p>Eventos</p>
+            </Link>
           </DropdownItem>
           <DropdownItem key={CurrentPage.SERVICES}>
-            <p className="font-raleway text-md">Servicios</p>
+            <Link href="/services" className="font-raleway text-md">
+              <p>Servicios</p>
+            </Link>
           </DropdownItem>
           <DropdownItem key={CurrentPage.CONTACT}>
-            <p className="font-raleway text-md">Contáctanos</p>
+            <Link href="/contact" className="font-raleway text-md">
+              <p>Contacto</p>
+            </Link>
           </DropdownItem>
           <DropdownItem disableAnimation>
             <Divider />
@@ -116,6 +123,17 @@ export default function BurgerMenu({ style }: ComponentProps) {
                 onClick={() => {
                   signOut({ redirect: false });
                   setLogged(false);
+                  Swal.fire({
+                    title: "Sesión finalizada",
+                    icon: "success",
+                    timer: 1000,
+                    color: "#ffffff",
+                    background: "#1E1E1E",
+                    showConfirmButton: false,
+                    customClass: {
+                      title: "font-raleway",
+                    },
+                  });
                 }}
                 className="font-raleway text-md"
               >

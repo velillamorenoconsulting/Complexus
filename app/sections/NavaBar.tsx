@@ -21,8 +21,8 @@ export default function NavaBar({ style }: ComponentProps) {
             <Image
               src={`${style === "light" ? "/logow.svg" : "/logob.svg"}`}
               alt="logo"
-              width={500}
-              height={500}
+              width={200}
+              height={200}
               className="w-10"
             />
             <h2
