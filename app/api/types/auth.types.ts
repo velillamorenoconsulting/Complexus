@@ -13,8 +13,10 @@ export interface SignedUser extends Omit<RecordUser, "generateId"> {
 
 export interface SignedUserResponse extends User {
   token: string;
+  userId: string;
 }
 
 export interface CustomJWT extends Record<string, unknown>, DefaultJWT {
   token: string;
+  userId: string;
 }

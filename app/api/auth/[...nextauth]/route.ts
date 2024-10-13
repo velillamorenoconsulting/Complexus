@@ -32,6 +32,7 @@ const handler = NextAuth({
           const userPayload = {
             id: `${userInfo.firstName} ${userInfo.lastName}`,
             email: userInfo.email,
+            userId: userInfo.userId,
             token: userInfo.token,
           };
           if (userInfo) {
@@ -85,6 +86,7 @@ const handler = NextAuth({
     jwt: ({ token, user }) => {
       if (user) {
         token.accessToken = (user as SignedUserResponse).token;
+        token.userId = (user as SignedUserResponse).userId;
       }
       return token;
     },
@@ -94,6 +96,7 @@ const handler = NextAuth({
         email: token.email,
         // @ts-expect-error forced attribute
         accessToken: token.accessToken as CustomJWT,
+        userId: token.userId as CustomJWT,
       };
       return session;
     },

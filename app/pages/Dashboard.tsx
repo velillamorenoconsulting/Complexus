@@ -1,33 +1,14 @@
 "use client";
 import { Button, Card, CardBody, Divider } from "@nextui-org/react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
+import { useUserSessionStrict } from "../components/hooks/useUserSession";
+import { useStore } from "../store/zustand";
 
 type PageStatus = "loading" | "done";
 
 export default function Dashboard() {
-  const [pageStatus, setPageStatus] = useState<PageStatus>("loading");
-  const session = useSession();
-  useEffect(() => {
-    if (session.status === "unauthenticated") {
-      Swal.fire({
-        title: "Sin Acceso",
-        text: "Deberás iniciar sesión para visualizar esta sección",
-        icon: "warning",
-        timer: 2000,
-        color: "#ffffff",
-        background: "#1E1E1E",
-        showConfirmButton: false,
-        customClass: {
-          title: "font-raleway",
-        },
-      });
-      redirect("/");
-    }
-  }, [session]);
+  const user = useUserSessionStrict();
+  console.log(user);
   return (
     <div className="pt-navbar lg:pt-navbard">
       <div className="hidden lg:flex flex-row  h-full lg:h-auto font-raleway">
