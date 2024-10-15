@@ -54,7 +54,11 @@ export const useUserSessionStrict = (): UserData => {
         },
       });
     } else if (baseSession.status === "authenticated") {
-      if (!globalUser) {
+      if (
+        !globalUser ||
+        (baseSession.data.user as SignedUserResponse).userId !==
+          globalUser.userId
+      ) {
         fetchData((baseSession.data.user as SignedUserResponse).userId);
       } else {
         setUserData(globalUser);
