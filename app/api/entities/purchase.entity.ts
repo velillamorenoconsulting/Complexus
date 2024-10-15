@@ -1,5 +1,6 @@
 import {
   BeforeInsert,
+  BeforeUpdate,
   Collection,
   Column,
   CreateDateColumn,
@@ -13,6 +14,7 @@ import { IsBoolean, IsDecimal, IsOptional, IsString } from "class-validator";
 import { Item } from "./item.entity";
 import { User } from "./user.entity";
 import { Member } from "./member.entity";
+import { Event } from "./event.entity";
 
 @Entity("Purchase")
 export class Purchase {
@@ -36,8 +38,8 @@ export class Purchase {
   tax!: number;
 
   @Column()
-  @IsString()
-  itemId!: string;
+  @IsBoolean()
+  isEvent!: boolean;
 
   @Column()
   @IsOptional()
@@ -64,6 +66,24 @@ export class Purchase {
   @Column({ default: false })
   isConfirmed!: boolean;
 
-  @ManyToOne(() => Item, (item) => item.purchases)
-  item!: Item;
+  @ManyToOne(() => Item, (item) => item.purchases, { nullable: true })
+  item?: Item;
+
+  @ManyToOne(() => Event, (event) => event.purchases, { nullable: true })
+  event?: Event;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  validatePurchase() {
+    if (this.event && this.item) {
+      throw new Error(
+        "Purchase can be related to either an event or an item, but not both."
+      );
+    }
+    if (!this.event && !this.item) {
+      throw new Error(
+        "Purchase must be related to either an event or an item."
+      );
+    }
+  }
 }

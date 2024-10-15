@@ -20,7 +20,10 @@ export class UserRepostitory {
 
   async findById(userId: string): Promise<User | null> {
     await this.init();
-    return this.repository!.findOneBy({ userId });
+    return this.repository!.findOne({
+      where: { userId },
+      relations: ["purchases"],
+    });
   }
 
   async findByEmail(email: string): Promise<User | null> {
