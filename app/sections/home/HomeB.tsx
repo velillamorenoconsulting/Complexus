@@ -3,7 +3,7 @@ import React from "react";
 export default function HomeB() {
   return (
     <div className="w-full flex justify-center bg-[#ecf4f4]">
-      <div className="flex flex-col md:flex-row gap-10 p-16 max-w-[1600px]">
+      <div className="flex flex-col md:flex-row gap-10 p-16 max-w-[1600px] min-h-[700px] md:pt-32">
         <h3 className="font-comorant text-5xl font-semibold">Quienes somos</h3>
         <div className="flex flex-col font-raleway text-justify gap-3 text-lg">
           <p>
