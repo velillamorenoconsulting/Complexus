@@ -1,8 +1,8 @@
 import { CurrentPage } from "../store/zustand";
-import { ThemeType, validPagesList } from "../types/types";
+import { ThemeType, ValidPagesList } from "../types/types";
 
-export const removePathNameSlash = (path: string): validPagesList => {
-  return path.replace("/", "") as validPagesList;
+export const removePathNameSlash = (path: string): ValidPagesList => {
+  return path.replace("/", "") as ValidPagesList;
 };
 
 export const isDarkTheme = (style: ThemeType): boolean => {

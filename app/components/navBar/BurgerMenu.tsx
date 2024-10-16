@@ -1,6 +1,6 @@
 "use client";
 import { CurrentPage, useStore } from "@/app/store/zustand";
-import { validPages } from "@/app/types/types";
+import { pageList, validPages } from "@/app/types/types";
 import {
   Divider,
   Dropdown,
@@ -59,7 +59,7 @@ export default function BurgerMenu({ style }: ComponentProps) {
           }
         >
           {session.status === "authenticated" ? (
-            <DropdownItem>
+            <DropdownItem textValue="user">
               <User
                 onClick={() => redirect.push("/dashboard")}
                 name={session.data.user?.name}
@@ -70,34 +70,18 @@ export default function BurgerMenu({ style }: ComponentProps) {
               />
             </DropdownItem>
           ) : (
-            <DropdownItem className="hidden"></DropdownItem>
+            <DropdownItem className="hidden" textValue="hidden"></DropdownItem>
           )}
-          <DropdownItem key={CurrentPage.HOME}>
-            <Link href="/" className="font-raleway text-md">
-              <p>Inicio</p>
-            </Link>
-          </DropdownItem>
-          <DropdownItem key={CurrentPage.CORP}>
-            <Link href="/corporation" className="font-raleway text-md">
-              <p>Corporacion</p>
-            </Link>
-          </DropdownItem>
-          <DropdownItem key={CurrentPage.EVENTS}>
-            <Link href="/events" className="font-raleway text-md">
-              <p>Eventos</p>
-            </Link>
-          </DropdownItem>
-          <DropdownItem key={CurrentPage.SERVICES}>
-            <Link href="/services" className="font-raleway text-md">
-              <p>Servicios</p>
-            </Link>
-          </DropdownItem>
-          <DropdownItem key={CurrentPage.CONTACT}>
-            <Link href="/contact" className="font-raleway text-md">
-              <p>Contacto</p>
-            </Link>
-          </DropdownItem>
-          <DropdownItem disableAnimation>
+          <DropdownSection>
+            {pageList.map((pageItem) => (
+              <DropdownItem key={pageItem.key} textValue={pageItem.name}>
+                <Link href={pageItem.redirect} className="font-raleway text-md">
+                  <p>{pageItem.name}</p>
+                </Link>
+              </DropdownItem>
+            ))}
+          </DropdownSection>
+          <DropdownItem disableAnimation textValue="divider1">
             <Divider />
           </DropdownItem>
           {session.status !== "authenticated" ? (
@@ -106,6 +90,7 @@ export default function BurgerMenu({ style }: ComponentProps) {
                 onClick={() => {
                   setAuthOptions({ isVisible: true, type: "login" });
                 }}
+                textValue="login"
               >
                 <p className="font-raleway text-md">Iniciar sesión</p>
               </DropdownItem>
@@ -113,12 +98,13 @@ export default function BurgerMenu({ style }: ComponentProps) {
                 onClick={() => {
                   setAuthOptions({ isVisible: true, type: "register" });
                 }}
+                textValue="register"
               >
                 <p className="font-raleway text-md">Registrarse</p>
               </DropdownItem>
             </DropdownSection>
           ) : (
-            <DropdownItem>
+            <DropdownItem textValue="signout">
               <p
                 onClick={() => {
                   signOut({ redirect: false });

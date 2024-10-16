@@ -5,6 +5,9 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ["typeorm"],
   },
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "*" }],
+  },
 };
 
 export default {

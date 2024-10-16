@@ -5,10 +5,10 @@ import Image from "next/image";
 
 export default function NotFound() {
   return (
-    <div className="pt-navbar lg:pt-navbard bg-zinc-800 h-screen">
+    <div className="bg-zinc-800 h-screen">
       <NavaBar style="light" />
       <div className="w-full h-full flex items-center justify-center text-white">
-        <div className="max-w-[700px] flex flex-col -mt-32 p-5">
+        <div className="max-w-[700px] flex flex-col p-5">
           <Image
             src="/thinking.png"
             alt="p_thinking"
