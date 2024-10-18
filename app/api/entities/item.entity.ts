@@ -4,6 +4,7 @@ import {
   Entity,
   OneToMany,
   PrimaryColumn,
+  Relation,
 } from "typeorm";
 import { generateNanoId } from "../utils/utils";
 import {
@@ -61,5 +62,5 @@ export class Item {
   stock!: number;
 
   @OneToMany(() => Purchase, (purchase) => purchase.item)
-  purchases!: Purchase[];
+  purchases!: Relation<Purchase>[];
 }

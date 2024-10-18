@@ -6,6 +6,7 @@ import {
   Entity,
   OneToMany,
   PrimaryColumn,
+  Relation,
   UpdateDateColumn,
 } from "typeorm";
 import { generateNanoId } from "../utils/utils";
@@ -74,5 +75,5 @@ export class Member {
   @OneToMany(() => Purchase, (purchase) => purchase.memberBuyer, {
     nullable: true,
   })
-  purchases!: Purchase[] | null;
+  purchases!: Relation<Purchase>[] | null;
 }

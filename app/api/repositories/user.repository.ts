@@ -21,8 +21,15 @@ export class UserRepostitory {
   async findById(userId: string): Promise<User | null> {
     await this.init();
     return this.repository!.findOne({
-      where: { userId },
-      relations: ["purchases"],
+      where: {
+        userId,
+      },
+      relations: {
+        purchases: {
+          event: true,
+          item: true
+        },
+      },
     });
   }
 

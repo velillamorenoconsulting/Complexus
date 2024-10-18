@@ -8,3 +8,11 @@ export interface ValidEventFilters {
   location: string;
   price: number;
 }
+
+export interface ValidPurchaseFilters {
+  tax: string;
+  isEvent: boolean;
+  confirmationId: string;
+  isMemberPurchase: boolean;
+  isConfirmed: boolean;
+}

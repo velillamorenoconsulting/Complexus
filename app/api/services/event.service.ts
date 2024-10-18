@@ -1,6 +1,8 @@
 import { EventRepository } from "../repositories/event.repository";
 import { Event } from "../entities/event.entity";
-import { NotFoundError } from "../utils/errors";
+import { NotFoundError, ValidateError } from "../utils/errors";
+import { validateOrReject, ValidationError } from "class-validator";
+import { plainToInstance } from "class-transformer";
 
 export class EventService {
   private eventRepository: EventRepository;
@@ -30,5 +32,25 @@ export class EventService {
 
   async getEventsByDateRange(startDate: Date, endDate?: Date): Promise<Event[]> {
     return this.eventRepository.findByDateRange(startDate, endDate);
+  }
+
+  // TODO Have JWT userId extracted
+  async createEvent(eventInfo: any): Promise<Event> {
+    const eventReceivedAttributes = {
+      ...eventInfo,
+      createdBy: 'SYSTEM',
+      updatedBy: 'SYSTEM',
+    };
+    const eventToCreate = plainToInstance(Event, eventReceivedAttributes);
+    try {
+      await validateOrReject(eventToCreate);
+    } catch (error: any) {
+      const constraints = error.map((error: ValidationError) => {
+        const key = Object.keys(error.constraints as object)[0];
+        return error.constraints?.[key];
+      });
+      throw new ValidateError(constraints);
+    }
+    return this.eventRepository.create(eventToCreate);
   }
 }

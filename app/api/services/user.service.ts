@@ -37,7 +37,7 @@ export class UserService {
     return this.userRepository.updateById(userId, payload);
   }
 
-  async createUser(user: any): Promise<User> {
+  async createUser(user: any): Promise<User> { // TODO TYPE
     const userReceivedAttributes = {
       ...user,
       createdBy: "SYSTEM",

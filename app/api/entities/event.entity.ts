@@ -4,9 +4,10 @@ import {
   Entity,
   OneToMany,
   PrimaryColumn,
+  Relation,
 } from "typeorm";
 import { generateNanoId } from "../utils/utils";
-import { IsArray, IsDate, IsDecimal, IsString } from "class-validator";
+import { IsArray, IsDate, IsDateString, IsDecimal, IsNumber, IsOptional, IsString } from "class-validator";
 import { Purchase } from "./purchase.entity";
 
 @Entity("Event")
@@ -28,15 +29,17 @@ export class Event {
   description!: string;
 
   @Column()
-  @IsDate()
+  @IsDateString()
   startAt!: Date;
 
-  @Column()
-  @IsDate()
-  endAt!: Date;
+  @Column({ nullable: true })
+  @IsDateString()
+  @IsOptional()
+  endAt?: Date;
 
   @Column("jsonb", { nullable: true, default: [] })
   @IsArray()
+  @IsOptional()
   images!: string[];
 
   @Column()
@@ -44,9 +47,9 @@ export class Event {
   location!: string;
 
   @Column("float")
-  @IsDecimal()
+  @IsNumber()
   price!: number;
 
   @OneToMany(() => Purchase, (purchase) => purchase.event)
-  purchases!: Purchase[];
+  purchases!: Relation<Purchase>[];
 }

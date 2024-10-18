@@ -1,4 +1,5 @@
 import {
+  AfterInsert,
   BeforeInsert,
   BeforeUpdate,
   Collection,
@@ -9,8 +10,9 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
+import type { Relation } from 'typeorm';
 import { generateNanoId } from "../utils/utils";
-import { IsBoolean, IsDecimal, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsDecimal, IsNumber, IsOptional, IsString } from "class-validator";
 import { Item } from "./item.entity";
 import { User } from "./user.entity";
 import { Member } from "./member.entity";
@@ -35,19 +37,28 @@ export class Purchase {
   @Column({ default: 0.0 })
   @IsDecimal()
   @IsOptional()
-  tax!: number;
+  tax!: string;
 
   @Column()
   @IsBoolean()
   isEvent!: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   @IsOptional()
-  confirmationId!: string;
+  confirmationId?: string;
+
+  @Column({ nullable: true })
+  @IsOptional()
+  confirmedAt!: Date;
+
+  @Column()
+  @IsDecimal()
+  basePrice!: string;
 
   @Column()
   @IsOptional()
-  confirmedAt!: Date;
+  @IsNumber()
+  totalPrice?: number;
 
   @Column()
   @IsBoolean()
@@ -67,13 +78,12 @@ export class Purchase {
   isConfirmed!: boolean;
 
   @ManyToOne(() => Item, (item) => item.purchases, { nullable: true })
-  item?: Item;
+  item?: Relation<Item>;
 
   @ManyToOne(() => Event, (event) => event.purchases, { nullable: true })
-  event?: Event;
+  event?: Relation<Event>;
 
   @BeforeInsert()
-  @BeforeUpdate()
   validatePurchase() {
     if (this.event && this.item) {
       throw new Error(
@@ -85,5 +95,14 @@ export class Purchase {
         "Purchase must be related to either an event or an item."
       );
     }
+    if (this.memberBuyer && this.userBuyer) {
+      throw new Error("Buyer can be either Member or User");
+    }
+    if (!this.memberBuyer && !this.userBuyer) {
+      throw new Error("No Buyer information provided");
+    }
+
+    const calculatedPrice = parseFloat(this.basePrice) / (1 + parseFloat(this.tax));
+    this.totalPrice = Math.trunc(calculatedPrice);
   }
 }
