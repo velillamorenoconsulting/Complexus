@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useUserSessionStrict } from "../components/hooks/useUserSession";
 import { useEffect, useState } from "react";
 import UserPreview from "../components/dashboard/UserPreview";
+import PurchasesPreview from "../components/dashboard/PurchasesPreview";
 
 type PageStatus = "loading" | "done";
 
@@ -45,24 +46,7 @@ export default function Dashboard() {
             </Card>
             <Card className="p-3 bg-zinc-200">
               <CardBody>
-                <h4 className="text-2xl font-semibold">Últimas compras</h4>
-                <Divider className="my-3" />
-                {isLoading && (
-                  <div className="flex flex-col gap-3 my-5">
-                    <Skeleton className="w-full rounded-lg">
-                      <div className="h-16 w-full"></div>
-                    </Skeleton>
-                    <Skeleton className="w-full rounded-lg">
-                      <div className="h-16 w-full"></div>
-                    </Skeleton>
-                    <Skeleton className="w-full rounded-lg">
-                      <div className="h-16 w-full"></div>
-                    </Skeleton>
-                    <Skeleton className="w-full rounded-lg">
-                      <div className="h-16 w-full"></div>
-                    </Skeleton>
-                  </div>
-                )}
+                <PurchasesPreview isLoading={isLoading} purchases={user.user?.purchases ?? []}/>
               </CardBody>
             </Card>
             <Card className="p-3 bg-zinc-200">
