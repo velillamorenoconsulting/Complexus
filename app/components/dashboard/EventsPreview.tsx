@@ -1,29 +1,20 @@
-"use client";
+import { Event } from "@/app/api/entities/event.entity";
 import { Purchase } from "@/app/api/entities/purchase.entity";
 import { Divider, Skeleton } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
-import PurchaseMiniCard from "./PurchaseMiniCard";
-import Link from "next/link";
 
 type ComponentProps = { isLoading: boolean; purchases: Purchase[] };
 
-export default function PurchasesPreview({
+export default function EventsPreview({
   isLoading,
   purchases,
 }: ComponentProps) {
-  const [purchaseList, setPurchaseList] = useState<Purchase[]>([]);
-  useEffect(() => {
-    if (purchases.length && purchases.length > 2) {
-      setPurchaseList(
-        purchases
-          .sort((a, b) => a.confirmedAt.getTime() - b.confirmedAt.getTime())
-          .slice(0, 2),
-      );
-    } else setPurchaseList(purchases);
-  }, [purchases]);
+  const validEventList = purchases
+    .map((purchase) => purchase.event!)
+    .filter((event) => new Date(event.startAt) > new Date());
   return (
     <div>
-      <h4 className="text-2xl font-semibold">Últimas compras</h4>
+      <h4 className="text-2xl font-semibold">Tus eventos</h4>
       <Divider className="my-3" />
       {isLoading ? (
         <div className="flex flex-col gap-3 my-5">
@@ -40,19 +31,11 @@ export default function PurchasesPreview({
             <div className="h-16 w-full"></div>
           </Skeleton>
         </div>
-      ) : purchaseList.length ? (
-        <div className="flex flex-col gap-4">
-        {purchaseList.map((item, idx) => {
-          if (item.isConfirmed) {
-            return <PurchaseMiniCard key={item.purchaseId} purchase={item} />;
-          }
-        })}
-        <Divider className="my-1"/>
-        <Link href='#' className="text-center font-bold">Ver más</Link>
-        </div>
+      ) : validEventList.length ? (
+        <p>You have events :D</p>
       ) : (
         <p className="font-raleway text-md opacity-70">
-          Aún no has realizado compras.
+          No tienes eventos proximos agendados.
         </p>
       )}
     </div>

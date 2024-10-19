@@ -5,6 +5,8 @@ import { useUserSessionStrict } from "../components/hooks/useUserSession";
 import { useEffect, useState } from "react";
 import UserPreview from "../components/dashboard/UserPreview";
 import PurchasesPreview from "../components/dashboard/PurchasesPreview";
+import EventsPreview from "../components/dashboard/EventsPreview";
+import { Event } from "../api/entities/event.entity";
 
 type PageStatus = "loading" | "done";
 
@@ -16,6 +18,8 @@ export default function Dashboard() {
       setLoading(false);
     }
   }, [user]);
+
+  const events = user.user?.purchases?.filter(purchase => purchase.isEvent) ?? [];
   return (
     <div className="pt-navbar lg:pt-navbard">
       <div className="hidden lg:flex flex-row  h-full lg:h-auto font-raleway">
@@ -51,24 +55,7 @@ export default function Dashboard() {
             </Card>
             <Card className="p-3 bg-zinc-200">
               <CardBody className="">
-                <h4 className="text-2xl font-semibold">Tus eventos</h4>
-                <Divider className="my-3" />
-                {isLoading && (
-                  <div className="flex flex-col gap-3 my-5">
-                    <Skeleton className="w-full rounded-lg">
-                      <div className="h-16 w-full"></div>
-                    </Skeleton>
-                    <Skeleton className="w-full rounded-lg">
-                      <div className="h-16 w-full"></div>
-                    </Skeleton>
-                    <Skeleton className="w-full rounded-lg">
-                      <div className="h-16 w-full"></div>
-                    </Skeleton>
-                    <Skeleton className="w-full rounded-lg">
-                      <div className="h-16 w-full"></div>
-                    </Skeleton>
-                  </div>
-                )}
+                <EventsPreview isLoading={isLoading} purchases={events}/>
               </CardBody>
             </Card>
             <Card className="p-3 bg-zinc-200">
