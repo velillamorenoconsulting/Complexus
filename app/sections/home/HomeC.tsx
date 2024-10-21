@@ -15,8 +15,8 @@ export default function HomeC() {
               <Image
                 src="https://prueba875678.my.canva.site/complexus-ejemplo/images/54c89dc3e895981147fce2c50a4e247a.png"
                 alt="edgar_morin"
-                width={200}
-                height={200}
+                width={800}
+                height={800}
                 className="w-full transform scale-150 translate-y-14"
               />
             </div>
@@ -39,8 +39,8 @@ export default function HomeC() {
               <Image
                 src="https://prueba875678.my.canva.site/complexus-ejemplo/images/f05f6b3fcee92fa60bb2411a44b88735.png"
                 alt="edgar_morin"
-                width={200}
-                height={200}
+                width={800}
+                height={800}
                 className="w-full transform scale-125 lg:scale-[170%] xl:scale-125 translate-y-8"
               />
             </div>

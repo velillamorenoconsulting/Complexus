@@ -1,7 +1,6 @@
-import { Event } from "@/app/api/entities/event.entity";
 import { Purchase } from "@/app/api/entities/purchase.entity";
 import { Divider, Skeleton } from "@nextui-org/react";
-import React, { useEffect, useState } from "react";
+import EventMiniCard from "./EventMiniCard";
 
 type ComponentProps = { isLoading: boolean; purchases: Purchase[] };
 
@@ -14,7 +13,7 @@ export default function EventsPreview({
     .filter((event) => new Date(event.startAt) > new Date());
   return (
     <div>
-      <h4 className="text-2xl font-semibold">Tus eventos</h4>
+      <h4 className="text-2xl font-semibold">Tus próximos eventos</h4>
       <Divider className="my-3" />
       {isLoading ? (
         <div className="flex flex-col gap-3 my-5">
@@ -32,7 +31,11 @@ export default function EventsPreview({
           </Skeleton>
         </div>
       ) : validEventList.length ? (
-        <p>You have events :D</p>
+        <div className="flex flex-col gap-3">
+          {validEventList.map((event) => (
+            <EventMiniCard event={event} />
+          ))}
+        </div>
       ) : (
         <p className="font-raleway text-md opacity-70">
           No tienes eventos proximos agendados.

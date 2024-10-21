@@ -10,9 +10,15 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
-import type { Relation } from 'typeorm';
+import type { Relation } from "typeorm";
 import { generateNanoId } from "../utils/utils";
-import { IsBoolean, IsDecimal, IsNumber, IsOptional, IsString } from "class-validator";
+import {
+  IsBoolean,
+  IsDecimal,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator";
 import { Item } from "./item.entity";
 import { User } from "./user.entity";
 import { Member } from "./member.entity";
@@ -34,9 +40,8 @@ export class Purchase {
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @Column({ default: 0.0 })
+  @Column()
   @IsDecimal()
-  @IsOptional()
   tax!: string;
 
   @Column()
@@ -102,7 +107,8 @@ export class Purchase {
       throw new Error("No Buyer information provided");
     }
 
-    const calculatedPrice = parseFloat(this.basePrice) / (1 + parseFloat(this.tax));
+    const calculatedPrice =
+      parseFloat(this.basePrice) / (1 + parseFloat(this.tax));
     this.totalPrice = Math.trunc(calculatedPrice);
   }
 }

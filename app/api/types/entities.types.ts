@@ -16,3 +16,8 @@ export interface ValidPurchaseFilters {
   isMemberPurchase: boolean;
   isConfirmed: boolean;
 }
+
+export interface ValidQuestionFilters {
+  isApproved: string;
+  approvedBy: string;
+}

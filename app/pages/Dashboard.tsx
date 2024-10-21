@@ -1,14 +1,12 @@
 "use client";
-import { Button, Card, CardBody, Divider, Skeleton } from "@nextui-org/react";
+import { Button, Card, CardBody } from "@nextui-org/react";
 import Image from "next/image";
 import { useUserSessionStrict } from "../components/hooks/useUserSession";
 import { useEffect, useState } from "react";
 import UserPreview from "../components/dashboard/UserPreview";
 import PurchasesPreview from "../components/dashboard/PurchasesPreview";
 import EventsPreview from "../components/dashboard/EventsPreview";
-import { Event } from "../api/entities/event.entity";
-
-type PageStatus = "loading" | "done";
+import QuestionsPreview from "../components/dashboard/QuestionsPreview";
 
 export default function Dashboard() {
   const user = useUserSessionStrict();
@@ -19,7 +17,10 @@ export default function Dashboard() {
     }
   }, [user]);
 
-  const events = user.user?.purchases?.filter(purchase => purchase.isEvent) ?? [];
+  const purchases =
+    user.user?.purchases?.filter((purchase) => purchase.isConfirmed) ?? [];
+  const events = purchases.filter((purchase) => purchase.isEvent);
+  const questions = user.user?.questions ?? [];
   return (
     <div className="pt-navbar lg:pt-navbard">
       <div className="hidden lg:flex flex-row  h-full lg:h-auto font-raleway">
@@ -50,34 +51,17 @@ export default function Dashboard() {
             </Card>
             <Card className="p-3 bg-zinc-200">
               <CardBody>
-                <PurchasesPreview isLoading={isLoading} purchases={user.user?.purchases ?? []}/>
+                <PurchasesPreview isLoading={isLoading} purchases={purchases} />
               </CardBody>
             </Card>
             <Card className="p-3 bg-zinc-200">
               <CardBody className="">
-                <EventsPreview isLoading={isLoading} purchases={events}/>
+                <EventsPreview isLoading={isLoading} purchases={events} />
               </CardBody>
             </Card>
             <Card className="p-3 bg-zinc-200">
               <CardBody>
-                <h4 className="text-2xl font-semibold">Preguntas realizadas</h4>
-                <Divider className="my-3" />
-                {isLoading && (
-                  <div className="flex flex-col gap-3 my-5">
-                    <Skeleton className="w-full rounded-lg">
-                      <div className="h-16 w-full"></div>
-                    </Skeleton>
-                    <Skeleton className="w-full rounded-lg">
-                      <div className="h-16 w-full"></div>
-                    </Skeleton>
-                    <Skeleton className="w-full rounded-lg">
-                      <div className="h-16 w-full"></div>
-                    </Skeleton>
-                    <Skeleton className="w-full rounded-lg">
-                      <div className="h-16 w-full"></div>
-                    </Skeleton>
-                  </div>
-                )}
+                <QuestionsPreview isLoading={isLoading} questions={questions} />
               </CardBody>
             </Card>
           </div>

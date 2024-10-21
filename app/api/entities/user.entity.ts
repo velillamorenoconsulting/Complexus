@@ -6,12 +6,13 @@ import {
   Entity,
   OneToMany,
   PrimaryColumn,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import type { Relation } from "typeorm";
 import { generateNanoId } from "../utils/utils";
 import { IsBoolean, IsEmail, IsOptional, IsString } from "class-validator";
 import { Purchase } from "./purchase.entity";
+import { Question } from "./question.entity";
 
 @Entity("User")
 export class User {
@@ -67,8 +68,9 @@ export class User {
   @IsBoolean()
   isDeleted!: boolean;
 
-  @OneToMany(() => Purchase, (purchase) => purchase.userBuyer, {
-    nullable: true,
-  })
-  purchases!: Purchase[] | null;
+  @OneToMany(() => Purchase, (purchase) => purchase.userBuyer)
+  purchases!: Relation<Purchase>[];
+
+  @OneToMany(() => Question, (question) => question.author)
+  questions!: Relation<Question>[];
 }

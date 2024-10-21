@@ -1,14 +1,24 @@
 import {
   BeforeInsert,
   Column,
+  CreateDateColumn,
   Entity,
   OneToMany,
   PrimaryColumn,
   Relation,
+  UpdateDateColumn,
 } from "typeorm";
 import { generateNanoId } from "../utils/utils";
-import { IsArray, IsDate, IsDateString, IsDecimal, IsNumber, IsOptional, IsString } from "class-validator";
+import {
+  IsArray,
+  IsBoolean,
+  IsDateString,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator";
 import { Purchase } from "./purchase.entity";
+import { Question } from "./question.entity";
 
 @Entity("Event")
 export class Event {
@@ -32,6 +42,25 @@ export class Event {
   @IsDateString()
   startAt!: Date;
 
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
+
+  @Column({ nullable: true })
+  @IsString()
+  createdBy!: string;
+
+  @Column({ nullable: true })
+  @IsString()
+  updatedBy!: string;
+
+  @Column({ default: false })
+  @IsOptional()
+  @IsBoolean()
+  isDeleted!: boolean;
+
   @Column({ nullable: true })
   @IsDateString()
   @IsOptional()
@@ -52,4 +81,7 @@ export class Event {
 
   @OneToMany(() => Purchase, (purchase) => purchase.event)
   purchases!: Relation<Purchase>[];
+
+  @OneToMany(() => Question, (question) => question.event)
+  questions!: Relation<Question>[];
 }

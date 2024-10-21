@@ -18,6 +18,12 @@ export class UserRepostitory {
     return this.repository!.find();
   }
 
+  /**
+   * TODO This needs to be optimized to recover only needed records
+   * once the amount of avh purchases per user increase since the nested info
+   * will be a lot to process in an acceptable time
+   */
+
   async findById(userId: string): Promise<User | null> {
     await this.init();
     return this.repository!.findOne({
@@ -27,7 +33,10 @@ export class UserRepostitory {
       relations: {
         purchases: {
           event: true,
-          item: true
+          item: true,
+        },
+        questions: {
+          event: true,
         },
       },
     });

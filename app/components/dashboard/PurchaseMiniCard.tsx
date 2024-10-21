@@ -13,7 +13,7 @@ export default function PurchaseMiniCard({ purchase }: Props) {
   return (
     <Card className="bg-[#e9f2f2]">
       <CardBody className="flex flex-row">
-        <h5 className="font-comorant text-2xl font-semibold w-[40%] text-center self-center">
+        <h5 className="font-raleway text-2xl font-semibold w-[40%] text-center self-center">
           {purchaseTitle}
         </h5>
         <Divider className="h-auto mx-3" orientation="vertical" />
