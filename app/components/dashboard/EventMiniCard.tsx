@@ -25,7 +25,7 @@ export default function EventMiniCard({ event }: Props) {
           <p className="font-raleway opacity-60">{event.description}</p>
         </div>
         <div>
-          <p>Inicia en: {missingDays} dias</p>
+          <p>{missingDays} dias</p>
         </div>
       </CardBody>
     </Card>

@@ -67,7 +67,7 @@ export default function QuestionsPreview({
       ) : questions.length ? (
         <div className="flex flex-col gap-3">
           {questions.map((question) => (
-            <QuestionMiniCard question={question} />
+            <QuestionMiniCard key={question.questionId} question={question} />
           ))}
         </div>
       ) : (

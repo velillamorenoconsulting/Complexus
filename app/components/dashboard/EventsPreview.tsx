@@ -33,7 +33,7 @@ export default function EventsPreview({
       ) : validEventList.length ? (
         <div className="flex flex-col gap-3">
           {validEventList.map((event) => (
-            <EventMiniCard event={event} />
+            <EventMiniCard key={event.eventId} event={event} />
           ))}
         </div>
       ) : (
