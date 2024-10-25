@@ -2,6 +2,7 @@ import React from "react";
 import NavaBar from "./sections/NavaBar";
 import { Divider } from "@nextui-org/react";
 import Image from "next/image";
+import Footer from "./sections/Footer";
 
 export default function NotFound() {
   return (
@@ -28,6 +29,7 @@ export default function NotFound() {
           </p>
         </div>
       </div>
+      <Footer style="dark" />
     </div>
   );
 }

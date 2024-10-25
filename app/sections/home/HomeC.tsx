@@ -24,7 +24,7 @@ export default function HomeC() {
               Edgar Morin
             </h5>
             <p className="opacity-80 font-raleway text-center text-xl">
-              Alto Patrono
+              Alto Patronato
             </p>
             <p className="text-justify font-raleway text-lg px-10 pt-3">
               Filósofo y sociólogo francés. Presidente de la Asociación de
@@ -48,7 +48,7 @@ export default function HomeC() {
               Fernando Savater
             </h5>
             <p className="opacity-80 font-raleway text-center text-xl">
-              Alto Patrono
+              Alto Patronato
             </p>
             <p className="text-justify font-raleway text-lg px-10 pt-3">
               Filósofo español. Autor de más de 40 ​libros de ensayo, novelas y
@@ -70,7 +70,7 @@ export default function HomeC() {
               Belisario Betancur
             </h5>
             <p className="opacity-80 font-raleway text-center text-xl">
-              Alto Patrono
+              Alto Patronato
             </p>
             <p className="text-justify font-raleway text-lg px-10 pt-3">
               Ex Presidente de la República. ​Presidente de la Fundación

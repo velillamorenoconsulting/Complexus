@@ -12,6 +12,12 @@ export default function HomeA() {
           className="object-cover h-full ar-16-9:w-full ar-16-9:h-auto"
         >
           <source src="/HomeVideo.mp4" type="video/mp4" />
+          <iframe
+            src="https://drive.google.com/file/d/1kXNAaMPCxz_6nRizMkZzjtZgi0tHT5GJ/preview"
+            width="640"
+            height="480"
+            allow="autoplay"
+          ></iframe>
         </video>
       </div>
       <div className="h-full justify-center flex flex-col items-end p-10 animate-slideIn max-w-[2300px]">

@@ -1,5 +1,10 @@
 import React from "react";
+import CropA from "../sections/corporation/CropA";
 
 export default function Corporation() {
-  return <div>Corporation</div>;
+  return (
+    <section>
+      <CropA />
+    </section>
+  );
 }

@@ -1,4 +1,5 @@
 import HomePage from "./pages/Home";
+import Footer from "./sections/Footer";
 import NavaBar from "./sections/NavaBar";
 
 export default function Home() {
