@@ -3,6 +3,8 @@ import { ThemeType, pageList } from "../types/types";
 import Image from "next/image";
 import Link from "next/link";
 import { Button, Input, Textarea } from "@nextui-org/react";
+import { redirect } from "next/dist/server/api-utils";
+import ContactForm from "../components/footer/ContactForm";
 
 type Props = { style: ThemeType };
 
@@ -21,31 +23,42 @@ export default function Footer({ style }: Props) {
               alt="logo"
               width={50}
               height={50}
-              className="w-6"
+              className="w-6 hidden md:block"
             />
-            <h3 className="font-comorant text-4xl font-semibold">
+            <h3 className="font-comorant text-4xl font-semibold text-center">
               Corporación Complexus
             </h3>
           </div>
           <div className="flex flex-row justify-center gap-2">
-            <Image
-              src={`/icons/social/${
-                style === "dark" ? "youtube_dark.svg" : "youtube.svg"
-              }`}
-              alt="youtube"
-              width={50}
-              height={50}
-              className="w-10 opacity-70"
-            />
-            <Image
-              src={`/icons/social/${
-                style === "dark" ? "facebookw.svg" : "facebookb.svg"
-              }`}
-              alt="facebook"
-              width={50}
-              height={50}
-              className="w-7 opacity-70"
-            />
+            <Link
+              href="https://www.youtube.com/@corporacioncomplexus5557"
+              target="_blank"
+            >
+              <Image
+                src={`/icons/social/${
+                  style === "dark" ? "youtube_dark.svg" : "youtube.svg"
+                }`}
+                alt="youtube"
+                width={50}
+                height={50}
+                className="w-10 opacity-70 hover:cursor-pointer"
+              />
+            </Link>
+            <Link
+              href="https://www.facebook.com/corporacioncomplexus"
+              target="_blank"
+              className="flex items-center"
+            >
+              <Image
+                src={`/icons/social/${
+                  style === "dark" ? "facebookw.svg" : "facebookb.svg"
+                }`}
+                alt="facebook"
+                width={50}
+                height={50}
+                className="w-7 opacity-70"
+              />
+            </Link>
             <Image
               src={`/icons/social/${
                 style === "dark" ? "linkedinw.svg" : "linkedinb.svg"
@@ -55,22 +68,19 @@ export default function Footer({ style }: Props) {
               height={50}
               className="w-7 opacity-70"
             />
-            <Image
-              src={`/icons/social/${style === "dark" ? "xw.svg" : "xb.svg"}`}
-              alt="x"
-              width={50}
-              height={50}
-              className="w-8 opacity-70"
-            />
-            <Image
-              src={`/icons/social/${
-                style === "dark" ? "instagram_dark.svg" : "instagram.svg"
-              }`}
-              alt="instagram"
-              width={50}
-              height={50}
-              className="w-7 opacity-70"
-            />
+            <Link
+              href="https://twitter.com/corpocomplexus"
+              target="_blank"
+              className="flex items-center"
+            >
+              <Image
+                src={`/icons/social/${style === "dark" ? "xw.svg" : "xb.svg"}`}
+                alt="x"
+                width={50}
+                height={50}
+                className="w-8 opacity-70"
+              />
+            </Link>
           </div>
         </div>
         <div className="flex flex-col lg:hidden 2xl:flex 2xl:flex-row items-center justify-center gap-3 font-raleway pt-5 lg:p-0">
@@ -81,33 +91,7 @@ export default function Footer({ style }: Props) {
           ))}
         </div>
 
-        <div className="flex flex-col lg:max-w-[400px] w-full">
-          <h4 className="font-comorant text-3xl pb-2">Contacto</h4>
-          <div className="flex flex-col gap-2">
-            <div className="flex flex-row gap-2 items-center">
-              <label className="font-raleway">Asunto:</label>
-              <Input radius="sm" />
-            </div>
-            <div className="flex flex-col gap-2 items-center">
-              <Textarea radius="sm" placeholder="Mensaje" />
-            </div>
-            <div className="flex flex-row gap-2 items-center justify-center">
-              <Button className={`${style === "light" ? "dark" : ""}`}>
-                Enviar
-              </Button>
-              <p>ó</p>
-              <Image
-                src={`/icons/social/${
-                  style === "dark" ? "whatsapp_dark.svg" : "whatsapp.svg"
-                }`}
-                alt="x"
-                width={50}
-                height={50}
-                className="w-7 hover:cursor-pointer"
-              />
-            </div>
-          </div>
-        </div>
+        <ContactForm style={style} />
       </div>
       <div className="flex flex-col items-center pt-7 lg:p-0">
         <p className="font-raleway">© Corporación Complexus 2024</p>
