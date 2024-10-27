@@ -39,7 +39,7 @@ export default function DesktopAvatar({ style }: ComponentProps) {
               <User
                 classNames={{
                   name: "text-lg",
-                  description: "text-md",
+                  description: `text-md opacity-80 ${isDarkTheme(style) ? "text-black" : "text-white"}`,
                 }}
                 name={session.data.user?.name}
                 description={session.data.user?.email}

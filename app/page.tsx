@@ -7,6 +7,7 @@ export default function Home() {
     <main className="overflow-x-hidden">
       <NavaBar style="light" />
       <HomePage />
+      <Footer style="dark" />
     </main>
   );
 }

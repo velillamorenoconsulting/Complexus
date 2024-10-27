@@ -14,7 +14,7 @@ export async function getDataSource(): Promise<DataSource> {
     return dataSource;
   }
   dataSource = new DataSource({
-    type: "cockroachdb",
+    type: "postgres",
     host: DB_HOST,
     port: Number(DB_PORT),
     username: DB_USER,
@@ -24,7 +24,7 @@ export async function getDataSource(): Promise<DataSource> {
     logging: true,
     entities: [User, Member, Purchase, Item, Event, Question],
     migrationsTransactionMode: "none",
-    timeTravelQueries: false,
+    // timeTravelQueries: false,
     ssl: true,
   });
 
