@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+*:focus {
+  outline: none !important;
+  border: none;
+  box-shadow: none;
+}
+
+input {
+  border: none;
+  box-shadow: none;
+}
+
+textarea,
+textarea:focus {
+  border: none;
+  box-shadow: none;
+}
+
+[type="text"]:focus,
+[type="password"]:focus {
+  border-color: transparent;
+  box-shadow: none;
+}

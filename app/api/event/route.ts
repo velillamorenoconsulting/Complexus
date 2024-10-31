@@ -9,12 +9,26 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const eventCreated = await eventService.createEvent(body);
     return NextResponse.json(
       { message: eventCreated.eventId },
-      { status: 201 },
+      { status: 201 }
     );
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message },
-      { status: error.status ?? 400 },
+      { status: error.status ?? 400 }
+    );
+  }
+}
+
+export async function GET(): Promise<NextResponse> {
+  try {
+    const eventList = await eventService.getAllEvents();
+    return NextResponse.json({ message: eventList }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json(
+      {
+        error: error.message,
+      },
+      { status: error.status ?? 400 }
     );
   }
 }

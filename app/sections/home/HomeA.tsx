@@ -1,3 +1,4 @@
+import { getVideoUrl } from "@/app/utils/utils";
 import React from "react";
 
 export default function HomeA() {
@@ -11,7 +12,10 @@ export default function HomeA() {
           playsInline
           className="object-cover h-full ar-16-9:w-full ar-16-9:h-auto"
         >
-          <source src="/HomeVideo.mp4" type="video/mp4" />
+          <source
+            src={getVideoUrl("uxdpgcgbzwkqhim3tqdk.mp4")}
+            type="video/mp4"
+          />
         </video>
       </div>
       <div className="h-full justify-center flex flex-col items-end p-10 animate-slideIn max-w-[2300px]">

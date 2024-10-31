@@ -50,6 +50,7 @@ export default function ContactForm({ style }: Props) {
             radius="sm"
             onChange={handleChange}
             value={formValues.subject as string}
+            className={style === "dark" ? "dark" : ""}
           />
         </div>
         <div className="flex flex-col gap-2 items-center">
@@ -59,6 +60,7 @@ export default function ContactForm({ style }: Props) {
             placeholder="Mensaje"
             onChange={handleChange}
             value={formValues.message as string}
+            className={style === "dark" ? "dark" : ""}
           />
         </div>
         <div className="flex flex-row gap-2 items-center justify-center">

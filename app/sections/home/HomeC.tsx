@@ -1,3 +1,4 @@
+import { getImageUrl } from "@/app/utils/utils";
 import { Divider } from "@nextui-org/react";
 import Image from "next/image";
 import React from "react";
@@ -13,7 +14,7 @@ export default function HomeC() {
           <div className="flex flex-col lg:w-1/3 h-full max-w-[500px]">
             <div className="w-full h-[300px] max-w-[400px] overflow-hidden relative self-center">
               <Image
-                src="https://prueba875678.my.canva.site/complexus-ejemplo/images/54c89dc3e895981147fce2c50a4e247a.png"
+                src={getImageUrl("yeh41wbrk1rwk1owbxo1.png")}
                 alt="edgar_morin"
                 width={800}
                 height={800}
@@ -37,7 +38,7 @@ export default function HomeC() {
           <div className="flex flex-col lg:w-1/3 h-full max-w-[500px]">
             <div className="w-full h-[300px] max-w-[400px] overflow-hidden relative self-center">
               <Image
-                src="https://prueba875678.my.canva.site/complexus-ejemplo/images/f05f6b3fcee92fa60bb2411a44b88735.png"
+                src={getImageUrl("bfvg68l4bne7b0wo7ga6.png")}
                 alt="edgar_morin"
                 width={800}
                 height={800}
@@ -59,7 +60,7 @@ export default function HomeC() {
           <div className="flex flex-col lg:w-1/3 h-full max-w-[500px]">
             <div className="w-full h-[300px] max-w-[400px] overflow-hidden relative self-center">
               <Image
-                src="https://prueba875678.my.canva.site/complexus-ejemplo/images/dd3657cb193130d02f0ccc909f7ba45a.png"
+                src={getImageUrl("l3ugwukkeuxahxg96mvo.png")}
                 alt="edgar_morin"
                 width={800}
                 height={800}

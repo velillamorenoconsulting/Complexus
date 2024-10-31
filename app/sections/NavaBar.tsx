@@ -6,7 +6,6 @@ import RowMenu from "../components/navBar/RowMenu";
 import Image from "next/image";
 import UserAvatar from "../components/navBar/UserAvatar";
 import DesktopAvatar from "../components/navBar/DesktopAvatar";
-import { div } from "framer-motion/client";
 
 type ComponentProps = {
   style: "dark" | "light";

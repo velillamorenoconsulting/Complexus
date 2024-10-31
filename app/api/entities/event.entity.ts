@@ -14,11 +14,32 @@ import {
   IsBoolean,
   IsDateString,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
 } from "class-validator";
 import { Purchase } from "./purchase.entity";
 import { Question } from "./question.entity";
+
+export class Segment {
+  title?: string;
+  text?: string;
+  list?: string[];
+  metadata?: string;
+}
+
+export class Participant {
+  logo?: string;
+  name?: string;
+  metadata?: string;
+}
+
+export class Location {
+  ubication!: string;
+  address?: string;
+  description?: string;
+  metadata?: string;
+}
 
 @Entity("Event")
 export class Event {
@@ -37,6 +58,29 @@ export class Event {
   @Column()
   @IsString()
   description!: string;
+
+  @Column("jsonb", { nullable: true })
+  @IsArray()
+  segments!: Segment[];
+
+  @Column("jsonb", { nullable: true, default: [] })
+  @IsOptional()
+  @IsArray()
+  sponsors?: Participant[];
+
+  @Column("jsonb", { nullable: true, default: [] })
+  @IsOptional()
+  @IsArray()
+  supporters?: Participant[];
+
+  @Column("jsonb", { nullable: true, default: [] })
+  @IsOptional()
+  @IsArray()
+  inviters?: Participant[];
+
+  @Column({ nullable: true })
+  @IsOptional()
+  video?: string;
 
   @Column()
   @IsDateString()
@@ -71,9 +115,9 @@ export class Event {
   @IsOptional()
   images!: string[];
 
-  @Column()
-  @IsString()
-  location!: string;
+  @Column("jsonb", { nullable: true })
+  @IsObject()
+  location!: Location;
 
   @Column("float")
   @IsNumber()

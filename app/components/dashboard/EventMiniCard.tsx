@@ -14,7 +14,7 @@ export default function EventMiniCard({ event }: Props) {
       <CardBody className="flex flex-row justify-between">
         <div className="flex flex-col gap-2 w-[70%]">
           <p className="font-raleway text-md opacity-30">
-            {event.location} -{" "}
+            {event.location.ubication} -{" "}
             {new Date(event.startAt).toLocaleDateString("es-US", {
               year: "numeric",
               month: "long",
