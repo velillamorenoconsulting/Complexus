@@ -94,7 +94,7 @@ export default function Footer({ style }: Props) {
         <ContactForm style={style} />
       </div>
       <div className="flex flex-col items-center pt-7 lg:p-0">
-        <p className="font-raleway">© Corporación Complexus 2024</p>
+        <p className="font-raleway">© Corporación Complexus, 2024</p>
       </div>
     </section>
   );
