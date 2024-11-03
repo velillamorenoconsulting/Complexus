@@ -15,8 +15,6 @@ export default async function EventsA() {
       </div>
     );
   } catch (e: any) {
-    return (<div>
-      {e.message}
-    </div>)
+    return <div>{e.message}</div>;
   }
 }

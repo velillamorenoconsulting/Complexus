@@ -2,8 +2,6 @@ import React from "react";
 import { ThemeType, pageList } from "../types/types";
 import Image from "next/image";
 import Link from "next/link";
-import { Button, Input, Textarea } from "@nextui-org/react";
-import { redirect } from "next/dist/server/api-utils";
 import ContactForm from "../components/footer/ContactForm";
 
 type Props = { style: ThemeType };
