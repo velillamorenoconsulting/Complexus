@@ -1,20 +1,17 @@
-import EventBoard from "@/app/components/events/EventBoard";
-import { EventList } from "@/app/types/responses";
-import axios from "axios";
+"use client";
 
-export default async function EventsA() {
-  try {
-    const { data: eventList } = await axios.get<EventList>(
-      `${process.env.NEXT_PUBLIC_BE_URL}/event`
-    );
-    return (
-      <div className="bg-[#eeefe8] px-10">
-        <div className="pt-32 lg:pt-44 flex flex-col">
-          <EventBoard upcomingEvents={[]} pastEvents={eventList.message} />
-        </div>
+import EventListComponent from "@/app/components/events/EventList";
+import LoadingBoard from "@/app/components/events/LoadingBoard";
+import { Suspense } from "react";
+
+export default function EventsA() {
+  return (
+    <div className="bg-[#eeefe8] px-10">
+      <div className="pt-32 lg:pt-44 flex flex-col">
+        <Suspense fallback={<LoadingBoard />}>
+          <EventListComponent />
+        </Suspense>
       </div>
-    );
-  } catch (e: any) {
-    return <div>{e.message}</div>;
-  }
+    </div>
+  );
 }

@@ -17,7 +17,23 @@ export class EventRepository {
 
   async findAll(): Promise<Event[]> {
     await this.init();
-    return this.repo!.find();
+    return this.repo!.find({
+      order: { startAt: "ASC" },
+      select: {
+        eventId: true,
+        startAt: true,
+        endAt: true,
+        location: {
+          ubication: true,
+          description: true,
+          address: true,
+        },
+        title: true,
+        description: true,
+        images: true,
+        imageFolder: true,
+      },
+    });
   }
 
   async findById(eventId: string): Promise<Event | null> {
@@ -27,10 +43,7 @@ export class EventRepository {
 
   async searchEvent(searchKey: string): Promise<Event[]> {
     const matchedEvents = await this.repo!.find({
-      where: [
-        { title: Like(searchKey) },
-        { description: Like(searchKey) },
-      ],
+      where: [{ title: Like(searchKey) }, { description: Like(searchKey) }],
     });
     return matchedEvents;
   }
@@ -38,7 +51,7 @@ export class EventRepository {
   async findByKey(keys: Partial<ValidEventFilters>): Promise<Event[]> {
     return this.repo!.find({
       where: removeNullOrUndefined(keys) as FindOptionsWhere<Event>,
-    })
+    });
   }
 
   async findByDateRange(startDate: Date, endDate?: Date): Promise<Event[]> {
@@ -46,7 +59,7 @@ export class EventRepository {
       where: {
         startAt: startDate,
         ...(endDate ? { endAt: endDate } : {}),
-      }
+      },
     });
   }
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { Button, Divider, Tab, Tabs } from "@nextui-org/react";
 import { Event } from "@/app/api/entities/event.entity";
 import { convertDate, getImageUrl } from "@/app/utils/utils";
@@ -10,7 +10,7 @@ type EventSelectOptions = "past" | "upcoming";
 
 type ComponentProps = {
   pastEvents: Event[];
-  upcomingEvents: any[];
+  upcomingEvents: Event[];
 };
 
 export default function EventBoard({
@@ -34,7 +34,9 @@ export default function EventBoard({
             <div className="flex flex-col lg:flex-row p-10 items-center justify-evenly w-full lg:w-[80%] gap-7">
               <div className="flex flex-col w-full lg:max-w-[50%] gap-2">
                 <p className="font-comorant text-2xl">
-                  {convertDate(event.startAt)}, {event.location.ubication}
+                  {convertDate(event.startAt)}
+                  {event.endAt ? `- ${convertDate(event.endAt)}` : ""},{" "}
+                  {event.location.ubication}
                 </p>
                 <h4 className="font-comorant text-4xl font-semibold text-[#3a6351] italic">
                   {event.title}
@@ -50,7 +52,7 @@ export default function EventBoard({
                 </Button>
               </div>
               <Carousel
-                className="max-w-[450px] h-[350px] dark"
+                className="max-w-[550px] h-[380px]"
                 leftControl={event.images.length > 1 ? undefined : " "}
                 rightControl={event.images.length > 1 ? undefined : " "}
                 slide={false}
@@ -61,16 +63,20 @@ export default function EventBoard({
                   },
                 }}
               >
-                {event.images.map((imgSrc) => (
-                  <Image
-                    key={imgSrc}
-                    src={getImageUrl(imgSrc, "2015/02")}
-                    alt={event.images[0]}
-                    width={500}
-                    height={500}
-                    className="max-w-[450px]"
-                  />
-                ))}
+                {event.images.slice(0, 5).map(
+                  (
+                    imgSrc, // Takes just the first 5 images for preview
+                  ) => (
+                    <Image
+                      key={imgSrc}
+                      src={getImageUrl(imgSrc, event.imageFolder)}
+                      alt={event.images[0]}
+                      width={600}
+                      height={600}
+                      className="max-w-[600px]"
+                    />
+                  ),
+                )}
               </Carousel>
             </div>
             <Divider className="w-[50%] my-5 h-1 bg-[#3a6351]/50" />
@@ -78,7 +84,7 @@ export default function EventBoard({
         ))}
       </Tab>
       <Tab key="upcoming" title="Próximos Eventos">
-        B
+        <div className="min-h-screen"></div>
       </Tab>
     </Tabs>
   );

@@ -18,53 +18,17 @@ export const isDarkTheme = (style: ThemeType): boolean => {
  * @param fileName Name of the file + extension, f.e. example.png
  * @param folder Folder name, this is scoped based on host file organization
  */
-export function getImageUrl(
-  fileName: string,
-  folder?: "events" | "publish" | "users" | string
-): string {
+export function getImageUrl(fileName: string, folder?: string): string {
   const baseUrl = process.env.NEXT_PUBLIC_IMAGE_DOMAIN || "";
-  let folderPath = "";
+  const folderPath: string = folder || "v1730082135/Complexus/Pagina%20Web";
 
-  if (folder) {
-    switch (folder) {
-      case "events":
-        folderPath = "Eventos";
-        break;
-      case "users":
-        folderPath = "Usuarios";
-        break;
-      case "publish":
-        folderPath = "Publicaciones";
-        break;
-      default:
-        folderPath = folder;
-    }
-  } else folderPath = "Pagina%20Web";
   return `${baseUrl}/${folderPath}/${fileName}`;
 }
 
-export function getVideoUrl(
-  fileName: string,
-  folder?: "events" | "publish" | "users"
-): string {
+export function getVideoUrl(fileName: string, folder?: string): string {
   const baseUrl = process.env.NEXT_PUBLIC_VIDEO_DOMAIN || "";
-  let folderPath = "";
+  const folderPath: string = folder || "v1730082135/Complexus/Pagina%20Web";
 
-  if (folder) {
-    switch (folder) {
-      case "events":
-        folderPath = "Eventos";
-        break;
-      case "users":
-        folderPath = "Usuarios";
-        break;
-      case "publish":
-        folderPath = "Publicaciones";
-        break;
-      default:
-        folderPath = folder;
-    }
-  } else folderPath = "Pagina%20Web";
   return `${baseUrl}/${folderPath}/${fileName}`;
 }
 
