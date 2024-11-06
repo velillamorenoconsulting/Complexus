@@ -6,7 +6,7 @@ import React from "react";
 export default function loading() {
   return (
     <main>
-      <NavaBar style="dark" />
+      <NavaBar style="light" />
       <EventLoading />
       <Footer style="dark" />
     </main>

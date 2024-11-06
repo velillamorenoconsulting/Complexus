@@ -1,9 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import { Button, Divider, Tab, Tabs } from "@nextui-org/react";
+import { Button, Card, Divider, Tab, Tabs } from "@nextui-org/react";
 import { Event } from "@/app/api/entities/event.entity";
-import { convertDate, getImageUrl } from "@/app/utils/utils";
+import { convertDate, eventTypePicker, getImageUrl } from "@/app/utils/utils";
 import { Carousel } from "flowbite-react";
+import { weekDays, monthList } from "@/app/utils/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -20,6 +21,7 @@ export default function EventBoard({
 }: ComponentProps) {
   const [selected, setSelected] = useState<EventSelectOptions>("past");
   const route = useRouter();
+  console.log(upcomingEvents);
   return (
     <Tabs
       classNames={{
@@ -87,7 +89,62 @@ export default function EventBoard({
         ))}
       </Tab>
       <Tab key="upcoming" title="Próximos Eventos">
-        <div className="min-h-screen"></div>
+        <div className="min-h-screen flex flex-col p-0 pt-5 md:pt-7">
+          <div className="flex flex-row flex-wrap gap-16 p-0 lg:p-10 justify-center 2xl:justify-start">
+            {upcomingEvents.map((upcomingEvent) => {
+              const date = new Date(upcomingEvent.startAt);
+
+              return (
+                <Card className="flex flex-col justify-evenly gap-7 items-center max-w-[600px] p-5 border-none bg-inherit">
+                  <div className="flex flex-col gap-5 w-full">
+                    <div className="relative overflow-hidden rounded-lg">
+                      <Image
+                        src={getImageUrl(
+                          upcomingEvent.images[0],
+                          upcomingEvent.imageFolder,
+                        )}
+                        alt={upcomingEvent.images[0]}
+                        width={400}
+                        height={400}
+                        className="w-full max-h-[373px]"
+                      />
+                    </div>
+                    <div className="flex flex-row px-3 justify-center gap-5">
+                      <div className="rounded-2xl bg-black text-white">
+                        <div className="flex flex-col gap-1 w-20 lg:w-28 font-raleway items-center justify-center p-3">
+                          <p className="">{weekDays[date.getDay()]}</p>
+                          <p className="text-2xl font-bold">{date.getDate()}</p>
+                          <p>{`${monthList[date.getMonth()]} ${date.getFullYear()}`}</p>
+                        </div>
+                      </div>
+                      <div className="flex flex-col w-[150px] lg:w-[300px] gap-1 font-raleway justify-center items-center">
+                        <p className="text-xl font-light text-center">
+                          {eventTypePicker(upcomingEvent.eventType)}
+                        </p>
+                        <p className="text-xl font-bold text-center">
+                          {`Precio: ${upcomingEvent.price ? `$${upcomingEvent.price}` : "GRATIS"}`}
+                        </p>
+                        <Button className="w-2/3 text-lg underline font-semibold">
+                          {upcomingEvent.price
+                            ? "Comprar entradas"
+                            : "Solicitar"}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col max-w-[600px] gap-5">
+                    <h3 className="font-comorant text-3xl font-semibold">
+                      {upcomingEvent.title}
+                    </h3>
+                    <p className="font-raleway text-lg text-justify">
+                      {upcomingEvent.description}
+                    </p>
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
       </Tab>
     </Tabs>
   );

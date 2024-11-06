@@ -68,6 +68,18 @@ export class Event {
   @IsArray()
   sponsors?: Participant[];
 
+  @Column({ nullable: true })
+  @IsString()
+  @IsOptional()
+  transmissionUrl?: string;
+
+  @Column("jsonb", { nullable: true, default: [] })
+  videos?: string[];
+
+  @Column({ nullable: true })
+  @IsString()
+  eventType!: "virtual" | "onsite" | "both";
+
   @Column("jsonb", { nullable: true, default: [] })
   @IsOptional()
   @IsArray()

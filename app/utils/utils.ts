@@ -40,3 +40,32 @@ export function convertDate(date: Date): string {
     day: "numeric",
   });
 }
+
+export function eventTypePicker(eventType: string): string {
+  switch (eventType) {
+    case "virtual":
+      return "Virtual";
+    case "onsite":
+      return "Presencial";
+    case "both":
+      return "Virtual / Presencial";
+    default:
+      return "";
+  }
+}
+
+export const weekDays = ["LUN", "MART", "MIE", "JUE", "VIE", "SAB", "DOM"];
+export const monthList = [
+  "ENE",
+  "FEB",
+  "MAR",
+  "ABR",
+  "MAY",
+  "JUN",
+  "JUL",
+  "AGO",
+  "SEP",
+  "OCT",
+  "NOV",
+  "DIC",
+];

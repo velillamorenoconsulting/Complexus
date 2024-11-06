@@ -23,6 +23,8 @@ export class EventRepository {
         eventId: true,
         startAt: true,
         endAt: true,
+        eventType: true,
+        price: true,
         location: {
           ubication: true,
           description: true,

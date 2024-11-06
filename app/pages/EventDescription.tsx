@@ -12,7 +12,7 @@ type ComponentProps = {
 
 export default function EventDescription({ event }: ComponentProps) {
   return (
-    <div className="bg-[#22302f] min-h-screen px-10 flex">
+    <div className="bg-[#22302f] min-h-screen px-10 flex pb-10">
       <div className="pt-32 lg:pt-44 flex flex-col w-full">
         <div className="flex flex-col 2xl:flex-row text-white md:p-10 gap-8 lg:gap-16">
           <div className="w-full 2xl:w-1/2 flex flex-col gap-3">
@@ -78,6 +78,24 @@ export default function EventDescription({ event }: ComponentProps) {
             </h3>
             <div className="w-full xl:w-[80%] self-center">
               <QuestionAccordion questions={event.questions} />
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+        {new Date(event.startAt) < new Date() && event.transmissionUrl ? (
+          <div className="p-10 flex flex-col text-white gap-10">
+            <h3 className="font-comorant text-5xl text-center font-semibold">
+              Grabación del evento
+            </h3>
+            <div className="flex justify-center w-full">
+              <iframe
+                src={event.transmissionUrl}
+                className="w-full xl:w-[70%] aspect-video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                frameBorder={0}
+              ></iframe>
             </div>
           </div>
         ) : (
