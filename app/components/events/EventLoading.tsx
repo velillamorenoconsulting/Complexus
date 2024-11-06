@@ -17,7 +17,7 @@ export default function EventLoading() {
             <Divider className="my-3 dark" />
             <div className="flex flex-col gap-4">
               {[1, 2, 3, 4].map((_, idx) => (
-                <Skeleton className="h-32 rounded-xl dark" />
+                <Skeleton key={idx} className="h-32 rounded-xl dark" />
               ))}
             </div>
             <p className="font-raleway text-lg text-justify">{}</p>
