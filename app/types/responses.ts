@@ -5,3 +5,5 @@ export interface ServerResponse<T> {
 }
 
 export interface EventList extends ServerResponse<Event[]> {}
+
+export interface EventResponse extends ServerResponse<Event> {}

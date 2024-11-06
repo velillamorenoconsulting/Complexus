@@ -1,10 +1,11 @@
 "use client";
-import React, { Suspense, useState } from "react";
+import React, { useState } from "react";
 import { Button, Divider, Tab, Tabs } from "@nextui-org/react";
 import { Event } from "@/app/api/entities/event.entity";
 import { convertDate, getImageUrl } from "@/app/utils/utils";
 import { Carousel } from "flowbite-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type EventSelectOptions = "past" | "upcoming";
 
@@ -18,6 +19,7 @@ export default function EventBoard({
   upcomingEvents,
 }: ComponentProps) {
   const [selected, setSelected] = useState<EventSelectOptions>("past");
+  const route = useRouter();
   return (
     <Tabs
       classNames={{
@@ -31,7 +33,7 @@ export default function EventBoard({
       <Tab key="past" title="Eventos Anteriores">
         {pastEvents.map((event) => (
           <div key={event.eventId} className="flex flex-col items-center">
-            <div className="flex flex-col lg:flex-row p-10 items-center justify-evenly w-full lg:w-[80%] gap-7">
+            <div className="flex flex-col lg:flex-row md:p-10 items-center justify-evenly w-full lg:w-[80%] gap-7">
               <div className="flex flex-col w-full lg:max-w-[50%] gap-2">
                 <p className="font-comorant text-2xl">
                   {convertDate(event.startAt)}
@@ -47,6 +49,7 @@ export default function EventBoard({
                 <Button
                   radius="full"
                   className="max-w-[200px] mt-5 ml-3 font-raleway text-lg underline bg-[#3a6351] text-white"
+                  onClick={() => route.push(`/events/${event.eventId}`)}
                 >
                   Ver más
                 </Button>

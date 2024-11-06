@@ -38,7 +38,16 @@ export class EventRepository {
 
   async findById(eventId: string): Promise<Event | null> {
     await this.init();
-    return this.repo!.findOneBy({ eventId });
+
+    return this.repo!.createQueryBuilder("event")
+      .leftJoinAndSelect(
+        "event.questions",
+        "question",
+        "question.visibility = :flag",
+        { flag: "general" },
+      )
+      .where("event.eventId = :eventId", { eventId })
+      .getOne();
   }
 
   async searchEvent(searchKey: string): Promise<Event[]> {
