@@ -34,7 +34,10 @@ export default function EventBoard({
     >
       <Tab key="past" title="Eventos Anteriores">
         {pastEvents.map((event) => (
-          <div key={event.eventId} className="flex flex-col items-center">
+          <div
+            key={event.eventId}
+            className="flex flex-col items-center lg:pt-0 pt-10"
+          >
             <div className="flex flex-col lg:flex-row md:p-10 items-center justify-evenly w-full lg:w-[80%] gap-7">
               <div className="flex flex-col w-full lg:max-w-[50%] gap-2">
                 <p className="font-comorant text-2xl">
@@ -89,7 +92,7 @@ export default function EventBoard({
         ))}
       </Tab>
       <Tab key="upcoming" title="Próximos Eventos">
-        <div className="min-h-screen flex flex-col p-0 pt-5 md:pt-7">
+        <div className="min-h-screen flex flex-col p-0 pt-5 md:pt-7 pb-16">
           <div className="flex flex-row flex-wrap gap-16 p-0 lg:p-10 justify-center 2xl:justify-start">
             {upcomingEvents.map((upcomingEvent) => {
               const date = new Date(upcomingEvent.startAt);
@@ -114,7 +117,7 @@ export default function EventBoard({
                         <div className="flex flex-col gap-1 w-20 lg:w-28 font-raleway items-center justify-center p-3">
                           <p className="">{weekDays[date.getDay()]}</p>
                           <p className="text-2xl font-bold">{date.getDate()}</p>
-                          <p>{`${monthList[date.getMonth()]} ${date.getFullYear()}`}</p>
+                          <p className="text-center">{`${monthList[date.getMonth()]} ${date.getFullYear()}`}</p>
                         </div>
                       </div>
                       <div className="flex flex-col w-[150px] lg:w-[300px] gap-1 font-raleway justify-center items-center">

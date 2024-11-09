@@ -21,7 +21,7 @@ export async function getDataSource(): Promise<DataSource> {
     password: DB_PASSWORD,
     database: DB_NAME,
     synchronize: true,
-    logging: true,
+    logging: false,
     entities: [User, Member, Purchase, Item, Event, Question],
     migrationsTransactionMode: "none",
     timeTravelQueries: false,

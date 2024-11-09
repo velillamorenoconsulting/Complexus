@@ -12,6 +12,7 @@ import {
 import { generateNanoId } from "../utils/utils";
 import { IsBoolean, IsEmail, IsOptional, IsString } from "class-validator";
 import { Purchase } from "./purchase.entity";
+import { Testimony } from "./testimony.entity";
 
 @Entity("Member")
 export class Member {
@@ -76,4 +77,9 @@ export class Member {
     nullable: true,
   })
   purchases!: Relation<Purchase>[] | null;
+
+  @OneToMany(() => Testimony, (testimony) => testimony.member, {
+    nullable: true,
+  })
+  testimonies!: Relation<Testimony>[] | null;
 }

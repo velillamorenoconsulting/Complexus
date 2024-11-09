@@ -33,7 +33,7 @@ export default function ContactA() {
               <p>o llena el formulario para enviarnos un mensaje</p>
             </div>
           </div>
-          <div className="w-1/3">
+          <div className="lg:w-1/3 w-full py-16">
             <ContactForm />
           </div>
         </div>
