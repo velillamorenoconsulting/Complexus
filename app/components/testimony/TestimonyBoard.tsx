@@ -15,6 +15,6 @@ export default async function TestimonyBoard() {
       </div>
     );
   } catch (e: any) {
-    return <ErrorComp />;
+    return <ErrorComp details={e.message || e.error || undefined} />;
   }
 }
