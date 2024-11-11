@@ -17,11 +17,8 @@ export default function PublicationList({ items }: Props) {
   return (
     <div className="flex flex-col px-10 py-20 justify-center">
       {items.map((item) => (
-        <div className="flex flex-col">
-          <div
-            className="p-5 flex flex-col lg:flex-row gap-3 justify-evenly"
-            key={item.itemId}
-          >
+        <div className="flex flex-col" key={item.itemId}>
+          <div className="p-5 flex flex-col lg:flex-row gap-3 justify-evenly">
             <div className="w-full lg:w-[20%] flex items-center justify-center">
               <Image
                 width={100}
