@@ -4,12 +4,13 @@ import Carousel from "../components/carousel/Carousel";
 import Image from "next/image";
 import NavaBar from "../sections/NavaBar";
 import Footer from "../sections/Footer";
+import Publications from "../pages/Publications";
 
 export default function page() {
   return (
     <main>
       <NavaBar style="light" />
-      <div className="min-h-screen bg-black"></div>
+      <Publications />
       <Footer style="dark" />
     </main>
   );

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { User } from "../api/entities/user.entity";
 import { Event } from "../api/entities/event.entity";
+import { Item } from "../api/entities/item.entity";
 
 export interface AuthOptions {
   isVisible: boolean;
@@ -12,6 +13,8 @@ export interface GlobalState {
   switchLogged: (val: boolean) => void;
   eventList: Event[];
   setEventList: (val: Event[]) => void;
+  itemList: Item[];
+  setItems: (val: Item[]) => void;
   currentPage: CurrentPage;
   setCurrentPage: (val: CurrentPage) => void;
   authOptions: AuthOptions;
@@ -38,6 +41,7 @@ export const useStore = create<GlobalState>((set) => ({
   },
   user: null,
   eventList: [],
+  itemList: [],
   // Handlers
   switchLogged: (val: boolean) => set(() => ({ isLogged: val })),
   setEventList: (val: Event[]) => set(() => ({ eventList: val })),
@@ -45,4 +49,5 @@ export const useStore = create<GlobalState>((set) => ({
   setAuthOptions: (val: Partial<AuthOptions>) =>
     set((state) => ({ authOptions: { ...state.authOptions, ...val } })),
   setUser: (val: Partial<User>) => set(() => ({ user: val })),
+  setItems: (val: Item[]) => set(() => ({ itemList: val })),
 }));

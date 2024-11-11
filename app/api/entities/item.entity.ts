@@ -1,10 +1,12 @@
 import {
   BeforeInsert,
   Column,
+  CreateDateColumn,
   Entity,
   OneToMany,
   PrimaryColumn,
   Relation,
+  UpdateDateColumn,
 } from "typeorm";
 import { generateNanoId } from "../utils/utils";
 import {
@@ -58,8 +60,27 @@ export class Item {
   price!: number;
 
   @Column()
+  @IsString()
+  createdBy!: string;
+
+  @Column()
+  @IsString()
+  updatedBy!: string;
+
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
+
+  @Column()
   @IsInt()
   stock!: number;
+
+  @Column({ nullable: true })
+  @IsOptional()
+  @IsString()
+  imageFolder?: string;
 
   @OneToMany(() => Purchase, (purchase) => purchase.item)
   purchases!: Relation<Purchase>[];

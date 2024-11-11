@@ -1,7 +1,6 @@
-import { FindOptions, FindOptionsWhere, Like, Repository } from "typeorm";
+import { FindOptionsWhere, Like, Repository } from "typeorm";
 import { Event } from "../entities/event.entity";
 import { getDataSource } from "../database";
-import { DatabaseError } from "../utils/errors";
 import { ValidEventFilters } from "../types/entities.types";
 import { removeNullOrUndefined } from "../utils/utils";
 

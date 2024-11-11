@@ -1,4 +1,3 @@
-import { Testimony } from "@/app/api/entities/testimony.entity";
 import { TestimonyListResponse } from "@/app/types/responses";
 import axios from "axios";
 import React from "react";
