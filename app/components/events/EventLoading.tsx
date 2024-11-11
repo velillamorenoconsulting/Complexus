@@ -22,7 +22,7 @@ export default function EventLoading() {
             </div>
             <p className="font-raleway text-lg text-justify">{}</p>
           </div>
-          <div className="flex justify-center 2xl:w-1/2 w-full items-center h-full">
+          <div className="flex justify-center 2xl:w-1/2 w-full items-center h-full pb-16">
             <Skeleton className="w-full h-[600px] dark rounded-xl" />
           </div>
         </div>

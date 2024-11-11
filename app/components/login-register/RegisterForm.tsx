@@ -3,6 +3,7 @@ import { Button, Input } from "@nextui-org/react";
 import React, { useState } from "react";
 import { validateRegisterErrors } from "@/app/utils/login-register/errorValidator";
 import axios from "axios";
+import Image from "next/image";
 
 export type RegisterFormValues = {
   email: string | null;
@@ -57,7 +58,7 @@ export default function RegisterForm({ changeSelection }: ComponentProps) {
           lastName,
           email: formValues.email,
           password: formValues.password,
-        }
+        },
       );
     } catch (error: any) {
       const message =
@@ -93,7 +94,13 @@ export default function RegisterForm({ changeSelection }: ComponentProps) {
             variant="underlined"
             className="dark"
             startContent={
-              <img src="/icons/user.svg" alt="user_icon" className="w-5" />
+              <Image
+                width={20}
+                height={20}
+                src="/icons/user.svg"
+                alt="user_icon"
+                className="w-5"
+              />
             }
           />
           <Input
@@ -108,7 +115,13 @@ export default function RegisterForm({ changeSelection }: ComponentProps) {
             variant="underlined"
             className="dark"
             startContent={
-              <img src="/icons/email.svg" alt="email_logo" className="w-5" />
+              <Image
+                width={20}
+                height={20}
+                src="/icons/email.svg"
+                alt="email_logo"
+                className="w-5"
+              />
             }
           />
           <Input
@@ -124,7 +137,13 @@ export default function RegisterForm({ changeSelection }: ComponentProps) {
             className="dark"
             placeholder="Escribe tu contraseña"
             startContent={
-              <img src="/icons/lock.svg" alt="lock_logo" className="w-5" />
+              <Image
+                width={20}
+                height={20}
+                src="/icons/lock.svg"
+                alt="lock_logo"
+                className="w-5"
+              />
             }
           />
         </div>

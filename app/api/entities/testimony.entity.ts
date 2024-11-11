@@ -59,10 +59,10 @@ export class Testimony {
   @IsBoolean()
   isApproved?: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   @IsString()
   @IsOptional()
-  approvedBy!: string;
+  approvedBy?: string;
 
   @Column()
   @IsNumber()
@@ -73,4 +73,11 @@ export class Testimony {
 
   @ManyToOne(() => Member, (member) => member.testimonies, { nullable: true })
   member?: Relation<Member>;
+
+  @BeforeInsert()
+  verifyCreator() {
+    if (!this.user && !this.member) {
+      throw Error("Testimony needs to be associated to either member or user");
+    }
+  }
 }

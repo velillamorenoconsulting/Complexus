@@ -5,6 +5,7 @@ import { Purchase } from "./entities/purchase.entity";
 import { Item } from "./entities/item.entity";
 import { Event } from "./entities/event.entity";
 import { Question } from "./entities/question.entity";
+import { Testimony } from "./entities/testimony.entity";
 
 const { DB_PASSWORD, DB_USER, DB_HOST, DB_PORT, DB_NAME } = process.env;
 let dataSource: DataSource | null = null;
@@ -22,7 +23,7 @@ export async function getDataSource(): Promise<DataSource> {
     database: DB_NAME,
     synchronize: true,
     logging: false,
-    entities: [User, Member, Purchase, Item, Event, Question],
+    entities: [User, Member, Purchase, Item, Event, Question, Testimony],
     migrationsTransactionMode: "none",
     timeTravelQueries: false,
     ssl: true,

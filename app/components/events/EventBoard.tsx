@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import { Button, Card, Divider, Tab, Tabs } from "@nextui-org/react";
 import { Event } from "@/app/api/entities/event.entity";
 import { convertDate, eventTypePicker, getImageUrl } from "@/app/utils/utils";
-import { Carousel } from "flowbite-react";
 import { weekDays, monthList } from "@/app/utils/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Carousel from "../carousel/Carousel";
 
 type EventSelectOptions = "past" | "upcoming";
 
@@ -21,7 +21,6 @@ export default function EventBoard({
 }: ComponentProps) {
   const [selected, setSelected] = useState<EventSelectOptions>("past");
   const route = useRouter();
-  console.log(upcomingEvents);
   return (
     <Tabs
       classNames={{
@@ -38,8 +37,8 @@ export default function EventBoard({
             key={event.eventId}
             className="flex flex-col items-center lg:pt-0 pt-10"
           >
-            <div className="flex flex-col lg:flex-row md:p-10 items-center justify-evenly w-full lg:w-[80%] gap-7">
-              <div className="flex flex-col w-full lg:max-w-[50%] gap-2">
+            <div className="flex flex-col xl:flex-row md:p-10 items-center justify-between 2xl:justify-evenly w-full gap-7">
+              <div className="flex flex-col w-full xl:max-w-[40%] gap-2">
                 <p className="font-comorant text-2xl">
                   {convertDate(event.startAt)}
                   {event.endAt ? `- ${convertDate(event.endAt)}` : ""},{" "}
@@ -59,33 +58,20 @@ export default function EventBoard({
                   Ver más
                 </Button>
               </div>
-              <Carousel
-                className="max-w-[550px] h-[380px]"
-                leftControl={event.images.length > 1 ? undefined : " "}
-                rightControl={event.images.length > 1 ? undefined : " "}
-                slide={false}
-                indicators={event.images.length > 1}
-                theme={{
-                  control: {
-                    base: "bg-transparent",
-                  },
-                }}
-              >
-                {event.images.slice(0, 5).map(
-                  (
-                    imgSrc, // Takes just the first 5 images for preview
-                  ) => (
+              <div className="w-full max-w-[600px] h-[300px] sm:h-[400px]">
+                <Carousel
+                  items={event.images.slice(0, 5).map((img) => (
                     <Image
-                      key={imgSrc}
-                      src={getImageUrl(imgSrc, event.imageFolder)}
-                      alt={event.images[0]}
+                      key={img}
+                      src={getImageUrl(img, event.imageFolder)}
+                      alt={img}
                       width={600}
                       height={600}
-                      className="max-w-[600px]"
+                      className="max-w-[500px] xl:max-w-[600px] rounded-lg w-full"
                     />
-                  ),
-                )}
-              </Carousel>
+                  ))}
+                />
+              </div>
             </div>
             <Divider className="w-[50%] my-5 h-1 bg-[#3a6351]/50" />
           </div>
@@ -98,7 +84,10 @@ export default function EventBoard({
               const date = new Date(upcomingEvent.startAt);
 
               return (
-                <Card className="flex flex-col justify-evenly gap-7 items-center max-w-[600px] p-5 border-none bg-inherit">
+                <Card
+                  key={date.toString()}
+                  className="flex flex-col justify-evenly gap-7 items-center max-w-[600px] p-5 border-none bg-inherit"
+                >
                   <div className="flex flex-col gap-5 w-full">
                     <div className="relative overflow-hidden rounded-lg">
                       <Image

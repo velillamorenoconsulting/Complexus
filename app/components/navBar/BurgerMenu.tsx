@@ -16,6 +16,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { removePathNameSlash } from "@/app/utils/utils";
 import Swal from "sweetalert2";
+import Image from "next/image";
 
 type ComponentProps = {
   style: "dark" | "light";
@@ -27,10 +28,10 @@ export default function BurgerMenu({ style }: ComponentProps) {
   const redirect = useRouter();
   const { setAuthOptions } = useStore();
   const [isLogged, setLogged] = useState<boolean>(
-    session.status === "authenticated"
+    session.status === "authenticated",
   );
   const [localPage, setLocalPage] = useState<CurrentPage>(
-    removePathNameSlash(pathName) as CurrentPage
+    removePathNameSlash(pathName) as CurrentPage,
   );
   return (
     <div>
@@ -44,7 +45,9 @@ export default function BurgerMenu({ style }: ComponentProps) {
         className="dark"
       >
         <DropdownTrigger>
-          <img
+          <Image
+            width={50}
+            height={50}
             src={`/icons/burger-menu-${style}.svg`}
             alt="menu_icon"
             className="w-10"

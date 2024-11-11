@@ -6,6 +6,7 @@ import { SignInResponse, signIn, signOut, useSession } from "next-auth/react";
 import CompLoading from "../CompLoading";
 import { useStore } from "@/app/store/zustand";
 import Swal from "sweetalert2";
+import Image from "next/image";
 
 export type LoginFormValues = {
   email: string | null;
@@ -123,7 +124,13 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
             placeholder="correo@email.com"
             variant="underlined"
             startContent={
-              <img src="/icons/email.svg" alt="email_logo" className="w-5" />
+              <Image
+                src="/icons/email.svg"
+                alt="email_logo"
+                className="w-5"
+                width={20}
+                height={20}
+              />
             }
           />
           <div className="flex flex-col">
@@ -139,7 +146,13 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
               variant="underlined"
               placeholder="Escribe tu contraseña"
               startContent={
-                <img src="/icons/lock.svg" alt="lock_logo" className="w-5" />
+                <Image
+                  width={20}
+                  height={20}
+                  src="/icons/lock.svg"
+                  alt="lock_logo"
+                  className="w-5"
+                />
               }
             />
             <p className="text-[12px] self-end text-white/60 hover:text-white/100 hover:cursor-pointer">

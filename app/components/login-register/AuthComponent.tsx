@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import { useStore } from "@/app/store/zustand";
+import Image from "next/image";
 
 type ComponentProps = {
   type: "login" | "register";
@@ -28,9 +29,11 @@ export default function AuthComponent({ type }: ComponentProps) {
         className="w-full max-w-[450px] h-full max-h-[600px] text-white dark"
       >
         <CardBody className="p-6 xs:p-10 flex relative">
-          <img
+          <Image
             src="/icons/close.svg"
             alt="close"
+            width={50}
+            height={50}
             className="w-7 absolute right-3 top-3 hover:cursor-pointer"
             onClick={() => setAuthOptions({ isVisible: false })}
           />

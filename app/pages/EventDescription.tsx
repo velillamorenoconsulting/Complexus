@@ -1,10 +1,11 @@
+"use client";
 import React from "react";
 import { Event } from "../api/entities/event.entity";
-import { Carousel } from "flowbite-react";
 import Image from "next/image";
 import { convertDate, getImageUrl } from "../utils/utils";
 import { Divider } from "@nextui-org/react";
 import QuestionAccordion from "../components/events/QuestionAccordion";
+import Carousel from "../components/carousel/Carousel";
 
 type ComponentProps = {
   event: Event;
@@ -12,10 +13,10 @@ type ComponentProps = {
 
 export default function EventDescription({ event }: ComponentProps) {
   return (
-    <div className="bg-[#22302f] min-h-screen px-10 flex pb-10">
-      <div className="pt-32 lg:pt-44 flex flex-col w-full">
-        <div className="flex flex-col 2xl:flex-row text-white md:p-10 gap-8 lg:gap-16">
-          <div className="w-full 2xl:w-1/2 flex flex-col gap-3">
+    <div className="bg-[#22302f] min-h-screen px-10 flex pb-10 relative">
+      <div className="pt-32 lg:pt-44 flex flex-col w-full h-full overflow-hidden">
+        <div className="flex flex-col 3xl:flex-row text-white md:p-10 gap-8 lg:gap-16 justify-center items-center">
+          <div className="w-full 3xl:w-1/2 flex flex-col gap-3">
             <h2 className="font-comorant text-3xl lg:text-5xl text-left max-w-[80%] pb-2">
               {event.title}
             </h2>
@@ -52,23 +53,21 @@ export default function EventDescription({ event }: ComponentProps) {
             </div>
             <p className="font-raleway text-lg text-justify">{}</p>
           </div>
-          <div className="flex justify-center 2xl:w-1/2 w-full items-center h-full">
-            <Carousel
-              slide={false}
-              theme={{ control: { base: "bg-transparent" } }}
-              className="h-[300px] md:h-[500px] lg:h-[800px] self-center"
-            >
-              {event.images.map((imgSrc) => (
-                <Image
-                  key={imgSrc}
-                  alt={imgSrc}
-                  src={getImageUrl(imgSrc, event.imageFolder)}
-                  width={1200}
-                  height={1200}
-                  className="rounded-lg"
-                />
-              ))}
-            </Carousel>
+          <div className="flex justify-center 3xl:w-1/2 w-[80%] items-center h-full relative">
+            <div className="w-full max-w-[1000px] h-[300px] md:h-[500px] lg:h-[800px] self-center 3xl:max-w-[850px] flex items-center justify-center mb-10 md:mb-0">
+              <Carousel
+                items={event.images.map((imgSrc) => (
+                  <Image
+                    key={imgSrc}
+                    alt={imgSrc}
+                    src={getImageUrl(imgSrc, event.imageFolder)}
+                    width={1200}
+                    height={1200}
+                    className="rounded-lg"
+                  />
+                ))}
+              />
+            </div>
           </div>
         </div>
         {event.questions.length ? (

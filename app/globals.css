@@ -2,25 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-*:focus {
-  outline: none !important;
-  border: none;
-  box-shadow: none;
-}
+@layer components {
+  .carousel-indicator {
+    @apply absolute left-1/2 -bottom-4 flex h-5 w-24 -translate-x-1/2 transform items-center justify-center space-x-1 md:-bottom-10;
+  }
 
-input {
-  border: none;
-  box-shadow: none;
-}
+  .carousel-indicator-dots {
+    @apply h-2 w-2 rounded-full bg-white opacity-50  transition-all duration-500 hover:w-4 hover:opacity-100;
+  }
 
-textarea,
-textarea:focus {
-  border: none;
-  box-shadow: none;
-}
+  .carousel-container {
+    @apply relative h-full w-full;
+    perspective: 450px;
+    transform-style: preserve-3d;
+  }
 
-[type="text"]:focus,
-[type="password"]:focus {
-  border-color: transparent;
-  box-shadow: none;
+  .carousel-item {
+    @apply absolute h-full w-full overflow-hidden rounded-sm drop-shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-700 ease-in-out;
+  }
 }
