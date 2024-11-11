@@ -59,11 +59,11 @@ export class Item {
   @IsDecimal()
   price!: number;
 
-  @Column()
+  @Column({ nullable: true })
   @IsString()
   createdBy!: string;
 
-  @Column()
+  @Column({ nullable: true })
   @IsString()
   updatedBy!: string;
 
