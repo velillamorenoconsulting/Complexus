@@ -27,12 +27,22 @@ export class User {
 
   @Column({ nullable: true })
   @IsString({ message: "fireBaseId must be a string" })
-  @IsOptional() // Optional if the field is nullable
+  @IsOptional()
   fireBaseId!: string;
 
   @Column()
   @IsString({ message: "First name must be a string" })
   firstName!: string;
+
+  @Column({ nullable: true })
+  @IsOptional()
+  @IsString()
+  country?: string;
+
+  @Column({ nullable: true })
+  @IsOptional()
+  @IsString()
+  telephone?: string;
 
   @Column()
   @IsString({ message: "Last name must be a string" })

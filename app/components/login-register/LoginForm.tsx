@@ -1,8 +1,8 @@
 "use client";
 import { Button, Input, Tab, Tabs } from "@nextui-org/react";
-import React, { Key, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { validateLoginErrors } from "@/app/utils/login-register/errorValidator";
-import { SignInResponse, signIn, signOut, useSession } from "next-auth/react";
+import { SignInResponse, signIn, useSession } from "next-auth/react";
 import CompLoading from "../CompLoading";
 import { useStore } from "@/app/store/zustand";
 import Swal from "sweetalert2";

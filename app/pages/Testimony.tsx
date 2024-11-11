@@ -1,6 +1,3 @@
-import axios from "axios";
-import React from "react";
-import { TestimonyListResponse } from "../types/responses";
 import TestimonyA from "../sections/testimony/TestimonyA";
 
 export default function Testimony() {

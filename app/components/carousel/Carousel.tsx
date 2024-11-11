@@ -6,9 +6,15 @@ type Props = {
   width?: number;
   height?: number;
   items: React.ReactNode[];
+  maxVisualItems?: number;
 };
 
-export default function Carousel({ width, height, items }: Props) {
+export default function Carousel({
+  width,
+  height,
+  items,
+  maxVisualItems = 5,
+}: Props) {
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   function handleNextItemBtn() {
@@ -31,6 +37,7 @@ export default function Carousel({ width, height, items }: Props) {
       ))}
 
       <CarouselIndicator
+        maxIndicatorVisible={maxVisualItems}
         activeIndex={activeIndex}
         length={items.length}
         onSetActiveIndex={(activeIndex) => {

@@ -53,8 +53,8 @@ export default function UserPreview({ isLoading, user }: ComponentProps) {
                 {user?.firstName} {user?.lastName}
               </p>
               <p>{user?.email}</p>
-              <p>Colombia</p>
-              <p>3057501498</p>
+              <p>{user?.country || "-"}</p>
+              <p>{user?.telephone || "-"}</p>
             </div>
           </div>
         </div>

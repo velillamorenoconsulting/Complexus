@@ -3,6 +3,7 @@ import { TestimonyListResponse } from "@/app/types/responses";
 import axios from "axios";
 import React from "react";
 import TestimonyCards from "./TestimonyCards";
+import ErrorComp from "../ErrorComp";
 
 export default async function TestimonyBoard() {
   try {
@@ -15,6 +16,6 @@ export default async function TestimonyBoard() {
       </div>
     );
   } catch (e: any) {
-    return <></>;
+    return <ErrorComp />;
   }
 }

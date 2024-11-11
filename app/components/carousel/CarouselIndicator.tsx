@@ -4,7 +4,7 @@ import { IoIosArrowBack } from "react-icons/io";
 export interface CarouselIndicatorProps {
   activeIndex: number;
   length: number;
-  maxIndicatorVisible?: number;
+  maxIndicatorVisible: number;
   onSetActiveIndex: (index: number) => void;
   handleNext: () => void;
   handlePrev: () => void;
@@ -13,7 +13,7 @@ export interface CarouselIndicatorProps {
 export default function CarouselIndicator({
   activeIndex,
   length,
-  maxIndicatorVisible = 5,
+  maxIndicatorVisible,
   onSetActiveIndex,
   handleNext,
   handlePrev,

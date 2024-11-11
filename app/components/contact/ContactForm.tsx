@@ -1,6 +1,5 @@
 "use client";
-import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
-import React from "react";
+import { Button, Input, Textarea } from "@nextui-org/react";
 
 export default function ContactForm() {
   return (

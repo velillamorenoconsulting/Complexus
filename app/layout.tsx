@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "reflect-metadata";
 import "./globals.css";
 import Providers from "./providers";
-import NavaBar from "./sections/NavaBar";
 import { Cormorant_Garamond, Raleway } from "next/font/google";
 
 const comorantFont = Cormorant_Garamond({

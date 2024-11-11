@@ -1,7 +1,6 @@
-import React from "react";
-import NavaBar from "../sections/NavaBar";
-import Footer from "../sections/Footer";
 import Events from "../pages/Events";
+import Footer from "../sections/Footer";
+import NavaBar from "../sections/NavaBar";
 
 export default function EventsPage() {
   return (

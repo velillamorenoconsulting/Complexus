@@ -35,7 +35,7 @@ export default function EventBoard({
         {pastEvents.map((event) => (
           <div
             key={event.eventId}
-            className="flex flex-col items-center lg:pt-0 pt-10"
+            className="flex flex-col items-center lg:pt-0 pt-10 overflow-x-hidden"
           >
             <div className="flex flex-col xl:flex-row md:p-10 items-center justify-between 2xl:justify-evenly w-full gap-7">
               <div className="flex flex-col w-full xl:max-w-[40%] gap-2">
