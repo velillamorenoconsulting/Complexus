@@ -20,7 +20,7 @@ export interface GlobalState {
   authOptions: AuthOptions;
   setAuthOptions: (val: Partial<AuthOptions>) => void;
   user: Partial<User> | null;
-  setUser: (val: Partial<User>) => void;
+  setUser: (val: Partial<User> | null) => void;
 }
 
 export enum CurrentPage {
@@ -48,6 +48,6 @@ export const useStore = create<GlobalState>((set) => ({
   setCurrentPage: (val: CurrentPage) => set(() => ({ currentPage: val })),
   setAuthOptions: (val: Partial<AuthOptions>) =>
     set((state) => ({ authOptions: { ...state.authOptions, ...val } })),
-  setUser: (val: Partial<User>) => set(() => ({ user: val })),
+  setUser: (val: Partial<User> | null) => set(() => ({ user: val })),
   setItems: (val: Item[]) => set(() => ({ itemList: val })),
 }));

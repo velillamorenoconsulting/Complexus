@@ -48,6 +48,10 @@ export class Purchase {
   @IsBoolean()
   isEvent!: boolean;
 
+  @Column()
+  @IsNumber()
+  amount!: number;
+
   @Column({ nullable: true })
   @IsOptional()
   confirmationId?: string;
@@ -79,7 +83,7 @@ export class Purchase {
   @IsString()
   buyerId!: string;
 
-  @Column({ default: false })
+  @Column({ default: true })
   isConfirmed!: boolean;
 
   @ManyToOne(() => Item, (item) => item.purchases, { nullable: true })
@@ -92,12 +96,12 @@ export class Purchase {
   validatePurchase() {
     if (this.event && this.item) {
       throw new Error(
-        "Purchase can be related to either an event or an item, but not both."
+        "Purchase can be related to either an event or an item, but not both.",
       );
     }
     if (!this.event && !this.item) {
       throw new Error(
-        "Purchase must be related to either an event or an item."
+        "Purchase must be related to either an event or an item.",
       );
     }
     if (this.memberBuyer && this.userBuyer) {

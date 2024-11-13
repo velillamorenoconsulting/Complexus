@@ -1,7 +1,8 @@
+"use client";
 import { Item } from "@/app/api/entities/item.entity";
 import { useStore } from "@/app/store/zustand";
 import { getImageUrl } from "@/app/utils/utils";
-import { Divider } from "@nextui-org/react";
+import { Button, Divider } from "@nextui-org/react";
 import Image from "next/image";
 import React from "react";
 
@@ -41,12 +42,14 @@ export default function PublicationList({ items }: Props) {
               </p>
             </div>
             <div className="flex flex-col items-center justify-center gap-3 p-3 w-full lg:w-[17%] font-raleway">
-              <button className="p-2 w-full rounded-full bg-gray-400 transition-all ease-out duration-300 hover:bg-gray-500 text-black">
+              {/* <button className="p-2 w-full rounded-full bg-gray-400 transition-all ease-out duration-300 hover:bg-gray-500 text-black">
                 Obtener
               </button>
               <button className="p-2 w-full rounded-full bg-gray-400 transition-all ease-out duration-300 hover:bg-gray-500 text-black">
                 Detalles
-              </button>
+              </button> */}
+              <Button className="w-[80%] lg:w-full">Obtener</Button>
+              <Button className="w-[80%] lg:w-full">Detalles</Button>
             </div>
           </div>
           <Divider className="my-7 dark w-[80%] self-center" />

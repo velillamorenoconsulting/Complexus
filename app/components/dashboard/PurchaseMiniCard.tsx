@@ -1,4 +1,5 @@
 import { Purchase } from "@/app/api/entities/purchase.entity";
+import { convertDate } from "@/app/utils/utils";
 import { Card, CardBody, Divider } from "@nextui-org/react";
 import React from "react";
 
@@ -9,7 +10,9 @@ export default function PurchaseMiniCard({ purchase }: Props) {
     ? purchase.event?.title
     : purchase.item?.title;
   const purchaseType = purchase.isEvent ? "Evento" : "Compra";
-  const purchaseDate = new Date(purchase.confirmedAt);
+  const purchaseDate = purchase.confirmedAt
+    ? new Date(purchase.confirmedAt)
+    : new Date(purchase.createdAt);
   return (
     <Card className="bg-[#e9f2f2]">
       <CardBody className="flex flex-row">
@@ -28,10 +31,13 @@ export default function PurchaseMiniCard({ purchase }: Props) {
             })}
           </p>
           <p>
-            <b>Fecha de compra:</b> {purchaseDate.toDateString()}
+            <b>Fecha de compra:</b> {convertDate(purchaseDate, true)}
           </p>
           <p>
             <b>Tipo:</b> {purchaseType}
+          </p>
+          <p>
+            <b>Cantidad:</b> {purchase.amount}
           </p>
         </div>
       </CardBody>

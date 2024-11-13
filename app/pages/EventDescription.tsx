@@ -5,6 +5,7 @@ import { Event } from "../api/entities/event.entity";
 import Carousel from "../components/carousel/Carousel";
 import QuestionAccordion from "../components/events/QuestionAccordion";
 import { convertDate, getImageUrl } from "../utils/utils";
+import EventQuestion from "../components/events/EventQuestion";
 
 type ComponentProps = {
   event: Event;
@@ -50,7 +51,17 @@ export default function EventDescription({ event }: ComponentProps) {
                 </div>
               ))}
             </div>
-            <p className="font-raleway text-lg text-justify">{}</p>
+            <div className="flex flex-row gap-5 w-full items-center">
+              <Divider className="dark w-1/4" />
+              <div className="flex flex-col items-center gap-2 font-raleway">
+                <p className="italic pt-7 text-center">
+                  Este evento ya ocurrió, pero puedes interactuar con sus
+                  participantes dejando una pregunta{" "}
+                </p>
+                <EventQuestion eventId={event.eventId} />
+              </div>
+              <Divider className="dark w-1/4" />
+            </div>
           </div>
           <div className="flex justify-center 3xl:w-1/2 w-[80%] items-center h-full relative">
             <div className="w-full max-w-[1000px] h-[300px] md:h-[500px] lg:h-[800px] self-center 3xl:max-w-[850px] flex items-center justify-center mb-10 md:mb-0">

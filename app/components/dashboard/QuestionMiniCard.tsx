@@ -8,9 +8,10 @@ type QuestionStatus = "approved" | "waiting" | "rejected";
 type Props = { question: Question };
 
 export default function QuestionMiniCard({ question }: Props) {
-  const visibilityContent = question.isGeneralQuestion
-    ? "¡Tu pregunta ha sido catalogada con mucho valor para la comunidad! Es visible en el resumen del evento"
-    : "Tu pregunta es visible solo para ti";
+  const visibilityContent =
+    question.visibility === "general"
+      ? "¡Tu pregunta ha sido catalogada con mucho valor para la comunidad! Es visible en el resumen del evento"
+      : "Tu pregunta es visible solo para ti";
   const questionContent =
     question.questionContent.length > 60
       ? question.questionContent.slice(0, 61) + "..."
@@ -19,8 +20,8 @@ export default function QuestionMiniCard({ question }: Props) {
     question.isApproved === null
       ? "waiting"
       : question.isApproved
-      ? "approved"
-      : "rejected";
+        ? "approved"
+        : "rejected";
   return (
     <Card className="hover:cursor-pointer">
       <CardBody>
@@ -48,8 +49,8 @@ export default function QuestionMiniCard({ question }: Props) {
                 questionStatus === "approved"
                   ? "bg-green-500"
                   : questionStatus === "waiting"
-                  ? "bg-yellow-500"
-                  : "bg-red-500"
+                    ? "bg-yellow-500"
+                    : "bg-red-500"
               }`}
             ></div>
             <Tooltip

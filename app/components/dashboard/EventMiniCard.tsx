@@ -7,7 +7,7 @@ type Props = { event: Event };
 export default function EventMiniCard({ event }: Props) {
   const missingDays = Math.ceil(
     Math.abs(new Date(event.startAt).getTime() - new Date().getTime()) /
-      (1000 * 3600 * 24)
+      (1000 * 3600 * 24),
   );
   return (
     <Card radius="sm">
@@ -22,7 +22,9 @@ export default function EventMiniCard({ event }: Props) {
             })}
           </p>
           <h5 className="text-lg font-raleway font-semibold">{event.title}</h5>
-          <p className="font-raleway opacity-60">{event.description}</p>
+          <p className="font-raleway opacity-60 text-sm">
+            {event.description.slice(0, 150)}...
+          </p>
         </div>
         <div>
           <p>{missingDays} dias</p>

@@ -1,12 +1,18 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, Card, Divider, Tab, Tabs } from "@nextui-org/react";
 import { Event } from "@/app/api/entities/event.entity";
-import { convertDate, eventTypePicker, getImageUrl } from "@/app/utils/utils";
+import {
+  convertDate,
+  eventTypePicker,
+  getImageUrl,
+  formatPrice,
+} from "@/app/utils/utils";
 import { weekDays, monthList } from "@/app/utils/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Carousel from "../carousel/Carousel";
+import EventBuy from "./EventBuy";
 
 type EventSelectOptions = "past" | "upcoming";
 
@@ -21,6 +27,7 @@ export default function EventBoard({
 }: ComponentProps) {
   const [selected, setSelected] = useState<EventSelectOptions>("past");
   const route = useRouter();
+
   return (
     <Tabs
       classNames={{
@@ -114,13 +121,9 @@ export default function EventBoard({
                           {eventTypePicker(upcomingEvent.eventType)}
                         </p>
                         <p className="text-xl font-bold text-center">
-                          {`Precio: ${upcomingEvent.price ? `$${upcomingEvent.price}` : "GRATIS"}`}
+                          {`Precio: ${upcomingEvent.price ? `${formatPrice(upcomingEvent.price)}` : "GRATIS"}`}
                         </p>
-                        <Button className="w-2/3 text-lg underline font-semibold">
-                          {upcomingEvent.price
-                            ? "Comprar entradas"
-                            : "Solicitar"}
-                        </Button>
+                        <EventBuy event={upcomingEvent} />
                       </div>
                     </div>
                   </div>

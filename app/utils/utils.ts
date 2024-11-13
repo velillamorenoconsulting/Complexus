@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { CurrentPage } from "../store/zustand";
 import { ThemeType, ValidPagesList } from "../types/types";
 
@@ -32,11 +33,11 @@ export function getVideoUrl(fileName: string, folder?: string): string {
   return `${baseUrl}/${folderPath}/${fileName}`;
 }
 
-export function convertDate(date: Date): string {
+export function convertDate(date: Date, short: boolean = false): string {
   const dateBase = new Date(date);
   return dateBase.toLocaleDateString("es-US", {
     year: "numeric",
-    month: "long",
+    month: short ? "short" : "long",
     day: "numeric",
   });
 }
@@ -54,6 +55,34 @@ export function eventTypePicker(eventType: string): string {
   }
 }
 
+type AlertOptions = {
+  title: string;
+  type: "success" | "error";
+  text?: string;
+  timing?: number;
+};
+
+export function sendAlert({
+  title,
+  type,
+  text,
+  timing = 1000,
+}: AlertOptions): void {
+  Swal.fire({
+    title: title,
+    text: text,
+    icon: type,
+    timer: timing,
+    color: "#ffffff",
+    background: "#1E1E1E",
+    showConfirmButton: false,
+    customClass: {
+      title: "font-raleway",
+      container: "font-raleway",
+    },
+  });
+}
+
 export const weekDays = ["LUN", "MART", "MIE", "JUE", "VIE", "SAB", "DOM"];
 export const monthList = [
   "ENE",
@@ -69,3 +98,11 @@ export const monthList = [
   "NOV",
   "DIC",
 ];
+
+export function formatPrice(price: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  }).format(price);
+}
