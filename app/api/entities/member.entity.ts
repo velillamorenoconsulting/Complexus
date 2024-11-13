@@ -29,7 +29,7 @@ export class Member {
   @IsOptional()
   fireBaseId!: string;
 
-  @Column()
+  @Column({ nullable: true })
   @IsString({ message: "First name must be a string" })
   firstName!: string;
 
