@@ -48,7 +48,7 @@ export class Purchase {
   @IsBoolean()
   isEvent!: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   @IsNumber()
   amount!: number;
 
