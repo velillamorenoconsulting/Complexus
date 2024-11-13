@@ -24,16 +24,7 @@ export default function CreateTestimony() {
 
   const handleTestimonyCreateButton = () => {
     if (status === "authenticated") {
-      if (!user?.country) {
-        sendAlert({
-          type: "error",
-          title: "Sin información de país",
-          text: "Antes de dejar un testimonio debes editar tu información de usuario",
-          timing: 2800,
-        });
-      } else {
-        onOpen();
-      }
+      onOpen();
     } else {
       window.scrollTo(0, 0);
       setAuthOptions({

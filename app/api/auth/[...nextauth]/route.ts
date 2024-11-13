@@ -64,8 +64,10 @@ const handler = NextAuth({
           const loginService = new LoginService();
           const memberInfo = await loginService.loginMember(credentials);
           const memberPayload = {
-            id: new Date().toISOString(),
-            ...memberInfo,
+            id: `${memberInfo.firstName} ${memberInfo.lastName}`,
+            email: memberInfo.email,
+            userId: memberInfo.memberId,
+            token: memberInfo.token,
           };
           if (memberInfo) {
             return memberPayload;

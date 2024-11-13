@@ -15,6 +15,7 @@ import {
   ModalContent,
   ModalBody,
   ModalFooter,
+  useDisclosure,
 } from "@nextui-org/react";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -28,8 +29,10 @@ type ComponentProps = {
 export default function DesktopAvatar({ style }: ComponentProps) {
   const session = useSession();
   const redirect = useRouter();
+  const { onClose } = useDisclosure();
   const { setAuthOptions } = useStore();
   const [isOpen, setOpen] = useState<boolean>(false);
+  console.log(session);
   return (
     <div className="font-raleway">
       {session.status === "authenticated" ? (
@@ -81,6 +84,7 @@ export default function DesktopAvatar({ style }: ComponentProps) {
                 <Button
                   onClick={() => {
                     signOut({ redirect: false });
+                    onClose();
                     Swal.fire({
                       title: "Sesión finalizada",
                       icon: "success",

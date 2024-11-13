@@ -16,7 +16,7 @@ import React, { useState } from "react";
 import CompLoading from "../CompLoading";
 import { validateUserQuestionCreation } from "@/app/utils/entityForms";
 import { SignedUserResponse } from "@/app/api/types/auth.types";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { ServerResponse } from "@/app/types/responses";
 import { sendAlert } from "@/app/utils/utils";
 

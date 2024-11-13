@@ -43,8 +43,8 @@ export default function TestimonyCards({ testimonies }: Props) {
                 </p>
                 <p className="pt-3 pl-5 opacity-70 font-raleway">
                   {t.user
-                    ? `${t.user.firstName} ${t.user.lastName}, Colombia`
-                    : `${t.member?.fistName} ${t.member?.lastName}, Colombia`}{" "}
+                    ? `${t.user.firstName} ${t.user.lastName}, ${t.user.country || "Colombia"}`
+                    : `${t.member?.firstName} ${t.member?.lastName}, ${t.member?.country || "Colombia"} `}{" "}
                 </p>
               </CardBody>
             </Card>

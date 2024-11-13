@@ -54,6 +54,7 @@ export default function RegisterForm({ changeSelection }: ComponentProps) {
       const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/register`,
         {
+          type: "user",
           firstName,
           lastName,
           email: formValues.email,

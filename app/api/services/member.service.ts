@@ -29,14 +29,16 @@ export class MemberService {
 
   async updateMember(
     memberId: string,
-    payload: Partial<Member>
+    payload: Partial<Member>,
   ): Promise<Member> {
     const member = await this.memberRepository.findById(memberId);
     if (!member) throw new NotFoundError("Member");
     return this.memberRepository.updateById(memberId, payload);
   }
 
-  async createMember(member: any): Promise<Member> {
+  async createMember(
+    member: Partial<Member> & { password: string },
+  ): Promise<Member> {
     const memberAttributes = {
       ...member,
       createdBy: "SYSTEM",
@@ -57,7 +59,7 @@ export class MemberService {
 
   async deleteMember(
     memberId: string,
-    isSoft: boolean = true
+    isSoft: boolean = true,
   ): Promise<string> {
     const member = await this.memberRepository.findById(memberId);
     if (!member) throw new NotFoundError("Member");

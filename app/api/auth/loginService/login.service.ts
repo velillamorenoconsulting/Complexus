@@ -5,7 +5,7 @@ import { UnauthorizedError } from "../../utils/errors";
 import { MemberService } from "../../services/member.service";
 import { User } from "../../entities/user.entity";
 import { Member } from "../../entities/member.entity";
-import { SignedUser } from "../../types/auth.types";
+import { SignedMember, SignedUser } from "../../types/auth.types";
 import { generateToken } from "../utils/jwt";
 
 export class LoginService {
@@ -29,7 +29,7 @@ export class LoginService {
       const fireBaseAuth = await signInWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
       if (!fireBaseAuth.user.emailVerified) {
         throw new UnauthorizedError("Verification missing");
@@ -52,7 +52,7 @@ export class LoginService {
   }: {
     email: string;
     password: string;
-  }): Promise<Member> {
+  }): Promise<SignedMember> {
     if (!email || !password) throw new UnauthorizedError("Bad credentials");
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -61,6 +61,10 @@ export class LoginService {
     }
     const memberInfo = await this.memberService.getMemberByEmail(email);
     if (memberInfo.isDeleted) throw new UnauthorizedError("Not Allowed");
-    return memberInfo;
+    const signedMember = {
+      ...memberInfo,
+      token: generateToken(memberInfo),
+    };
+    return signedMember;
   }
 }

@@ -31,7 +31,7 @@ export class Member {
 
   @Column()
   @IsString({ message: "First name must be a string" })
-  fistName!: string;
+  firstName!: string;
 
   @Column()
   @IsString({ message: "Last name must be a string" })
@@ -49,7 +49,11 @@ export class Member {
   @Column({ nullable: true })
   @IsString({ message: "Avatar URL must be a string" })
   @IsOptional()
-  avatarUrl!: string;
+  avatarUrl?: string;
+
+  @Column({ nullable: true })
+  @IsString()
+  country?: string;
 
   @Column()
   @IsString({ message: "Created by must be a string" })

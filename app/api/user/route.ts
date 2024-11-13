@@ -12,3 +12,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
+
+export async function GET(): Promise<NextResponse> {
+  try {
+    const userList = await userService.getAllUsers();
+    return NextResponse.json({ message: userList }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
