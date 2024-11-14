@@ -32,7 +32,6 @@ export default function DesktopAvatar({ style }: ComponentProps) {
   const { onClose } = useDisclosure();
   const { setAuthOptions } = useStore();
   const [isOpen, setOpen] = useState<boolean>(false);
-  console.log(session);
   return (
     <div className="font-raleway">
       {session.status === "authenticated" ? (

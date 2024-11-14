@@ -1,44 +1,27 @@
 "use client";
 import { ThemeType } from "@/app/types/types";
-import { validateErrors } from "@/app/utils/contact/footerContact";
 import { Button, Input, Textarea } from "@nextui-org/react";
 import Image from "next/image";
-import React, { useState } from "react";
+import useFormBase from "../hooks/useFormBase";
+import { footerContactFormValidations } from "@/app/utils/userValidations";
 
 type Props = { style: ThemeType };
 
-export type FormValues = {
+export type FooterFormValues = {
   subject: string | null;
   message: string | null;
 };
 
-export default function ContactForm({ style }: Props) {
-  const [formValues, setFormValues] = useState<FormValues>({
-    subject: "",
-    message: "",
-  });
-  const [formErrors, setFormErrors] = useState<FormValues>({
-    subject: null,
-    message: null,
-  });
+const initializer: FooterFormValues = {
+  subject: null,
+  message: null,
+};
 
-  const handleChange = (element: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValues({
-      ...formValues,
-      [element.target.id]: element.target.value,
-    });
-    setFormErrors(
-      validateErrors({
-        ...formValues,
-        [element.target.id]: element.target.value,
-      })
-    );
-  };
-  const isButtonDisabled =
-    !formValues.message ||
-    !!formErrors.message ||
-    !formValues.subject ||
-    !!formErrors.subject;
+export default function ContactForm({ style }: Props) {
+  const [formValues, formErrors, handleChange, isButtonDisabled] = useFormBase(
+    initializer,
+    footerContactFormValidations,
+  );
   return (
     <div className="flex flex-col lg:max-w-[400px] w-full">
       <h4 className="font-comorant text-3xl pb-2">Contacto</h4>

@@ -5,6 +5,7 @@ import { NextAuthOptions, Session } from "next-auth";
 import NextAuth from "next-auth/next";
 import {
   CustomJWT,
+  SignedMemberResponse,
   SignedUser,
   SignedUserResponse,
 } from "../../types/auth.types";
@@ -34,6 +35,7 @@ const handler = NextAuth({
             email: userInfo.email,
             userId: userInfo.userId,
             token: userInfo.token,
+            type: userInfo.type,
           };
           if (userInfo) {
             return userPayload;
@@ -66,8 +68,9 @@ const handler = NextAuth({
           const memberPayload = {
             id: `${memberInfo.firstName} ${memberInfo.lastName}`,
             email: memberInfo.email,
-            userId: memberInfo.memberId,
+            memberId: memberInfo.memberId,
             token: memberInfo.token,
+            type: memberInfo.type,
           };
           if (memberInfo) {
             return memberPayload;
@@ -88,7 +91,15 @@ const handler = NextAuth({
     jwt: ({ token, user }) => {
       if (user) {
         token.accessToken = (user as SignedUserResponse).token;
-        token.userId = (user as SignedUserResponse).userId;
+        token.memberId =
+          (user as SignedUserResponse).type === "member"
+            ? (user as SignedMemberResponse).memberId
+            : undefined;
+        token.userId =
+          (user as SignedUserResponse).type === "user"
+            ? (user as SignedUserResponse).userId
+            : undefined;
+        token.type = (user as SignedUserResponse).type;
       }
       return token;
     },
@@ -98,7 +109,10 @@ const handler = NextAuth({
         email: token.email,
         // @ts-expect-error forced attribute
         accessToken: token.accessToken as CustomJWT,
-        userId: token.userId as CustomJWT,
+        userId: token.type === "user" ? (token.userId as CustomJWT) : undefined,
+        memberId:
+          token.type === "member" ? (token.memberId as CustomJWT) : undefined,
+        type: token.type as CustomJWT,
       };
       return session;
     },

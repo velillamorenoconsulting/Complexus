@@ -1,5 +1,4 @@
 "use client";
-import { ValidateMemberForm } from "@/app/utils/entityForms/dashboard";
 import {
   Button,
   Divider,
@@ -16,13 +15,21 @@ import CompLoading from "../../CompLoading";
 import axios from "axios";
 import { ServerResponse } from "@/app/types/responses";
 import { sendAlert } from "@/app/utils/utils";
+import useFormBase from "../../hooks/useFormBase";
+import { FormValidations } from "@/app/types/types";
+import {
+  countryRegex,
+  emailRegex,
+  fullNameRegex,
+  passwordRegex,
+} from "@/app/utils";
 
-export interface CreateMemberForm {
+export type CreateMemberForm = {
   fullName: string | null;
   email: string | null;
   password: string | null;
   country?: string | null;
-}
+};
 
 const initializer: CreateMemberForm = {
   fullName: null,
@@ -35,30 +42,39 @@ type CompProps = {
   forceRefetch: (val: { refetch: boolean }) => void;
 };
 
+const validations: FormValidations = {
+  fullName: [
+    {
+      regex: fullNameRegex,
+      failedMessage: "Nombre incorrecto",
+    },
+  ],
+  email: [
+    {
+      regex: emailRegex,
+      failedMessage: "Correo incorrecto",
+    },
+  ],
+  country: [
+    {
+      regex: countryRegex,
+      failedMessage: "Pais incorrecto",
+    },
+  ],
+  password: [
+    {
+      regex: passwordRegex,
+      failedMessage: "Contraseña muy débil",
+    },
+  ],
+};
+
 export default function CreateMember({ forceRefetch }: CompProps) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
-  const [formValues, setFormValues] = useState<CreateMemberForm>(initializer);
-  const [errors, setErrors] = useState<CreateMemberForm>(initializer);
+  const [formValues, formErrors, handleChange, isButtonDisabled, clearForm] =
+    useFormBase<CreateMemberForm>(initializer, validations);
   const [loading, isLoading] = useState<boolean>(false);
   const { data, status } = useSession();
-
-  const clearStates = () => {
-    setFormValues(initializer);
-    setErrors(initializer);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValues({
-      ...formValues,
-      [e.target.id]: e.target.value,
-    });
-    setErrors(
-      ValidateMemberForm({
-        ...formValues,
-        [e.target.id]: e.target.value,
-      }),
-    );
-  };
 
   const handleCreation = async () => {
     if (status !== "authenticated") return;
@@ -82,7 +98,7 @@ export default function CreateMember({ forceRefetch }: CompProps) {
         timing: 2000,
       });
       onClose();
-      clearStates();
+      clearForm();
       forceRefetch({ refetch: true });
     } catch (e: any) {
       sendAlert({
@@ -124,8 +140,8 @@ export default function CreateMember({ forceRefetch }: CompProps) {
                     onChange={handleChange}
                     id="fullName"
                     value={formValues.fullName as string}
-                    errorMessage={errors.fullName}
-                    isInvalid={!!errors.fullName}
+                    errorMessage={formErrors.fullName}
+                    isInvalid={!!formErrors.fullName}
                   />
                   <Input
                     label="Correo"
@@ -133,8 +149,8 @@ export default function CreateMember({ forceRefetch }: CompProps) {
                     onChange={handleChange}
                     id="email"
                     value={formValues.email as string}
-                    errorMessage={errors.email}
-                    isInvalid={!!errors.email}
+                    errorMessage={formErrors.email}
+                    isInvalid={!!formErrors.email}
                   />
                   <Input
                     label="Pais"
@@ -142,8 +158,8 @@ export default function CreateMember({ forceRefetch }: CompProps) {
                     isRequired
                     id="country"
                     value={formValues.country as string}
-                    errorMessage={errors.country}
-                    isInvalid={!!errors.country}
+                    errorMessage={formErrors.country}
+                    isInvalid={!!formErrors.country}
                   />
                   <Input
                     type="password"
@@ -152,24 +168,15 @@ export default function CreateMember({ forceRefetch }: CompProps) {
                     onChange={handleChange}
                     id="password"
                     value={formValues.password as string}
-                    errorMessage={errors.password}
-                    isInvalid={!!errors.password}
+                    errorMessage={formErrors.password}
+                    isInvalid={!!formErrors.password}
                   />
 
                   <Button
                     onPress={handleCreation}
                     className="mt-5"
                     color="primary"
-                    isDisabled={
-                      !formValues.email ||
-                      !!errors.email ||
-                      !formValues.fullName ||
-                      !!errors.fullName ||
-                      !!errors.country ||
-                      !formValues.country ||
-                      !formValues.password ||
-                      !!errors.password
-                    }
+                    isDisabled={isButtonDisabled}
                   >
                     Enviar
                   </Button>

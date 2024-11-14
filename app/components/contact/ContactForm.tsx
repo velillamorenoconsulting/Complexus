@@ -1,14 +1,14 @@
 "use client";
-import { validateMainFormErrors } from "@/app/utils/contact/contactForm";
 import { Button, Input, Textarea } from "@nextui-org/react";
-import { useState } from "react";
+import useFormBase from "../hooks/useFormBase";
+import { contactFormValidations } from "@/app/utils/userValidations";
 
-export interface ContactFormValues {
+export type ContactFormValues = {
   name: string | null;
   subject: string | null;
   reason: string | null;
   message: string | null;
-}
+};
 
 const initialState: ContactFormValues = {
   name: null,
@@ -18,31 +18,8 @@ const initialState: ContactFormValues = {
 };
 
 export default function ContactForm() {
-  const [formValues, setFormValues] = useState<ContactFormValues>(initialState);
-  const [errors, setErrors] = useState<ContactFormValues>(initialState);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValues({
-      ...formValues,
-      [e.target.id]: e.target.value,
-    });
-    setErrors(
-      validateMainFormErrors({
-        ...formValues,
-        [e.target.id]: e.target.value,
-      }),
-    );
-  };
-
-  const isButtonDisabled =
-    !formValues.message ||
-    !!errors.message ||
-    !formValues.name ||
-    !!errors.name ||
-    !formValues.reason ||
-    !!errors.reason ||
-    !formValues.subject ||
-    !!errors.subject;
+  const [formValues, errors, handleChange, isButtonDisabled] =
+    useFormBase<ContactFormValues>(initialState, contactFormValidations);
   return (
     <div className="flex flex-col w-full gap-4">
       <div className="flex flex-col gap-1 font-raleway">

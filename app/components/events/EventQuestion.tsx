@@ -14,51 +14,38 @@ import {
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import CompLoading from "../CompLoading";
-import { validateUserQuestionCreation } from "@/app/utils/entityForms";
 import { SignedUserResponse } from "@/app/api/types/auth.types";
 import axios from "axios";
 import { ServerResponse } from "@/app/types/responses";
 import { sendAlert } from "@/app/utils/utils";
+import useFormBase from "../hooks/useFormBase";
+import { FormValidations } from "@/app/types/types";
+import { getValidateLengthFunction } from "@/app/utils/functionValidators";
+import { eventQuestionValidation } from "@/app/utils/userValidations";
 
-export interface UserQuestionFormValues {
+export type UserQuestionFormValues = {
   questionContent: string | null;
   additionalDescription: string | null;
-  isGeneralQuestion: true;
-}
+};
 
 type ComponentProps = {
   eventId: string;
 };
 
+const initializer: UserQuestionFormValues = {
+  questionContent: null,
+  additionalDescription: null,
+};
+
 export default function EventQuestion({ eventId }: ComponentProps) {
-  const [formValues, setFormValues] = useState<UserQuestionFormValues>({
-    questionContent: null,
-    additionalDescription: null,
-    isGeneralQuestion: true,
-  });
-  const [errors, setErrors] = useState<UserQuestionFormValues>({
-    questionContent: null,
-    additionalDescription: null,
-    isGeneralQuestion: true,
-  });
   const { isOpen, onOpenChange, onOpen, onClose } = useDisclosure();
+  const [formValues, errors, handleChange, _, clearStates] =
+    useFormBase<UserQuestionFormValues>(initializer, eventQuestionValidation);
   const { status, data } = useSession();
   const { setAuthOptions } = useStore();
   const [isLoading, setLoading] = useState<boolean>();
   const user = data?.user as SignedUserResponse;
 
-  const clearStates = () => {
-    setFormValues({
-      questionContent: null,
-      additionalDescription: null,
-      isGeneralQuestion: true,
-    });
-    setErrors({
-      questionContent: null,
-      additionalDescription: null,
-      isGeneralQuestion: true,
-    });
-  };
   const handleQuestionCreation = async () => {
     if (status !== "authenticated") return;
     try {
@@ -67,6 +54,7 @@ export default function EventQuestion({ eventId }: ComponentProps) {
         `${process.env.NEXT_PUBLIC_BE_URL}/question`,
         {
           ...formValues,
+          isGeneralQuestion: true,
           author: user.userId,
           event: eventId,
         },
@@ -89,19 +77,6 @@ export default function EventQuestion({ eventId }: ComponentProps) {
         timing: 2500,
       });
     }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setErrors(
-      validateUserQuestionCreation({
-        ...formValues,
-        [e.target.id]: e.target.value,
-      }),
-    );
-    setFormValues({
-      ...formValues,
-      [e.target.id]: e.target.value,
-    });
   };
   const handleCreateQuestionButton = () => {
     if (status === "authenticated") {
@@ -154,14 +129,14 @@ export default function EventQuestion({ eventId }: ComponentProps) {
                     className="font-raleway"
                     description="Escribe tu pregunta de manera corta. Los detalles los podrás dar más abajo"
                   />
-                  <Select
+                  {/* <Select
                     isRequired
                     className="dark font-raleway"
                     label="Tipo"
                     description="Todas las preguntas serán generales por ahora."
                   >
                     <SelectItem key="general">General</SelectItem>
-                  </Select>
+                  </Select> */}
                   <Textarea
                     errorMessage={errors.additionalDescription}
                     isInvalid={!!errors.additionalDescription}
@@ -169,6 +144,7 @@ export default function EventQuestion({ eventId }: ComponentProps) {
                     label="Detalles adicionales"
                     id="additionalDescription"
                     onChange={handleChange}
+                    description="Todas las preguntas serán generales por ahora."
                   />
                   <Button
                     type="submit"

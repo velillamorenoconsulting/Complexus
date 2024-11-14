@@ -32,7 +32,7 @@ export class MemberRepository {
     await this.init();
     const { affected } = await this.memberRepository!.update(
       { memberId },
-      member
+      member,
     );
     if (!affected) throw new DatabaseError();
     const updatedMember = await this.findById(memberId);

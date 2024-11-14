@@ -5,7 +5,7 @@ import { UnauthorizedError } from "../../utils/errors";
 import { MemberService } from "../../services/member.service";
 import { User } from "../../entities/user.entity";
 import { Member } from "../../entities/member.entity";
-import { SignedMember, SignedUser } from "../../types/auth.types";
+import { LoginType, SignedMember, SignedUser } from "../../types/auth.types";
 import { generateToken } from "../utils/jwt";
 
 export class LoginService {
@@ -42,6 +42,7 @@ export class LoginService {
     const signedUser = {
       ...userInfo,
       token: generateToken(userInfo),
+      type: "user",
     };
     return signedUser;
   }
@@ -64,6 +65,7 @@ export class LoginService {
     const signedMember = {
       ...memberInfo,
       token: generateToken(memberInfo),
+      type: "member",
     };
     return signedMember;
   }

@@ -1,10 +1,68 @@
 "use client";
 import { Card, CardBody, Divider, Tab, Tabs } from "@nextui-org/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import UsersTable from "../components/dashboard/admin/UsersTable";
 import MembersTable from "../components/dashboard/admin/MembersTable";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { sendAlert } from "../utils/utils";
+import { SignedMember, SignedUser } from "../api/types/auth.types";
+import axios from "axios";
+import { ServerResponse } from "../types/responses";
+import { Member } from "../api/entities/member.entity";
 
 export default function AdminDashboard() {
+  const { status, data } = useSession();
+  const route = useRouter();
+  const [admin, setAdmin] = useState<Member | null>(null);
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      route.push("/");
+      sendAlert({
+        title: "Deberas iniciar sesión para acceder aquí",
+        type: "error",
+        timing: 1500,
+      });
+    }
+
+    if (data?.user) {
+      const user = data?.user as SignedMember;
+      if (user?.type !== "member") {
+        route.push("/");
+        sendAlert({
+          title: "No tienes acceso a este panel",
+          type: "error",
+          timing: 1500,
+        });
+      }
+      const verifyAdmin = async () => {
+        try {
+          const { data } = await axios.get<ServerResponse<Member>>(
+            `${process.env.NEXT_PUBLIC_BE_URL}/member/${user.memberId}`,
+          );
+          setAdmin(data.message);
+        } catch (e) {
+          console.log(e);
+        }
+      };
+      verifyAdmin();
+    }
+  }, [status]);
+
+  console.log(admin);
+
+  useEffect(() => {
+    if (admin) {
+      if (!admin.isAdmin) {
+        route.push("/");
+        sendAlert({
+          title: "No tienes acceso a este panel",
+          type: "error",
+          timing: 1500,
+        });
+      }
+    }
+  }, [admin]);
   return (
     <div className="min-h-screen pt-navbar lg:pt-navbard px-10 pb-5 flex w-full h-full">
       <div className="flex flex-1 flex-col">
@@ -31,6 +89,8 @@ export default function AdminDashboard() {
                   <MembersTable />
                 </Tab>
                 <Tab key="events" title="Eventos" />
+                <Divider />
+
                 <Tab key="pubs" title="Publicaciones" />
                 <Tab key="testimony" title="Testimonios" />
               </Tabs>

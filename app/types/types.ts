@@ -48,3 +48,15 @@ export type ValidPagesList =
   | "contact";
 
 export type ThemeType = "dark" | "light";
+
+export type FormValuesObject = Record<string, string | null>;
+
+export interface Validation {
+  regex?: RegExp;
+  condition?: (val: string) => boolean;
+  failedMessage: string;
+}
+
+export interface FormValidations {
+  [key: keyof FormValuesObject]: Validation[];
+}

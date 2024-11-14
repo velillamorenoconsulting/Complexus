@@ -1,9 +1,10 @@
 "use client";
 import { Button, Input } from "@nextui-org/react";
 import React, { useState } from "react";
-import { validateRegisterErrors } from "@/app/utils/login-register/errorValidator";
 import axios from "axios";
 import Image from "next/image";
+import useFormBase from "../hooks/useFormBase";
+import { registerFormValidations } from "@/app/utils/userValidations";
 
 export type RegisterFormValues = {
   email: string | null;
@@ -11,43 +12,26 @@ export type RegisterFormValues = {
   name: string | null;
 };
 
+const initializer: RegisterFormValues = {
+  email: null,
+  password: null,
+  name: null,
+};
+
 type ComponentProps = {
   changeSelection: (val: "login" | "register") => void;
 };
 
 export default function RegisterForm({ changeSelection }: ComponentProps) {
-  const [formValues, setFormValues] = useState<RegisterFormValues>({
-    email: "",
-    password: "",
-    name: "",
-  });
-  const [errors, setErrors] = useState<RegisterFormValues>({
-    email: null,
-    password: null,
-    name: null,
-  });
+  const [formValues, errors, handleFormChanges, isButtonDisabled] = useFormBase(
+    initializer,
+    registerFormValidations,
+  );
   const [generalError, setError] = useState<string | null>(null);
-
-  const handleFormChanges = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValues({
-      ...formValues,
-      [e.target.id]: e.target.value,
-    });
-    setErrors({
-      ...validateRegisterErrors({
-        ...errors,
-        [e.target.id]: e.target.value,
-      }),
-    });
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formValues.name) {
-      alert("Wrong input");
-      return;
-    }
-    const splittedName = formValues.name.split(" ");
+    const splittedName = formValues.name!.split(" ");
     const firstName = splittedName[0];
     const lastName = splittedName.length > 1 ? splittedName[1] : "";
     try {
@@ -154,14 +138,7 @@ export default function RegisterForm({ changeSelection }: ComponentProps) {
             radius="full"
             className="dark"
             type="submit"
-            isDisabled={
-              !formValues.email ||
-              !!errors.email ||
-              !formValues.password ||
-              !!errors.password ||
-              !formValues.name ||
-              !!errors.name
-            }
+            isDisabled={isButtonDisabled}
           >
             Registrarse
           </Button>

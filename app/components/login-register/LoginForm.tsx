@@ -1,16 +1,22 @@
 "use client";
 import { Button, Input, Tab, Tabs } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
-import { validateLoginErrors } from "@/app/utils/login-register/errorValidator";
 import { SignInResponse, signIn, useSession } from "next-auth/react";
 import CompLoading from "../CompLoading";
 import { useStore } from "@/app/store/zustand";
 import Swal from "sweetalert2";
 import Image from "next/image";
+import useFormBase from "../hooks/useFormBase";
+import { loginFormValidations } from "@/app/utils/userValidations";
 
 export type LoginFormValues = {
   email: string | null;
   password: string | null;
+};
+
+const initializer: LoginFormValues = {
+  email: null,
+  password: null,
 };
 
 type ComponentProps = {
@@ -18,18 +24,14 @@ type ComponentProps = {
 };
 
 export default function LoginForm({ changeSelection }: ComponentProps) {
-  const [formValues, setFormValues] = useState<LoginFormValues>({
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState<LoginFormValues>({
-    email: null,
-    password: null,
-  });
   const [generalError, setError] = useState<string | null>(null);
   const [loading, isLoading] = useState<boolean>(false);
   const [loginType, setLoginType] = useState<string>("user");
   const { switchLogged, setAuthOptions } = useStore();
+  const [formValues, errors, handleFormChanges, isButtonDisabled] = useFormBase(
+    initializer,
+    loginFormValidations,
+  );
   const { status, data } = useSession();
 
   useEffect(() => {
@@ -37,19 +39,6 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
       switchLogged(true);
     }
   }, [data]);
-
-  const handleFormChanges = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValues({
-      ...formValues,
-      [e.target.id]: e.target.value,
-    });
-    setErrors({
-      ...validateLoginErrors({
-        ...errors,
-        [e.target.id]: e.target.value,
-      }),
-    });
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -85,7 +74,7 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
         return "Credenciales Incorrectas";
       } else if (error.error === "Verification missing") {
         return "Aún no has verificado tu correo";
-      } else return null;
+      } else return "Ha ocurrido un error. Intenta nuevamente luego";
     } else return "Ha ocurrido un error. Intenta nuevamente luego";
   };
   return (
@@ -165,12 +154,7 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
             fullWidth
             radius="full"
             type="submit"
-            isDisabled={
-              !formValues.email ||
-              !!errors.email ||
-              !formValues.password ||
-              !!errors.password
-            }
+            isDisabled={isButtonDisabled}
           >
             Iniciar sesión
           </Button>
