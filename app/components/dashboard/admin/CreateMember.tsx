@@ -10,25 +10,21 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import CompLoading from "../../CompLoading";
 import axios from "axios";
 import { ServerResponse } from "@/app/types/responses";
 import { sendAlert } from "@/app/utils/utils";
 import useFormBase from "../../hooks/useFormBase";
-import { FormValidations } from "@/app/types/types";
-import {
-  countryRegex,
-  emailRegex,
-  fullNameRegex,
-  passwordRegex,
-} from "@/app/utils";
+import { FetchState } from "@/app/types/types";
+import { Member } from "@/app/api/entities/member.entity";
+import { createMemberValidations } from "@/app/utils/admValidations";
 
 export type CreateMemberForm = {
   fullName: string | null;
   email: string | null;
   password: string | null;
-  country?: string | null;
+  country: string | null;
 };
 
 const initializer: CreateMemberForm = {
@@ -39,40 +35,15 @@ const initializer: CreateMemberForm = {
 };
 
 type CompProps = {
-  forceRefetch: (val: { refetch: boolean }) => void;
+  state: FetchState<Member[]>;
+  forceRefetch: (disp: FetchState<Member[]>) => void;
 };
 
-const validations: FormValidations = {
-  fullName: [
-    {
-      regex: fullNameRegex,
-      failedMessage: "Nombre incorrecto",
-    },
-  ],
-  email: [
-    {
-      regex: emailRegex,
-      failedMessage: "Correo incorrecto",
-    },
-  ],
-  country: [
-    {
-      regex: countryRegex,
-      failedMessage: "Pais incorrecto",
-    },
-  ],
-  password: [
-    {
-      regex: passwordRegex,
-      failedMessage: "Contraseña muy débil",
-    },
-  ],
-};
-
-export default function CreateMember({ forceRefetch }: CompProps) {
+// TODO Check issue password not being needed on form
+export default function CreateMember({ forceRefetch, state }: CompProps) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const [formValues, formErrors, handleChange, isButtonDisabled, clearForm] =
-    useFormBase<CreateMemberForm>(initializer, validations);
+    useFormBase<CreateMemberForm>(initializer, createMemberValidations);
   const [loading, isLoading] = useState<boolean>(false);
   const { data, status } = useSession();
 
@@ -99,7 +70,7 @@ export default function CreateMember({ forceRefetch }: CompProps) {
       });
       onClose();
       clearForm();
-      forceRefetch({ refetch: true });
+      forceRefetch({ ...state, refetch: true });
     } catch (e: any) {
       sendAlert({
         title: "Ha ocurrido un error",

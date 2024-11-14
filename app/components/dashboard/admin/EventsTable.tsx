@@ -52,7 +52,7 @@ export default function EventsTable() {
         <CompLoading height="h-1/2" />
       ) : (
         <>
-          <CreateMember forceRefetch={forceRefetch} />
+          {/* <CreateMember state={state} forceRefetch={forceRefetch} /> */}
           <Table className="dark mt-3">
             <TableHeader>
               <TableColumn> </TableColumn>

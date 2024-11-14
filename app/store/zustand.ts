@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { User } from "../api/entities/user.entity";
 import { Event } from "../api/entities/event.entity";
 import { Item } from "../api/entities/item.entity";
+import { Member } from "../api/entities/member.entity";
 
 export interface AuthOptions {
   isVisible: boolean;
@@ -21,6 +22,8 @@ export interface GlobalState {
   setAuthOptions: (val: Partial<AuthOptions>) => void;
   user: Partial<User> | null;
   setUser: (val: Partial<User> | null) => void;
+  member: Partial<Member> | null;
+  setMember: (val: Partial<Member> | null) => void;
 }
 
 export enum CurrentPage {
@@ -40,6 +43,7 @@ export const useStore = create<GlobalState>((set) => ({
     type: "login",
   },
   user: null,
+  member: null,
   eventList: [],
   itemList: [],
   // Handlers
@@ -50,4 +54,5 @@ export const useStore = create<GlobalState>((set) => ({
     set((state) => ({ authOptions: { ...state.authOptions, ...val } })),
   setUser: (val: Partial<User> | null) => set(() => ({ user: val })),
   setItems: (val: Item[]) => set(() => ({ itemList: val })),
+  setMember: (val: Partial<Member> | null) => set(() => ({ member: val })),
 }));

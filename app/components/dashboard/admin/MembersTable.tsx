@@ -1,7 +1,5 @@
 "use client";
-import { ServerResponse } from "@/app/types/responses";
 import {
-  Button,
   Chip,
   Dropdown,
   DropdownItem,
@@ -14,45 +12,32 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import axios, { AxiosError } from "axios";
-import React, { useEffect, useState } from "react";
 import CompLoading from "../../CompLoading";
 import { convertDate } from "@/app/utils/utils";
 import Image from "next/image";
 import { Member } from "@/app/api/entities/member.entity";
 import CreateMember from "./CreateMember";
+import { FetchState } from "@/app/types/types";
 
-export default function MembersTable() {
-  const [memberList, setMemberList] = useState<Member[]>([]);
-  const [generalError, setGeneralError] = useState<string>("");
-  const [loading, isLoading] = useState<boolean>(false);
-  const [refetch, forceRefetch] = useState({ refetch: true });
+type ComponentProps = {
+  isLoading: boolean;
+  forceRefetch: (state: FetchState<Member[]>) => void;
+  state: FetchState<Member[]>;
+};
 
-  useEffect(() => {
-    isLoading(true);
-    const fetchData = async () => {
-      try {
-        const { data } = await axios.get<ServerResponse<Member[]>>(
-          `${process.env.NEXT_PUBLIC_BE_URL}/member`,
-        );
-        setMemberList(data.message);
-      } catch (e) {
-        if (e instanceof AxiosError) {
-          setGeneralError(e.message);
-        }
-      } finally {
-        isLoading(false);
-      }
-    };
-    fetchData();
-  }, [refetch]);
+export default function MembersTable({
+  isLoading,
+  forceRefetch,
+  state,
+}: ComponentProps) {
+  const memberList = state.value;
   return (
     <>
-      {loading ? (
+      {isLoading ? (
         <CompLoading height="h-1/2" />
       ) : (
         <>
-          <CreateMember forceRefetch={forceRefetch} />
+          <CreateMember state={state} forceRefetch={forceRefetch} />
           <Table className="dark mt-3">
             <TableHeader>
               <TableColumn> </TableColumn>

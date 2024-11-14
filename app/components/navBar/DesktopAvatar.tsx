@@ -1,4 +1,5 @@
 "use client";
+import { SignedAuth } from "@/app/api/types/auth.types";
 import { useStore } from "@/app/store/zustand";
 import { ThemeType } from "@/app/types/types";
 import { isDarkTheme } from "@/app/utils/utils";
@@ -32,6 +33,7 @@ export default function DesktopAvatar({ style }: ComponentProps) {
   const { onClose } = useDisclosure();
   const { setAuthOptions } = useStore();
   const [isOpen, setOpen] = useState<boolean>(false);
+
   return (
     <div className="font-raleway">
       {session.status === "authenticated" ? (
@@ -56,7 +58,13 @@ export default function DesktopAvatar({ style }: ComponentProps) {
             <DropdownMenu className="font-raleway">
               <DropdownItem
                 textValue="a"
-                onClick={() => redirect.push("/dashboard")}
+                onClick={() => {
+                  if ((session.data.user as SignedAuth).type === "user") {
+                    redirect.push("/dashboard");
+                  } else {
+                    redirect.push("/memberDashboard");
+                  }
+                }}
               >
                 Panel de control
               </DropdownItem>

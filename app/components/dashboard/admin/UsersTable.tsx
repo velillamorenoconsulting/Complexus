@@ -1,8 +1,6 @@
 "use client";
 import { User } from "@/app/api/entities/user.entity";
-import { ServerResponse } from "@/app/types/responses";
 import {
-  Button,
   Chip,
   Dropdown,
   DropdownItem,
@@ -15,42 +13,19 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import axios, { AxiosError } from "axios";
-import React, { useEffect, useState } from "react";
 import CompLoading from "../../CompLoading";
 import { convertDate } from "@/app/utils/utils";
 import Image from "next/image";
 
-type CompProps = {
-  refetch: boolean;
+type ComponentParams = {
+  isLoading: boolean;
+  users: User[];
 };
 
-export default function UsersTable({ refetch }: CompProps) {
-  const [userList, setUserList] = useState<User[]>([]);
-  const [generalError, setGeneralError] = useState<string>("");
-  const [loading, isLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    isLoading(true);
-    const fetchData = async () => {
-      try {
-        const { data } = await axios.get<ServerResponse<User[]>>(
-          `${process.env.NEXT_PUBLIC_BE_URL}/user`,
-        );
-        setUserList(data.message);
-      } catch (e) {
-        if (e instanceof AxiosError) {
-          setGeneralError(e.message);
-        }
-      } finally {
-        isLoading(false);
-      }
-    };
-    fetchData();
-  }, [refetch]);
+export default function UsersTable({ isLoading, users }: ComponentParams) {
   return (
     <>
-      {loading ? (
+      {isLoading ? (
         <CompLoading height="h-1/2" />
       ) : (
         <Table className="dark mt-3">
@@ -64,7 +39,7 @@ export default function UsersTable({ refetch }: CompProps) {
             <TableColumn>ACCION</TableColumn>
           </TableHeader>
           <TableBody className="flex flex-col gap-3">
-            {userList.map((user) => (
+            {users.map((user) => (
               <TableRow key={user.userId} className="font-raleway">
                 <TableCell>
                   <div

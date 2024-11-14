@@ -12,7 +12,6 @@ export async function GET(
     params: { id: string };
   },
 ): Promise<NextResponse> {
-  console.log(params);
   const { id: memberId } = params;
   try {
     const event = await memberService.getMemberById(memberId);

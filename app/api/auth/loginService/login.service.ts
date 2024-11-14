@@ -3,9 +3,7 @@ import { UserService } from "../../services/user.service";
 import { auth } from "../firebase";
 import { UnauthorizedError } from "../../utils/errors";
 import { MemberService } from "../../services/member.service";
-import { User } from "../../entities/user.entity";
-import { Member } from "../../entities/member.entity";
-import { LoginType, SignedMember, SignedUser } from "../../types/auth.types";
+import { SignedMember, SignedUser } from "../../types/auth.types";
 import { generateToken } from "../utils/jwt";
 
 export class LoginService {
@@ -56,9 +54,21 @@ export class LoginService {
   }): Promise<SignedMember> {
     if (!email || !password) throw new UnauthorizedError("Bad credentials");
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const fireBaseAuth = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      // TODO ACTIVATE
+      // if (!fireBaseAuth.user.emailVerified) {
+      //   throw new UnauthorizedError("Verification missing");
+      // }
     } catch (error: any) {
-      throw new UnauthorizedError("Bad credentials");
+      if (error.statusCode === 401) {
+        throw error;
+      } else {
+        throw new UnauthorizedError("Bad credentials");
+      }
     }
     const memberInfo = await this.memberService.getMemberByEmail(email);
     if (memberInfo.isDeleted) throw new UnauthorizedError("Not Allowed");

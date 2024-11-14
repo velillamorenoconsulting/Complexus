@@ -64,8 +64,6 @@ export default function CreateTestimony() {
     }
   };
 
-  console.log(buttonDisabled);
-
   return (
     <>
       <Button
@@ -96,7 +94,7 @@ export default function CreateTestimony() {
                     id="title"
                     label="Titulo"
                     isRequired
-                    value={formValues.title ?? ""}
+                    value={formValues.title as string}
                     onChange={handleChange}
                     errorMessage={formErrors.title}
                     isInvalid={!!formErrors.title}
@@ -105,7 +103,7 @@ export default function CreateTestimony() {
                     id="content"
                     label="Contenido"
                     isRequired
-                    value={formValues.content ?? ""}
+                    value={formValues.content as string}
                     onChange={handleChange}
                     errorMessage={formErrors.content}
                     isInvalid={!!formErrors.content}

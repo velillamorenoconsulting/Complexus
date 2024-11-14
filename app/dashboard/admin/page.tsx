@@ -4,8 +4,8 @@ import React from "react";
 
 export default function page() {
   return (
-    <main className="min-h-screen bg-zinc-200 flex flex-col">
-      <NavaBar style="dark" />
+    <main className="min-h-screen bg-zinc-600 flex flex-col">
+      <NavaBar style="light" />
       <AdminDashboard />
     </main>
   );

@@ -5,6 +5,7 @@ import { NextAuthOptions, Session } from "next-auth";
 import NextAuth from "next-auth/next";
 import {
   CustomJWT,
+  SignedEntityResponse,
   SignedMemberResponse,
   SignedUser,
   SignedUserResponse,
@@ -78,7 +79,7 @@ const handler = NextAuth({
             return null;
           }
         } catch (error: any) {
-          return null;
+          throw new Error(error.message);
         }
       },
     }),
@@ -90,15 +91,11 @@ const handler = NextAuth({
   callbacks: {
     jwt: ({ token, user }) => {
       if (user) {
-        token.accessToken = (user as SignedUserResponse).token;
-        token.memberId =
-          (user as SignedUserResponse).type === "member"
-            ? (user as SignedMemberResponse).memberId
-            : undefined;
-        token.userId =
-          (user as SignedUserResponse).type === "user"
+        token.accessToken = (user as SignedEntityResponse).token;
+        token.id =
+          (user as SignedEntityResponse).type === "user"
             ? (user as SignedUserResponse).userId
-            : undefined;
+            : (user as SignedMemberResponse).memberId;
         token.type = (user as SignedUserResponse).type;
       }
       return token;
@@ -109,9 +106,7 @@ const handler = NextAuth({
         email: token.email,
         // @ts-expect-error forced attribute
         accessToken: token.accessToken as CustomJWT,
-        userId: token.type === "user" ? (token.userId as CustomJWT) : undefined,
-        memberId:
-          token.type === "member" ? (token.memberId as CustomJWT) : undefined,
+        id: token.id as CustomJWT,
         type: token.type as CustomJWT,
       };
       return session;

@@ -11,10 +11,10 @@ export type ContactFormValues = {
 };
 
 const initialState: ContactFormValues = {
-  name: null,
-  subject: null,
-  reason: null,
-  message: null,
+  name: "",
+  subject: "",
+  reason: "",
+  message: "",
 };
 
 export default function ContactForm() {

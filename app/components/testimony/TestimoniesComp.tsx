@@ -6,7 +6,7 @@ export default function TestimoniesComp() {
   return (
     <div className="relative">
       <Suspense
-        fallback={<CompLoading hasBackground={false} height="h-[700px]" />}
+        fallback={<CompLoading hasBackground={false} height="h-[500px]" />}
       >
         <TestimonyBoard />
       </Suspense>

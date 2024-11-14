@@ -60,3 +60,8 @@ export interface Validation {
 export interface FormValidations {
   [key: keyof FormValuesObject]: Validation[];
 }
+
+export interface FetchState<T> {
+  refetch: boolean;
+  value: T;
+}

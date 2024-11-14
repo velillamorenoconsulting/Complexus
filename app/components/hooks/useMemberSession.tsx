@@ -1,39 +1,53 @@
 "use client";
-import { User } from "@/app/api/entities/user.entity";
-import { SignedAuth, SignedUserResponse } from "@/app/api/types/auth.types";
+import { Member } from "@/app/api/entities/member.entity";
+import { SignedAuth } from "@/app/api/types/auth.types";
 import { useStore } from "@/app/store/zustand";
+import { ServerResponse } from "@/app/types/responses";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-interface UserData {
-  user: Partial<User> | null;
+interface MemberData {
+  member: Partial<Member> | null;
   loading: boolean;
   error: string | null;
 }
 
-export const useUserSessionStrict = (): UserData => {
-  const [userData, setUserData] = useState<Partial<User> | null>(null);
-  const { user: globalUser, setUser } = useStore();
+export const useMemberSession = (): MemberData => {
+  const [memberData, setMemberData] = useState<Partial<Member> | null>(null);
+  const { member: globalMember, setMember } = useStore();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const baseSession = useSession();
   const navigation = useRouter();
 
   useEffect(() => {
-    const fetchData = async (userId: string) => {
+    const fetchData = async (memberId: string) => {
       setLoading(true);
       try {
-        const { data } = await axios<{ message: Partial<User> }>(
-          `${process.env.NEXT_PUBLIC_BE_URL}/user/${userId}`,
+        const { data } = await axios<ServerResponse<Member>>(
+          `${process.env.NEXT_PUBLIC_BE_URL}/member/${memberId}`,
         );
         if (data.message) {
-          setUser(data.message);
-          setUserData(data.message);
+          setMember(data.message);
+          setMemberData(data.message);
         }
       } catch (error: any) {
+        navigation.push("/");
+        Swal.fire({
+          title: "Sin Acceso",
+          text: "No eres miembro o no tienes acceso a esta interfaz",
+          icon: "warning",
+          timer: 2000,
+          color: "#ffffff",
+          background: "#1E1E1E",
+          showConfirmButton: false,
+          customClass: {
+            title: "font-raleway",
+          },
+        });
         setError(error.message || "An error ocurred");
       } finally {
         setLoading(false);
@@ -55,15 +69,15 @@ export const useUserSessionStrict = (): UserData => {
       });
     } else if (baseSession.status === "authenticated") {
       if (
-        !globalUser ||
-        (baseSession.data.user as SignedAuth).id !== globalUser.userId
+        !globalMember ||
+        (baseSession.data.user as SignedAuth).id !== globalMember.memberId
       ) {
         fetchData((baseSession.data.user as SignedAuth).id);
       } else {
-        setUserData(globalUser);
+        setMemberData(globalMember);
       }
     }
   }, [baseSession]);
 
-  return { user: userData, loading: isLoading, error };
+  return { member: memberData, loading: isLoading, error };
 };

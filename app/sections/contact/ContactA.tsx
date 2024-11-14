@@ -8,7 +8,7 @@ export default function ContactA() {
     <div className="bg-[#22302f] px-10 min-h-screen flex">
       <div className="pt-32 lg:pt-44">
         <div className="flex flex-col lg:flex-row text-white h-full items-center justify-evenly">
-          <div className="flex flex-col gap-10 w-[80%] lg:w-1/3">
+          <div className="flex flex-col gap-3 2xl:gap-10 w-[80%] lg:w-1/3">
             <h2 className="font-comorant font-bold text-6xl">
               Contacta con nosotros
             </h2>
@@ -20,8 +20,8 @@ export default function ContactA() {
               estratégicas para generar impacto. Escríbenos y unamos esfuerzos
               para construir un futuro más humanista, sostenible y en paz.
             </p>
-            <Divider className="dark my-5" />
-            <div className="flex flex-row gap-5 font-raleway text-lg font-light">
+            <Divider className="dark my-2 lg:my-5" />
+            <div className="flex flex-row gap-5 font-raleway text-lg font-light pb-10">
               <p>Escribenos a nuestro whatsapp</p>
               <Image
                 src="icons/social/whatsapp_dark.svg"

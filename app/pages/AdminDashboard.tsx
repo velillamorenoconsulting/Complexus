@@ -2,67 +2,35 @@
 import { Card, CardBody, Divider, Tab, Tabs } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import UsersTable from "../components/dashboard/admin/UsersTable";
-import MembersTable from "../components/dashboard/admin/MembersTable";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { sendAlert } from "../utils/utils";
-import { SignedMember, SignedUser } from "../api/types/auth.types";
-import axios from "axios";
-import { ServerResponse } from "../types/responses";
+import { User } from "../api/entities/user.entity";
+import {
+  fetchMemberList,
+  fetchStateChange,
+  fetchUserList,
+} from "../utils/fetchFunctions";
+import { FetchState } from "../types/types";
 import { Member } from "../api/entities/member.entity";
+import MembersTable from "../components/dashboard/admin/MembersTable";
+
+const initialState = {
+  refetch: true,
+  value: [],
+};
 
 export default function AdminDashboard() {
-  const { status, data } = useSession();
-  const route = useRouter();
-  const [admin, setAdmin] = useState<Member | null>(null);
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      route.push("/");
-      sendAlert({
-        title: "Deberas iniciar sesión para acceder aquí",
-        type: "error",
-        timing: 1500,
-      });
-    }
-
-    if (data?.user) {
-      const user = data?.user as SignedMember;
-      if (user?.type !== "member") {
-        route.push("/");
-        sendAlert({
-          title: "No tienes acceso a este panel",
-          type: "error",
-          timing: 1500,
-        });
-      }
-      const verifyAdmin = async () => {
-        try {
-          const { data } = await axios.get<ServerResponse<Member>>(
-            `${process.env.NEXT_PUBLIC_BE_URL}/member/${user.memberId}`,
-          );
-          setAdmin(data.message);
-        } catch (e) {
-          console.log(e);
-        }
-      };
-      verifyAdmin();
-    }
-  }, [status]);
-
-  console.log(admin);
+  const [users, setUsers] = useState<FetchState<User[]>>(initialState);
+  const [members, setMembers] = useState<FetchState<Member[]>>(initialState);
+  const [usersLoading, isUsersLoading] = useState<boolean>(false);
+  const [membersLoading, isMembersLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (admin) {
-      if (!admin.isAdmin) {
-        route.push("/");
-        sendAlert({
-          title: "No tienes acceso a este panel",
-          type: "error",
-          timing: 1500,
-        });
-      }
+    if (users.refetch) {
+      fetchUserList(setUsers, isUsersLoading);
+    } else if (members.refetch) {
+      fetchMemberList(setMembers, isMembersLoading);
     }
-  }, [admin]);
+  }, [users, members]);
+
   return (
     <div className="min-h-screen pt-navbar lg:pt-navbard px-10 pb-5 flex w-full h-full">
       <div className="flex flex-1 flex-col">
@@ -75,24 +43,35 @@ export default function AdminDashboard() {
             Por favor cambia el dispositivo para poder administrar la pagina
           </p>
         </div>
-        <Card className="hidden lg:block h-full dark" fullWidth radius="sm">
+        <Card className="hidden lg:block h-full dark " fullWidth radius="sm">
           <CardBody className="h-full">
             <div className="flex flex-col gap-3">
-              <h3 className="font-comorant text-2xl font-bold">Navegación</h3>
-              <Tabs variant="light" className="font-raleway w-full">
+              <h3 className="font-comorant text-2xl font-bold pt-5 pl-5">
+                Navegación
+              </h3>
+              <Tabs variant="light" className="font-raleway w-full dark">
                 <Tab key="users" title="Usuarios">
                   <Divider />
-                  <UsersTable refetch={false} />
+                  <UsersTable users={users.value} isLoading={usersLoading} />
                 </Tab>
                 <Tab key="members" title="Miembros">
                   <Divider />
-                  <MembersTable />
+                  <MembersTable
+                    isLoading={membersLoading}
+                    forceRefetch={setMembers}
+                    state={members}
+                  />
                 </Tab>
-                <Tab key="events" title="Eventos" />
-                <Divider />
+                <Tab key="events" title="Eventos">
+                  <Divider />
+                </Tab>
 
-                <Tab key="pubs" title="Publicaciones" />
-                <Tab key="testimony" title="Testimonios" />
+                <Tab key="pubs" title="Publicaciones">
+                  <Divider />
+                </Tab>
+                <Tab key="testimony" title="Testimonios">
+                  <Divider />
+                </Tab>
               </Tabs>
             </div>
           </CardBody>

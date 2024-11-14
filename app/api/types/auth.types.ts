@@ -8,16 +8,19 @@ export enum LoginType {
   USER = "user",
 }
 
-export interface SignedUser extends Omit<RecordUser, "generateId"> {
+export interface SignedEntity {
   token: string;
   type: string;
 }
 
-export interface SignedMember extends Omit<Member, "generateId"> {
-  token: string;
-  type: string;
-}
+export interface SignedUser
+  extends SignedEntity,
+    Omit<RecordUser, "generateId"> {}
+export interface SignedMember
+  extends SignedEntity,
+    Omit<Member, "generateId"> {}
 
+export interface SignedEntityResponse extends User, SignedEntity {}
 export interface SignedMemberResponse extends User {
   token: string;
   memberId: string;
@@ -32,6 +35,12 @@ export interface SignedUserResponse extends User {
 
 export interface CustomJWT extends Record<string, unknown>, DefaultJWT {
   token: string;
-  userId: string;
+  id: string;
+  type: string;
+}
+
+export interface SignedAuth extends User {
+  id: string;
+  token: string;
   type: string;
 }

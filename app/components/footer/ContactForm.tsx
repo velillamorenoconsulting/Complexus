@@ -13,8 +13,8 @@ export type FooterFormValues = {
 };
 
 const initializer: FooterFormValues = {
-  subject: null,
-  message: null,
+  subject: "",
+  message: "",
 };
 
 export default function ContactForm({ style }: Props) {
