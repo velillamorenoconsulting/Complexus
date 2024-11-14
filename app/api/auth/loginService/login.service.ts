@@ -59,10 +59,9 @@ export class LoginService {
         email,
         password,
       );
-      // TODO ACTIVATE
-      // if (!fireBaseAuth.user.emailVerified) {
-      //   throw new UnauthorizedError("Verification missing");
-      // }
+      if (!fireBaseAuth.user.emailVerified) {
+        throw new UnauthorizedError("Verification missing");
+      }
     } catch (error: any) {
       if (error.statusCode === 401) {
         throw error;

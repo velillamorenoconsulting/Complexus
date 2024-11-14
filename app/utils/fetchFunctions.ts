@@ -3,6 +3,10 @@ import { ServerResponse } from "../types/responses";
 import { User } from "../api/entities/user.entity";
 import { FetchState } from "../types/types";
 import { Member } from "../api/entities/member.entity";
+import { Event } from "../api/entities/event.entity";
+import { Question } from "../api/entities/question.entity";
+import { Item } from "../api/entities/item.entity";
+import { Testimony } from "../api/entities/testimony.entity";
 
 export async function fetchOperation<T>(
   method: "post" | "get",
@@ -68,6 +72,62 @@ export async function fetchMemberList(
   fetchStateChange<Member[]>(
     {
       path: "member",
+      method: "get",
+    },
+    changeState,
+    loadingState,
+  );
+}
+
+export async function fetchEventList(
+  changeState: (dispatcher: FetchState<Event[]>) => void,
+  loadingState?: (dispatcher: boolean) => void,
+): Promise<void> {
+  fetchStateChange<Event[]>(
+    {
+      path: "event?relations=true",
+      method: "get",
+    },
+    changeState,
+    loadingState,
+  );
+}
+
+export async function fetchQuestionList(
+  changeState: (dispatcher: FetchState<Question[]>) => void,
+  loadingState?: (dispatcher: boolean) => void,
+): Promise<void> {
+  fetchStateChange<Question[]>(
+    {
+      path: "question",
+      method: "get",
+    },
+    changeState,
+    loadingState,
+  );
+}
+
+export async function fetchPubList(
+  changeState: (dispatcher: FetchState<Item[]>) => void,
+  loadingState?: (dispatcher: boolean) => void,
+): Promise<void> {
+  fetchStateChange<Item[]>(
+    {
+      path: "items",
+      method: "get",
+    },
+    changeState,
+    loadingState,
+  );
+}
+
+export async function fetchTestimonyList(
+  changeState: (dispatcher: FetchState<Testimony[]>) => void,
+  loadingState?: (dispatcher: boolean) => void,
+): Promise<void> {
+  fetchStateChange<Testimony[]>(
+    {
+      path: "testimony",
       method: "get",
     },
     changeState,

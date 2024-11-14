@@ -9,12 +9,24 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const questionCreated = await questionService.createQuestion(body);
     return NextResponse.json(
       { message: questionCreated.questionId },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message },
-      { status: error.status ?? 400 }
+      { status: error.status ?? 400 },
+    );
+  }
+}
+
+export async function GET(): Promise<NextResponse> {
+  try {
+    const questionList = await questionService.findAllQuestions();
+    return NextResponse.json({ message: questionList }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: error.message },
+      { status: error.status ?? 400 },
     );
   }
 }

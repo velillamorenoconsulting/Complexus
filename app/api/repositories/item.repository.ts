@@ -14,7 +14,11 @@ export class ItemRepository {
 
   async getAllItems(): Promise<Item[]> {
     await this.init();
-    return this.repo!.find();
+    return this.repo!.find({
+      relations: {
+        purchases: true,
+      },
+    });
   }
 
   async createItem(item: Item): Promise<Item> {

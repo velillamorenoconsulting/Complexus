@@ -24,7 +24,7 @@ export class UserService {
 
   async getUserByEmail(
     userEmail: string,
-    throwError: boolean = true
+    throwError: boolean = true,
   ): Promise<User> {
     const user = await this.userRepository.findByEmail(userEmail);
     if (!user && throwError) throw new NotFoundError("User");
@@ -37,7 +37,7 @@ export class UserService {
     return this.userRepository.updateById(userId, payload);
   }
 
-  async createUser(user: any): Promise<User> { // TODO TYPE
+  async createUser(user: Partial<User>): Promise<User> {
     const userReceivedAttributes = {
       ...user,
       createdBy: "SYSTEM",

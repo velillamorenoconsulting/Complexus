@@ -1,6 +1,6 @@
 "use client";
 import { Event } from "@/app/api/entities/event.entity";
-import { SignedUserResponse } from "@/app/api/types/auth.types";
+import { SignedAuth, SignedUserResponse } from "@/app/api/types/auth.types";
 import { useStore } from "@/app/store/zustand";
 import { ServerResponse } from "@/app/types/responses";
 import { convertDate, formatPrice, sendAlert } from "@/app/utils/utils";
@@ -46,7 +46,7 @@ export default function EventBuy({ event }: Props) {
           tax: "0.0",
           isEvent: true,
           basePrice: totalCost.toString(),
-          isMemberPurchase: false, // TODO Add type on signed user from JWT
+          isMemberPurchase: (data.user as SignedAuth).type === "member",
           buyerId: user.userId,
           userBuyer: user.userId,
           amount: tickets,

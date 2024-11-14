@@ -12,6 +12,13 @@ export class QuestionRepository {
     }
   }
 
+  async findAllQuestions(): Promise<Question[]> {
+    await this.init();
+    return this.repository!.find({
+      relations: { author: true },
+    });
+  }
+
   async findQuestion(questionId: string): Promise<Question | null> {
     await this.init();
     return this.repository!.findOneBy({ questionId });
@@ -46,7 +53,7 @@ export class QuestionRepository {
   async findQuestionsByApproval(
     isApproved: boolean,
     eventId?: string,
-    includeRelations: boolean = false
+    includeRelations: boolean = false,
   ): Promise<Question[]> {
     await this.init();
     return this.repository!.find({
@@ -67,7 +74,7 @@ export class QuestionRepository {
       userId?: string;
       eventId?: string;
     },
-    includeRelations: boolean = false
+    includeRelations: boolean = false,
   ): Promise<Question[]> {
     await this.init();
     return this.repository!.find({

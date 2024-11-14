@@ -68,7 +68,6 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
   };
 
   const handleError = (error?: SignInResponse): string | null => {
-    console.log(error);
     if (error?.ok) return null;
     else if (error?.status === 401) {
       if (error?.error?.includes("credential")) {

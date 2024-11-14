@@ -13,23 +13,24 @@ import {
   TableRow,
 } from "@nextui-org/react";
 import CompLoading from "../../CompLoading";
-import { convertDate } from "@/app/utils/utils";
+import { convertDate, formatPrice } from "@/app/utils/utils";
 import Image from "next/image";
-import { Event } from "@/app/api/entities/event.entity";
+import { Question } from "@/app/api/entities/question.entity";
+import { Item } from "@/app/api/entities/item.entity";
+import { Testimony } from "@/app/api/entities/testimony.entity";
 
 type CompProps = {
-  events: Event[];
+  testimonies: Testimony[];
   isLoading: boolean;
 };
 
-export default function EventsTable({ events, isLoading }: CompProps) {
-  const cropEventTitle = (title: string): string => {
-    if (title.length > 40) {
-      return title.slice(0, 39) + "...";
+export default function TestimonyTable({ testimonies, isLoading }: CompProps) {
+  const handleContent = (val: string): string => {
+    if (val.length > 150) {
+      return val.slice(0, 149) + "...";
     }
-    return title;
+    return val;
   };
-
   return (
     <>
       {isLoading ? (
@@ -40,27 +41,27 @@ export default function EventsTable({ events, isLoading }: CompProps) {
             <TableHeader>
               <TableColumn> </TableColumn>
               <TableColumn>TITULO</TableColumn>
-              <TableColumn>INICIA</TableColumn>
-              <TableColumn>FINALIZADO</TableColumn>
+              <TableColumn>CONTENIDO</TableColumn>
               <TableColumn>CREADO</TableColumn>
-              <TableColumn>REGISTROS</TableColumn>
+              <TableColumn>USUARIO</TableColumn>
+              <TableColumn>APROBADO</TableColumn>
+              <TableColumn>PRIORIDAD</TableColumn>
               <TableColumn>ACCION</TableColumn>
             </TableHeader>
             <TableBody className="flex flex-col gap-3">
-              {events.map((event) => (
-                <TableRow key={event.eventId} className="font-raleway">
+              {testimonies.map((entity) => (
+                <TableRow key={entity.testimonyId} className="font-raleway">
                   <TableCell>
                     <div
-                      className={`w-2 h-2 rounded-full ${event.isDeleted ? "bg-red-500" : "bg-green-500"}`}
+                      className={`w-2 h-2 rounded-full ${entity.isDeleted ? "bg-red-500" : "bg-green-500"}`}
                     ></div>
                   </TableCell>
-                  <TableCell>{cropEventTitle(event.title)}</TableCell>
-                  <TableCell>{convertDate(event.startAt, true)}</TableCell>
-                  <TableCell>
-                    {new Date(event.startAt) > new Date() ? "NO" : "SI"}
-                  </TableCell>
-                  <TableCell>{convertDate(event.createdAt)}</TableCell>
-                  <TableCell>{event.purchases.length}</TableCell>
+                  <TableCell>{entity.title}</TableCell>
+                  <TableCell>{handleContent(entity.content)}</TableCell>
+                  <TableCell>{convertDate(entity.createdAt, true)}</TableCell>
+                  <TableCell>{entity.user?.email}</TableCell>
+                  <TableCell>{entity.isApproved ? "SI" : "NO"}</TableCell>
+                  <TableCell>{entity.priority}</TableCell>
                   <TableCell>
                     <Dropdown className="dark">
                       <DropdownTrigger>
@@ -77,7 +78,11 @@ export default function EventsTable({ events, isLoading }: CompProps) {
                       <DropdownMenu className="dark text-white">
                         <DropdownItem key="review">Ver detalles</DropdownItem>
                         <DropdownItem key="update">Editar</DropdownItem>
-                        <DropdownItem key="delete">Eliminar</DropdownItem>
+                        {entity.isDeleted ? (
+                          <DropdownItem key="activate">Activar</DropdownItem>
+                        ) : (
+                          <DropdownItem key="delete">Eliminar</DropdownItem>
+                        )}
                       </DropdownMenu>
                     </Dropdown>
                   </TableCell>

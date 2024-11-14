@@ -11,8 +11,8 @@ export class EventService {
     this.eventRepository = new EventRepository();
   }
 
-  async getAllEvents(): Promise<Event[]> {
-    return this.eventRepository.findAll();
+  async getAllEvents(includeRelations?: boolean): Promise<Event[]> {
+    return this.eventRepository.findAll(includeRelations);
   }
 
   // TODO Include flag for includes or throw error
@@ -30,7 +30,10 @@ export class EventService {
     return this.eventRepository.findByKey({ location });
   }
 
-  async getEventsByDateRange(startDate: Date, endDate?: Date): Promise<Event[]> {
+  async getEventsByDateRange(
+    startDate: Date,
+    endDate?: Date,
+  ): Promise<Event[]> {
     return this.eventRepository.findByDateRange(startDate, endDate);
   }
 
@@ -38,8 +41,8 @@ export class EventService {
   async createEvent(eventInfo: any): Promise<Event> {
     const eventReceivedAttributes = {
       ...eventInfo,
-      createdBy: 'SYSTEM',
-      updatedBy: 'SYSTEM',
+      createdBy: "SYSTEM",
+      updatedBy: "SYSTEM",
     };
     const eventToCreate = plainToInstance(Event, eventReceivedAttributes);
     try {

@@ -2,6 +2,7 @@ import {
   BeforeInsert,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   OneToMany,
   PrimaryColumn,
@@ -11,6 +12,7 @@ import {
 import { generateNanoId } from "../utils/utils";
 import {
   IsArray,
+  IsBoolean,
   IsDecimal,
   IsEnum,
   IsInt,
@@ -72,6 +74,14 @@ export class Item {
 
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  @Column({ nullable: true, default: false })
+  @IsBoolean()
+  @IsOptional()
+  isDeleted?: boolean;
+
+  @DeleteDateColumn({ nullable: true })
+  deletedAt!: Date;
 
   @Column()
   @IsInt()

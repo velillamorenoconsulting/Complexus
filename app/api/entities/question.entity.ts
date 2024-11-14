@@ -2,6 +2,7 @@ import {
   BeforeInsert,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   PrimaryColumn,
@@ -72,6 +73,14 @@ export class Question {
   @IsString()
   @IsOptional()
   questionTo?: string;
+
+  @Column({ nullable: true, default: false })
+  @IsBoolean()
+  @IsOptional()
+  isDeleted?: boolean;
+
+  @DeleteDateColumn({ nullable: true })
+  deletedAt!: Date;
 
   @Column({ nullable: true })
   @IsOptional()

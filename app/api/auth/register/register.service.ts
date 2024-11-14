@@ -23,7 +23,7 @@ export class RegisterService {
     validateRegister(userInfo, LoginType.USER);
     const existentUser = await this.userService.getUserByEmail(
       userInfo.email,
-      false
+      false,
     );
     if (existentUser) {
       throw new ApplicationError("Email already registered");
@@ -34,7 +34,7 @@ export class RegisterService {
       const userAuth = await createUserWithEmailAndPassword(
         auth,
         userCreated.email,
-        userInfo.password
+        userInfo.password,
       );
       await sendEmailVerification(userAuth.user);
       fireBaseId = userAuth.user.uid;
@@ -56,8 +56,9 @@ export class RegisterService {
       const userAuth = await createUserWithEmailAndPassword(
         auth,
         memberCreated.email,
-        memberInfo.password
+        memberInfo.password,
       );
+      await sendEmailVerification(userAuth.user);
       fireBaseId = userAuth.user.uid;
     } catch (error: any) {
       await this.memberService.deleteMember(memberCreated.memberId, false);
@@ -67,7 +68,7 @@ export class RegisterService {
       memberCreated.memberId,
       {
         fireBaseId,
-      }
+      },
     );
     return result;
   }

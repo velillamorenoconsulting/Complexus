@@ -14,7 +14,7 @@ export class EventRepository {
     }
   }
 
-  async findAll(): Promise<Event[]> {
+  async findAll(includeRelations: boolean = false): Promise<Event[]> {
     await this.init();
     return this.repo!.find({
       order: { startAt: "ASC" },
@@ -24,6 +24,7 @@ export class EventRepository {
         endAt: true,
         eventType: true,
         price: true,
+        createdAt: true,
         location: {
           ubication: true,
           description: true,
@@ -33,6 +34,9 @@ export class EventRepository {
         description: true,
         images: true,
         imageFolder: true,
+      },
+      relations: {
+        purchases: includeRelations,
       },
     });
   }

@@ -18,6 +18,10 @@ export class QuestionService {
     this.eventRepository = new EventRepository();
   }
 
+  async findAllQuestions(): Promise<Question[]> {
+    return this.questionRepository.findAllQuestions();
+  }
+
   async createQuestion(question: Partial<Question>): Promise<Question> {
     const questionAttributes = {
       ...question,
@@ -30,7 +34,7 @@ export class QuestionService {
       if (!question.event)
         throw new ApplicationError("No event information received");
       const relatedEvent = await this.eventRepository.findById(
-        question.event as unknown as string
+        question.event as unknown as string,
       );
       if (!relatedEvent) throw new NotFoundError("Event");
       if (relatedEvent?.startAt > new Date())
