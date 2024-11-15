@@ -24,11 +24,7 @@ export default function PublicationList({ items }: Props) {
               <Image
                 width={100}
                 height={100}
-                src={
-                  item.images[0]
-                    ? getImageUrl(item.images[0], item.imageFolder)
-                    : ""
-                }
+                src={item.images[0] ? getImageUrl(item.images[0]) : ""}
                 alt={item.imageFolder || item.itemId}
                 className="w-[80%] max-w-[200px] h-full max-h-[300px]"
               />

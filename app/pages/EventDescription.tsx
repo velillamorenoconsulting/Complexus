@@ -71,7 +71,7 @@ export default function EventDescription({ event }: ComponentProps) {
                   <Image
                     key={imgSrc}
                     alt={imgSrc}
-                    src={getImageUrl(imgSrc, event.imageFolder)}
+                    src={getImageUrl(imgSrc)}
                     width={1200}
                     height={1200}
                     className="rounded-lg"

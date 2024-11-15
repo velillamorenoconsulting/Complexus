@@ -19,18 +19,28 @@ export const isDarkTheme = (style: ThemeType): boolean => {
  * @param fileName Name of the file + extension, f.e. example.png
  * @param folder Folder name, this is scoped based on host file organization
  */
-export function getImageUrl(fileName: string, folder?: string): string {
+export function getImageUrl(
+  fileName: string,
+  useDefaultFolder?: boolean,
+): string {
   const baseUrl = process.env.NEXT_PUBLIC_IMAGE_DOMAIN || "";
-  const folderPath: string = folder || "v1730082135/Complexus/Pagina%20Web";
+  if (useDefaultFolder) {
+    return `${baseUrl}/v1730082135/Complexus/Pagina%20Web/${fileName}`;
+  }
 
-  return `${baseUrl}/${folderPath}/${fileName}`;
+  return `${baseUrl}/${fileName}`;
 }
 
-export function getVideoUrl(fileName: string, folder?: string): string {
+export function getVideoUrl(
+  fileName: string,
+  useDefaultFolder?: boolean,
+): string {
   const baseUrl = process.env.NEXT_PUBLIC_VIDEO_DOMAIN || "";
-  const folderPath: string = folder || "v1730082135/Complexus/Pagina%20Web";
+  if (useDefaultFolder) {
+    return `${baseUrl}/v1730082135/Complexus/Pagina%20Web/${fileName}`;
+  }
 
-  return `${baseUrl}/${folderPath}/${fileName}`;
+  return `${baseUrl}/${fileName}`;
 }
 
 export function convertDate(date: Date, short: boolean = false): string {

@@ -70,7 +70,7 @@ export default function EventBoard({
                   items={event.images.slice(0, 5).map((img) => (
                     <Image
                       key={img}
-                      src={getImageUrl(img, event.imageFolder)}
+                      src={getImageUrl(img)}
                       alt={img}
                       width={600}
                       height={600}
@@ -98,10 +98,7 @@ export default function EventBoard({
                   <div className="flex flex-col gap-5 w-full">
                     <div className="relative overflow-hidden rounded-lg">
                       <Image
-                        src={getImageUrl(
-                          upcomingEvent.images[0],
-                          upcomingEvent.imageFolder,
-                        )}
+                        src={getImageUrl(upcomingEvent.images[0])}
                         alt={upcomingEvent.images[0]}
                         width={400}
                         height={400}

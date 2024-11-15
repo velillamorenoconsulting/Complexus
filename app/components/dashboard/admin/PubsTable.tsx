@@ -15,21 +15,28 @@ import {
 import CompLoading from "../../CompLoading";
 import { convertDate, formatPrice } from "@/app/utils/utils";
 import Image from "next/image";
-import { Question } from "@/app/api/entities/question.entity";
 import { Item } from "@/app/api/entities/item.entity";
+import CreatePub from "./CreatePub";
+import { FetchState } from "@/app/types/types";
 
 type CompProps = {
-  items: Item[];
+  state: FetchState<Item[]>;
   isLoading: boolean;
+  forceRefetch: (disp: FetchState<Item[]>) => void;
 };
 
-export default function PubsTable({ items, isLoading }: CompProps) {
+export default function PubsTable({
+  state,
+  isLoading,
+  forceRefetch,
+}: CompProps) {
   return (
     <>
       {isLoading ? (
         <CompLoading height="h-1/2" />
       ) : (
         <>
+          <CreatePub state={state} forceRefetch={forceRefetch} />
           <Table className="dark mt-3">
             <TableHeader>
               <TableColumn> </TableColumn>
@@ -41,7 +48,7 @@ export default function PubsTable({ items, isLoading }: CompProps) {
               <TableColumn>ACCION</TableColumn>
             </TableHeader>
             <TableBody className="flex flex-col gap-3">
-              {items.map((entity) => (
+              {state.value.map((entity) => (
                 <TableRow key={entity.itemId} className="font-raleway">
                   <TableCell>
                     <div

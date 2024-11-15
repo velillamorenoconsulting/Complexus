@@ -7,7 +7,7 @@ export default function CropA() {
     <div className="w-full h-screen relative">
       <div className="h-full w-full absolute z-0">
         <Image
-          src={getImageUrl("qaa2tq7gvyuzryqhv3zw.png")}
+          src={getImageUrl("qaa2tq7gvyuzryqhv3zw.png", true)}
           alt="bg_corp"
           width={3000}
           height={3000}

@@ -13,7 +13,7 @@ export default function HomeA() {
           className="object-cover h-full ar-16-9:w-full ar-16-9:h-auto"
         >
           <source
-            src={getVideoUrl("uxdpgcgbzwkqhim3tqdk.mp4")}
+            src={getVideoUrl("uxdpgcgbzwkqhim3tqdk.mp4", true)}
             type="video/mp4"
           />
         </video>

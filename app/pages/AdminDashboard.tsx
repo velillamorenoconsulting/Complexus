@@ -1,6 +1,6 @@
 "use client";
 import { Card, CardBody, Divider, Tab, Tabs } from "@nextui-org/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import UsersTable from "../components/dashboard/admin/UsersTable";
 import { User } from "../api/entities/user.entity";
 import {
@@ -22,6 +22,7 @@ import { Testimony } from "../api/entities/testimony.entity";
 import QuestionsTable from "../components/dashboard/admin/QuestionsTable";
 import PubsTable from "../components/dashboard/admin/PubsTable";
 import TestimonyTable from "../components/dashboard/admin/TestimonyTable";
+import UploadWidget from "../components/UploadWidget";
 
 const initialState = {
   refetch: true,
@@ -44,26 +45,49 @@ export default function AdminDashboard() {
   const [pubsLoading, isPubsLoading] = useState<boolean>(false);
   const [testimoniesLoading, isTestimoniesLoading] = useState<boolean>(false);
 
+  const usersRefetch = useMemo(() => users.refetch, [users.refetch]);
+  const membersRefetch = useMemo(() => members.refetch, [members.refetch]);
+  const eventsRefetch = useMemo(() => events.refetch, [events.refetch]);
+  const questionsRefetch = useMemo(
+    () => questions.refetch,
+    [questions.refetch],
+  );
+  const pubsRefetch = useMemo(() => pubs.refetch, [pubs.refetch]);
+  const testimonyRefetch = useMemo(
+    () => testimonies.refetch,
+    [testimonies.refetch],
+  );
+
   useEffect(() => {
-    if (users.refetch) {
+    if (usersRefetch) {
       fetchUserList(setUsers, isUsersLoading);
     }
-    if (members.refetch) {
+  }, [usersRefetch]);
+  useEffect(() => {
+    if (membersRefetch) {
       fetchMemberList(setMembers, isMembersLoading);
     }
-    if (events.refetch) {
-      fetchEventList(setEvents, isEventsLoading);
-    }
-    if (questions.refetch) {
-      fetchQuestionList(setQuestions, isQuestionsLoading);
-    }
-    if (pubs.refetch) {
-      fetchPubList(setPubs, isPubsLoading);
-    }
-    if (testimonies.refetch) {
+  }, [membersRefetch]);
+  useEffect(() => {
+    if (testimonyRefetch) {
       fetchTestimonyList(setTestimonies, isTestimoniesLoading);
     }
-  }, [users, members, events, questions, pubs, testimonies]);
+  }, [testimonyRefetch]);
+  useEffect(() => {
+    if (eventsRefetch) {
+      fetchEventList(setEvents, isEventsLoading);
+    }
+  }, [eventsRefetch]);
+  useEffect(() => {
+    if (questionsRefetch) {
+      fetchQuestionList(setQuestions, isQuestionsLoading);
+    }
+  }, [questionsRefetch]);
+  useEffect(() => {
+    if (pubsRefetch) {
+      fetchPubList(setPubs, isPubsLoading);
+    }
+  }, [pubsRefetch]);
 
   return (
     <div className="min-h-screen pt-navbar lg:pt-navbard px-10 pb-5 flex w-full h-full">
@@ -100,7 +124,8 @@ export default function AdminDashboard() {
                   <Divider />
                   <EventsTable
                     isLoading={eventsLoading}
-                    events={events.value}
+                    state={events}
+                    forceRefetch={setEvents}
                   />
                 </Tab>
                 <Tab key="questions" title="Preguntas">
@@ -112,7 +137,11 @@ export default function AdminDashboard() {
                 </Tab>
                 <Tab key="pubs" title="Publicaciones">
                   <Divider />
-                  <PubsTable isLoading={pubsLoading} items={pubs.value} />
+                  <PubsTable
+                    isLoading={pubsLoading}
+                    state={pubs}
+                    forceRefetch={setPubs}
+                  />
                 </Tab>
                 <Tab key="testimony" title="Testimonios">
                   <Divider />

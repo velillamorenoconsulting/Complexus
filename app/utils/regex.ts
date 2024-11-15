@@ -4,3 +4,5 @@ export const countryRegex = /^[A-Za-z]+(?:\s[A-Za-z]+)*$/;
 export const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{7,}$/;
 export const stringOnlyRegex = /^[A-Za-z]+$/;
 export const nameRegex = /^(?!.*\d)([A-Za-z]+|[A-Za-z]+ [A-Za-z]+)$/;
+export const numsOnlyRegex = /^\d+$/;
+export const decimalRegex = /^-?\d+(\.\d+)?$/;

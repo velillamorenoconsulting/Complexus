@@ -25,3 +25,26 @@ export async function GET(
     );
   }
 }
+
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { id: string } },
+): Promise<NextResponse> {
+  const { id: eventId } = params;
+  try {
+    const body = await req.json();
+    const event = await eventService.updateEvent(eventId, body);
+    return NextResponse.json({ message: event }, { status: 201 });
+  } catch (error: any) {
+    if (error instanceof CustomBaseError) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: error.statusCode },
+      );
+    }
+    return NextResponse.json(
+      { error: "Internal server error: " + error.message },
+      { status: 500 },
+    );
+  }
+}

@@ -14,7 +14,7 @@ export default function HomeC() {
           <div className="flex flex-col lg:w-1/3 h-full max-w-[500px]">
             <div className="w-full h-[300px] max-w-[400px] overflow-hidden relative self-center">
               <Image
-                src={getImageUrl("yeh41wbrk1rwk1owbxo1.png")}
+                src={getImageUrl("yeh41wbrk1rwk1owbxo1.png", true)}
                 alt="edgar_morin"
                 width={800}
                 height={800}
@@ -38,7 +38,7 @@ export default function HomeC() {
           <div className="flex flex-col lg:w-1/3 h-full max-w-[500px]">
             <div className="w-full h-[300px] max-w-[400px] overflow-hidden relative self-center">
               <Image
-                src={getImageUrl("bfvg68l4bne7b0wo7ga6.png")}
+                src={getImageUrl("bfvg68l4bne7b0wo7ga6.png", true)}
                 alt="edgar_morin"
                 width={800}
                 height={800}
@@ -60,7 +60,7 @@ export default function HomeC() {
           <div className="flex flex-col lg:w-1/3 h-full max-w-[500px]">
             <div className="w-full h-[300px] max-w-[400px] overflow-hidden relative self-center">
               <Image
-                src={getImageUrl("l3ugwukkeuxahxg96mvo.png")}
+                src={getImageUrl("l3ugwukkeuxahxg96mvo.png", true)}
                 alt="edgar_morin"
                 width={800}
                 height={800}

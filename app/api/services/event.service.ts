@@ -56,4 +56,12 @@ export class EventService {
     }
     return this.eventRepository.create(eventToCreate);
   }
+
+  async updateEvent(eventId: string, event: Partial<Event>): Promise<string> {
+    const result = await this.eventRepository.update(eventId, event);
+    if (!result) {
+      throw new NotFoundError("Event");
+    }
+    return eventId;
+  }
 }

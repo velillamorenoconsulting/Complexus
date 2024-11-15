@@ -82,4 +82,25 @@ export class EventRepository {
     const result = await this.repo!.save(event);
     return result;
   }
+
+  async update(
+    eventId: string,
+    event: Partial<Event>,
+  ): Promise<number | undefined> {
+    await this.init();
+    const initialEvent = await this.repo!.findOneBy({ eventId });
+    if (!initialEvent) return undefined;
+    const images = initialEvent.images;
+    if (event.images) {
+      images.push(...event.images);
+    }
+    const result = await this.repo!.update(
+      { eventId },
+      {
+        ...event,
+        images,
+      },
+    );
+    return result.affected;
+  }
 }

@@ -48,6 +48,7 @@ export type ValidPagesList =
   | "contact";
 
 export type ThemeType = "dark" | "light";
+export const validEventTypes = ["virtual", "onsite", "both"];
 
 export type FormValuesObject = Record<string, string | null>;
 

@@ -7,7 +7,7 @@ export default function ServA() {
     <div className="w-full h-screen relative">
       <div className="h-full w-full absolute z-0">
         <Image
-          src={getImageUrl("sfnrt4iiingpfnr3of8l.png")}
+          src={getImageUrl("sfnrt4iiingpfnr3of8l.png", true)}
           alt="bg_corp"
           width={3000}
           height={3000}
