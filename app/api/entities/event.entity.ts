@@ -127,11 +127,6 @@ export class Event {
   @IsOptional()
   images!: string[];
 
-  @Column({ nullable: true })
-  @IsString()
-  @IsOptional()
-  imageFolder?: string;
-
   @Column("jsonb", { nullable: true })
   @IsObject()
   location!: Location;

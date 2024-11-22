@@ -87,11 +87,6 @@ export class Item {
   @IsInt()
   stock!: number;
 
-  @Column({ nullable: true })
-  @IsOptional()
-  @IsString()
-  imageFolder?: string;
-
   @OneToMany(() => Purchase, (purchase) => purchase.item)
   purchases!: Relation<Purchase>[];
 }

@@ -66,9 +66,9 @@ export default function ActionButton({
             Editar
           </DropdownItem>
           {isDeleted ? (
-            <DropdownItem key="delete">Eliminar</DropdownItem>
-          ) : (
             <DropdownItem key="active">Activar</DropdownItem>
+          ) : (
+            <DropdownItem key="delete">Eliminar</DropdownItem>
           )}
         </DropdownMenu>
       </Dropdown>

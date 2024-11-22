@@ -24,8 +24,6 @@ type Props = {
   event: Event;
 };
 
-type PurchaseStatus = "completed" | "failed" | null;
-
 export default function EventBuy({ event }: Props) {
   const { status, data } = useSession();
   const { setAuthOptions, setUser } = useStore();
@@ -77,6 +75,7 @@ export default function EventBuy({ event }: Props) {
     if (status === "authenticated") {
       onOpen();
     } else {
+      window.scrollTo(0, 0);
       setAuthOptions({
         isVisible: true,
         type: "login",

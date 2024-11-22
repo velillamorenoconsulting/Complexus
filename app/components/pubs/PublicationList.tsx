@@ -25,7 +25,7 @@ export default function PublicationList({ items }: Props) {
                 width={100}
                 height={100}
                 src={item.images[0] ? getImageUrl(item.images[0]) : ""}
-                alt={item.imageFolder || item.itemId}
+                alt={item.itemId}
                 className="w-[80%] max-w-[200px] h-full max-h-[300px]"
               />
             </div>
@@ -38,12 +38,6 @@ export default function PublicationList({ items }: Props) {
               </p>
             </div>
             <div className="flex flex-col items-center justify-center gap-3 p-3 w-full lg:w-[17%] font-raleway">
-              {/* <button className="p-2 w-full rounded-full bg-gray-400 transition-all ease-out duration-300 hover:bg-gray-500 text-black">
-                Obtener
-              </button>
-              <button className="p-2 w-full rounded-full bg-gray-400 transition-all ease-out duration-300 hover:bg-gray-500 text-black">
-                Detalles
-              </button> */}
               <Button className="w-[80%] lg:w-full">Obtener</Button>
               <Button className="w-[80%] lg:w-full">Detalles</Button>
             </div>

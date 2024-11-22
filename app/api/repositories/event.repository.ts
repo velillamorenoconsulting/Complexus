@@ -23,6 +23,7 @@ export class EventRepository {
         startAt: true,
         endAt: true,
         eventType: true,
+        isDeleted: true,
         price: true,
         createdAt: true,
         location: {
@@ -33,7 +34,6 @@ export class EventRepository {
         title: true,
         description: true,
         images: true,
-        imageFolder: true,
       },
       relations: {
         purchases: includeRelations,
