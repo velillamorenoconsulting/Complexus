@@ -12,9 +12,18 @@ export class TestimonyRepository {
     }
   }
 
-  async findAll(): Promise<Testimony[]> {
+  async findAll(priority?: number): Promise<Testimony[]> {
     await this.init();
-    return this.repo!.find({ relations: { user: true, member: true } });
+    return this.repo!.find({
+      where: {
+        ...(priority && {
+          priority,
+          isApproved: true,
+          isDeleted: false,
+        }),
+      },
+      relations: { user: true, member: true },
+    });
   }
 
   async create(testimony: Testimony): Promise<Testimony> {

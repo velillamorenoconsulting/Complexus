@@ -11,8 +11,8 @@ export class TestimonyService {
     this.testimonyRepo = new TestimonyRepository();
   }
 
-  async getAllTestimonies(): Promise<Testimony[]> {
-    return this.testimonyRepo.findAll();
+  async getAllTestimonies(priority?: number): Promise<Testimony[]> {
+    return this.testimonyRepo.findAll(priority);
   }
 
   async createTestimony(testimony: Partial<Testimony>): Promise<Testimony> {

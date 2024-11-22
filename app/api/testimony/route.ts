@@ -3,9 +3,13 @@ import { TestimonyService } from "../services/testimony.service";
 
 const testimonyService = new TestimonyService();
 
-export async function GET(): Promise<NextResponse> {
+export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
-    const allTestimonies = await testimonyService.getAllTestimonies();
+    const url = new URL(req.url);
+    const queryParams = url.searchParams.get("priority");
+    const allTestimonies = await testimonyService.getAllTestimonies(
+      queryParams ? parseInt(queryParams) : undefined,
+    );
     return NextResponse.json({ message: allTestimonies }, { status: 200 });
   } catch (e: any) {
     return NextResponse.json(
