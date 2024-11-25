@@ -21,7 +21,6 @@ export class TestimonyRepository {
         isDeleted: false,
       }),
     };
-    console.log(where);
     return this.repo!.find({
       withDeleted: !priority,
       where: {

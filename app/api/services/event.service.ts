@@ -7,6 +7,7 @@ import {
 } from "../utils/errors";
 import { validateOrReject, ValidationError } from "class-validator";
 import { plainToInstance } from "class-transformer";
+import { deleteImages } from "../cloudinary/cloudinary";
 
 export class EventService {
   private eventRepository: EventRepository;
@@ -85,6 +86,11 @@ export class EventService {
     } else {
       deleted = await this.eventRepository.deleteEvent(eventId);
     }
+    // Delete event images to free space
+    const publicImageIds = event.images.map(
+      (img) => img.split("/").pop()!.split(".")[0],
+    );
+    deleteImages(publicImageIds);
 
     if (!deleted) throw new ApplicationError("Problem deleting the record");
     return event.eventId;

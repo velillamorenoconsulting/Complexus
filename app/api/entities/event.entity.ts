@@ -142,6 +142,6 @@ export class Event {
   @OneToMany(() => Question, (question) => question.event)
   questions!: Relation<Question>[];
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({ nullable: true })
   deletedAt!: Date;
 }

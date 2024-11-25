@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import { CurrentPage } from "../store/zustand";
 import { ThemeType, ValidPagesList } from "../types/types";
+import { ApplicationError } from "../api/utils/errors";
 
 export const removePathNameSlash = (path: string): ValidPagesList => {
   return path.replace("/", "") as ValidPagesList;
@@ -115,4 +116,15 @@ export function formatPrice(price: number): string {
     currency: "USD",
     minimumFractionDigits: 2,
   }).format(price);
+}
+
+export function removeStringValueFromArray(
+  array: string[],
+  remove: string,
+): string[] {
+  if (!array.includes(remove)) {
+    throw new ApplicationError("No value existent in array");
+  }
+  const newArray = array.slice().filter((value) => value != remove);
+  return newArray;
 }

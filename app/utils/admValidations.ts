@@ -84,3 +84,5 @@ export const createPubValidations: FormValidations = {
     },
   ],
 };
+
+export const updateEventValidations: FormValidations = {};

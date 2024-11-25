@@ -53,7 +53,7 @@ export default function CreateEvent({ state, forceRefetch }: Props) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const [startDate, setStartDate] = useState<DateValue>();
   const [eventType, setEventType] = useState<string>("");
-  const [formValues, formErrors, handleChange, _, clearForm] = useFormBase(
+  const { formValues, formErrors, handleChange, clearForm } = useFormBase(
     initializer,
     eventFormValidations,
   );
@@ -72,7 +72,7 @@ export default function CreateEvent({ state, forceRefetch }: Props) {
 
   const handleCreation = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // if (status !== "authenticated") return;
+    if (status !== "authenticated") return;
     try {
       isLoading(true);
       await axios.post<ServerResponse<string>>(

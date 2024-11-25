@@ -19,7 +19,6 @@ export class EventRepository {
     includeRelations: boolean = false,
     valid: boolean = false,
   ): Promise<Event[]> {
-    console.log(valid);
     await this.init();
     return this.repo!.find({
       withDeleted: !valid,
@@ -96,15 +95,10 @@ export class EventRepository {
     await this.init();
     const initialEvent = await this.repo!.findOneBy({ eventId });
     if (!initialEvent) return undefined;
-    const images = initialEvent.images;
-    if (event.images) {
-      images.push(...event.images);
-    }
     const result = await this.repo!.update(
       { eventId },
       {
         ...event,
-        images,
       },
     );
     return result.affected;

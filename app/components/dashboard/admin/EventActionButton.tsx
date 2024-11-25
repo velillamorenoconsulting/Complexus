@@ -45,7 +45,6 @@ export default function ActionButton({
   } = useEntityDeletion("event", "SYSTEM", forceRefetch);
   const [isDeletionOpen, setDeletionOpen] = useState<boolean>(false);
 
-  console.log(selection);
   return (
     <>
       <Dropdown className="dark" isDisabled={isDeleted}>

@@ -28,10 +28,8 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
   const [loading, isLoading] = useState<boolean>(false);
   const [loginType, setLoginType] = useState<string>("user");
   const { switchLogged, setAuthOptions } = useStore();
-  const [formValues, errors, handleFormChanges, isButtonDisabled] = useFormBase(
-    initializer,
-    loginFormValidations,
-  );
+  const { formValues, formErrors, handleChange, isButtonDisabled } =
+    useFormBase(initializer, loginFormValidations);
   const { status, data } = useSession();
 
   useEffect(() => {
@@ -104,12 +102,12 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
           </div>
           <Input
             id="email"
-            errorMessage={errors.email}
+            errorMessage={formErrors.email}
             label="Correo Electronico"
             labelPlacement="outside"
             value={formValues.email as string}
-            isInvalid={!!errors.email}
-            onChange={handleFormChanges}
+            isInvalid={!!formErrors.email}
+            onChange={handleChange}
             placeholder="correo@email.com"
             variant="underlined"
             startContent={
@@ -127,10 +125,10 @@ export default function LoginForm({ changeSelection }: ComponentProps) {
               id="password"
               label="Contraseña"
               type="password"
-              isInvalid={!!errors.password}
-              errorMessage={errors.password}
+              isInvalid={!!formErrors.password}
+              errorMessage={formErrors.password}
               value={formValues.password as string}
-              onChange={handleFormChanges}
+              onChange={handleChange}
               labelPlacement="outside"
               variant="underlined"
               placeholder="Escribe tu contraseña"

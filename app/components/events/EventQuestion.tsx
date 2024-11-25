@@ -6,8 +6,6 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
-  Select,
-  SelectItem,
   Textarea,
   useDisclosure,
 } from "@nextui-org/react";
@@ -19,8 +17,6 @@ import axios from "axios";
 import { ServerResponse } from "@/app/types/responses";
 import { sendAlert } from "@/app/utils/utils";
 import useFormBase from "../hooks/useFormBase";
-import { FormValidations } from "@/app/types/types";
-import { getValidateLengthFunction } from "@/app/utils/functionValidators";
 import { eventQuestionValidation } from "@/app/utils/userValidations";
 
 export type UserQuestionFormValues = {
@@ -39,7 +35,7 @@ const initializer: UserQuestionFormValues = {
 
 export default function EventQuestion({ eventId }: ComponentProps) {
   const { isOpen, onOpenChange, onOpen, onClose } = useDisclosure();
-  const [formValues, errors, handleChange, _, clearStates] =
+  const { formValues, formErrors, handleChange, clearForm } =
     useFormBase<UserQuestionFormValues>(initializer, eventQuestionValidation);
   const { status, data } = useSession();
   const { setAuthOptions } = useStore();
@@ -61,7 +57,7 @@ export default function EventQuestion({ eventId }: ComponentProps) {
       );
       onClose();
       setLoading(false);
-      clearStates();
+      clearForm();
       sendAlert({
         title: "Pregunta creada",
         text: "Tu pregunta se ha creado correctamente. Puedes revisarla en tu panel.",
@@ -119,8 +115,8 @@ export default function EventQuestion({ eventId }: ComponentProps) {
                 <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
                   <Textarea
                     value={formValues.questionContent as string}
-                    isInvalid={!!errors.questionContent}
-                    errorMessage={errors.questionContent}
+                    isInvalid={!!formErrors.questionContent}
+                    errorMessage={formErrors.questionContent}
                     id="questionContent"
                     onChange={handleChange}
                     isRequired
@@ -138,8 +134,8 @@ export default function EventQuestion({ eventId }: ComponentProps) {
                     <SelectItem key="general">General</SelectItem>
                   </Select> */}
                   <Textarea
-                    errorMessage={errors.additionalDescription}
-                    isInvalid={!!errors.additionalDescription}
+                    errorMessage={formErrors.additionalDescription}
+                    isInvalid={!!formErrors.additionalDescription}
                     value={formValues.additionalDescription as string}
                     label="Detalles adicionales"
                     id="additionalDescription"
@@ -152,8 +148,8 @@ export default function EventQuestion({ eventId }: ComponentProps) {
                     className="mt-5"
                     isDisabled={
                       !formValues.questionContent ||
-                      !!errors.additionalDescription ||
-                      !!errors.questionContent
+                      !!formErrors.additionalDescription ||
+                      !!formErrors.questionContent
                     }
                   >
                     Enviar

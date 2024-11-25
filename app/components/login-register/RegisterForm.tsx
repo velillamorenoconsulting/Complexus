@@ -23,10 +23,8 @@ type ComponentProps = {
 };
 
 export default function RegisterForm({ changeSelection }: ComponentProps) {
-  const [formValues, errors, handleFormChanges, isButtonDisabled] = useFormBase(
-    initializer,
-    registerFormValidations,
-  );
+  const { formValues, formErrors, handleChange, isButtonDisabled } =
+    useFormBase(initializer, registerFormValidations);
   const [generalError, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -69,12 +67,12 @@ export default function RegisterForm({ changeSelection }: ComponentProps) {
         <div className="flex flex-col gap-5">
           <Input
             id="name"
-            errorMessage={errors.name}
+            errorMessage={formErrors.name}
             label="Nombre"
             labelPlacement="outside"
             value={formValues.name as string}
-            isInvalid={!!errors.name}
-            onChange={handleFormChanges}
+            isInvalid={!!formErrors.name}
+            onChange={handleChange}
             placeholder="John Doe"
             variant="underlined"
             className="dark"
@@ -90,12 +88,12 @@ export default function RegisterForm({ changeSelection }: ComponentProps) {
           />
           <Input
             id="email"
-            errorMessage={errors.email}
+            errorMessage={formErrors.email}
             label="Correo Electronico"
             labelPlacement="outside"
             value={formValues.email as string}
-            isInvalid={!!errors.email}
-            onChange={handleFormChanges}
+            isInvalid={!!formErrors.email}
+            onChange={handleChange}
             placeholder="correo@email.com"
             variant="underlined"
             className="dark"
@@ -113,10 +111,10 @@ export default function RegisterForm({ changeSelection }: ComponentProps) {
             id="password"
             label="Contraseña"
             type="password"
-            isInvalid={!!errors.password}
-            errorMessage={errors.password}
+            isInvalid={!!formErrors.password}
+            errorMessage={formErrors.password}
             value={formValues.password as string}
-            onChange={handleFormChanges}
+            onChange={handleChange}
             labelPlacement="outside"
             variant="underlined"
             className="dark"

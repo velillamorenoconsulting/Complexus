@@ -16,7 +16,7 @@ export default function CompLoading({
 }: CompProps) {
   return (
     <div
-      className={`absolute ${hasBackground ? "bg-[#18181B]/70" : ""} w-full ${height ? height : "h-full"} z-10 flex flex-col justify-center items-center font-raleway`}
+      className={`z-30 absolute ${hasBackground ? "bg-[#18181B]/70" : ""} w-full ${height ? height : "h-full"} z-10 flex flex-col justify-center items-center font-raleway`}
     >
       <CircularProgress
         label={hasText ? "Cargando..." : ""}

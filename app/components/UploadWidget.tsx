@@ -8,12 +8,14 @@ import useFileUpload from "./hooks/useFileUpload";
 type Props = {
   uploadPreset: string;
   includeFolder?: boolean;
+  currentImages: string[];
   imageSetter: (disp: string[]) => void;
 };
 
 export default function UploadWidget({
   uploadPreset,
   includeFolder,
+  currentImages,
   imageSetter,
 }: Props) {
   const [
@@ -21,12 +23,20 @@ export default function UploadWidget({
     handleFileLoad,
     loading,
     isButtonDisabled,
+    totalFiles,
     uploadedFiles,
   ] = useFileUpload(uploadPreset, includeFolder);
   const [deactivate, isDeactivated] = useState<boolean>(false);
+  const [isCompleted, setCompleted] = useState<boolean>(false);
+
   useEffect(() => {
-    imageSetter(uploadedFiles);
-  }, [uploadedFiles]);
+    if (uploadedFiles.length && totalFiles === uploadedFiles.length) {
+      setCompleted(true);
+    }
+    if (isCompleted) {
+      imageSetter([...currentImages, ...uploadedFiles]);
+    }
+  }, [uploadedFiles, isCompleted]);
 
   return (
     <div className="w-full h-full font-raleway text-white flex flex-col gap-2 items-center justify-center relative">
@@ -39,8 +49,10 @@ export default function UploadWidget({
         multiple
         isDisabled={deactivate}
       />
-      {uploadedFiles.length ? (
+      {uploadedFiles.length && uploadedFiles.length === totalFiles ? (
         <p className="text-sm text-green-500">Imagenes subidas exitosamente</p>
+      ) : uploadedFiles.length ? (
+        <p className="italic">Procesando imagenes...</p>
       ) : (
         <></>
       )}
