@@ -18,7 +18,7 @@ const initialState: ContactFormValues = {
 };
 
 export default function ContactForm() {
-  const [formValues, errors, handleChange, isButtonDisabled] =
+  const { formValues, formErrors, handleChange, isButtonDisabled } =
     useFormBase<ContactFormValues>(initialState, contactFormValidations);
   return (
     <div className="flex flex-col w-full gap-4">
@@ -31,8 +31,8 @@ export default function ContactForm() {
           onChange={handleChange}
           value={formValues.name as string}
           id="name"
-          errorMessage={errors.name}
-          isInvalid={!!errors.name}
+          errorMessage={formErrors.name}
+          isInvalid={!!formErrors.name}
         />
       </div>
       <div className="flex flex-col gap-1 font-raleway">
@@ -44,8 +44,8 @@ export default function ContactForm() {
           id="subject"
           onChange={handleChange}
           value={formValues.subject as string}
-          errorMessage={errors.subject}
-          isInvalid={!!errors.subject}
+          errorMessage={formErrors.subject}
+          isInvalid={!!formErrors.subject}
         />
       </div>
       <div className="flex flex-col gap-1 font-raleway">
@@ -57,8 +57,8 @@ export default function ContactForm() {
           onChange={handleChange}
           id="reason"
           value={formValues.reason as string}
-          errorMessage={errors.reason}
-          isInvalid={!!errors.reason}
+          errorMessage={formErrors.reason}
+          isInvalid={!!formErrors.reason}
         />
       </div>
       <div className="flex flex-col gap-1 font-raleway">
@@ -70,8 +70,8 @@ export default function ContactForm() {
           onChange={handleChange}
           id="message"
           value={formValues.message as string}
-          errorMessage={errors.message}
-          isInvalid={!!errors.message}
+          errorMessage={formErrors.message}
+          isInvalid={!!formErrors.message}
         />
       </div>
       <Button

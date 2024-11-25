@@ -2,6 +2,7 @@ import {
   BeforeInsert,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   OneToMany,
   PrimaryColumn,
@@ -140,4 +141,7 @@ export class Event {
 
   @OneToMany(() => Question, (question) => question.event)
   questions!: Relation<Question>[];
+
+  @DeleteDateColumn({ nullable: true })
+  deletedAt!: Date;
 }

@@ -110,7 +110,11 @@ export default function AdminDashboard() {
               <Tabs variant="light" className="font-raleway w-full dark">
                 <Tab key="users" title="Usuarios">
                   <Divider />
-                  <UsersTable users={users.value} isLoading={usersLoading} />
+                  <UsersTable
+                    users={users.value}
+                    isLoading={usersLoading}
+                    forceRefetch={setUsers}
+                  />
                 </Tab>
                 <Tab key="members" title="Miembros">
                   <Divider />
@@ -131,6 +135,7 @@ export default function AdminDashboard() {
                 <Tab key="questions" title="Preguntas">
                   <Divider />
                   <QuestionsTable
+                    forceRefetch={setQuestions}
                     isLoading={questionsLoading}
                     questions={questions.value}
                   />
@@ -148,6 +153,7 @@ export default function AdminDashboard() {
                   <TestimonyTable
                     isLoading={testimoniesLoading}
                     testimonies={testimonies.value}
+                    forceRefetch={setTestimonies}
                   />
                 </Tab>
               </Tabs>

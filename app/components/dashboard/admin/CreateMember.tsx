@@ -42,7 +42,7 @@ type CompProps = {
 // TODO Check issue password not being needed on form
 export default function CreateMember({ forceRefetch, state }: CompProps) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
-  const [formValues, formErrors, handleChange, isButtonDisabled, clearForm] =
+  const { formValues, formErrors, handleChange, isButtonDisabled, clearForm } =
     useFormBase<CreateMemberForm>(initializer, createMemberValidations);
   const [loading, isLoading] = useState<boolean>(false);
   const { data, status } = useSession();

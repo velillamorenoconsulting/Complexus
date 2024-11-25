@@ -12,16 +12,19 @@ export default function useFileUpload(
   (e: React.ChangeEvent<HTMLInputElement>) => void,
   boolean,
   boolean,
+  number,
   string[],
 ] {
   const [files, setFiles] = useState<FileList | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
   const [loading, isLoading] = useState<boolean>(false);
   const isButtonDisabled = files ? !files.length : true;
+  const [totalFiles, setTotalFiles] = useState<number>(0);
   const handleFileLoad = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
     setFiles(files);
+    setTotalFiles(files.length);
   };
 
   useEffect(() => {
@@ -61,6 +64,7 @@ export default function useFileUpload(
     handleFileLoad,
     loading,
     isButtonDisabled,
+    totalFiles,
     uploadedFiles,
   ];
 }

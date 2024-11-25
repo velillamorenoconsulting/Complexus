@@ -8,7 +8,7 @@ import React from "react";
 export default async function PublicationsBF() {
   try {
     const { data } = await axios.get<ServerResponse<Item[]>>(
-      `${process.env.NEXT_PUBLIC_BE_URL}/items`,
+      `${process.env.NEXT_PUBLIC_BE_URL}/items?valid=true`,
     );
 
     return <PublicationList items={data.message} />;

@@ -42,7 +42,7 @@ import CompLoading from "../../CompLoading";
 
 export default function CreatePub({ state, forceRefetch }: Props) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
-  const [formValues, errors, handleChange, isButtonDisabled, clearForm] =
+  const { formValues, formErrors, handleChange, isButtonDisabled, clearForm } =
     useFormBase(initializer, createPubValidations);
   const [loading, isLoading] = useState<boolean>();
   const { data, status } = useSession();
@@ -110,8 +110,8 @@ export default function CreatePub({ state, forceRefetch }: Props) {
                     onChange={handleChange}
                     id="title"
                     value={formValues.title as string}
-                    errorMessage={errors.title}
-                    isInvalid={!!errors.title}
+                    errorMessage={formErrors.title}
+                    isInvalid={!!formErrors.title}
                   />
                   <Textarea
                     label="Descripcion"
@@ -119,8 +119,8 @@ export default function CreatePub({ state, forceRefetch }: Props) {
                     onChange={handleChange}
                     id="description"
                     value={formValues.description as string}
-                    errorMessage={errors.description}
-                    isInvalid={!!errors.description}
+                    errorMessage={formErrors.description}
+                    isInvalid={!!formErrors.description}
                   />
                   <Input
                     label="Precio"
@@ -128,8 +128,8 @@ export default function CreatePub({ state, forceRefetch }: Props) {
                     onChange={handleChange}
                     id="price"
                     value={formValues.price as string}
-                    errorMessage={errors.price}
-                    isInvalid={!!errors.price}
+                    errorMessage={formErrors.price}
+                    isInvalid={!!formErrors.price}
                   />
                   <Input
                     label="Cantidad"
@@ -137,8 +137,8 @@ export default function CreatePub({ state, forceRefetch }: Props) {
                     onChange={handleChange}
                     id="stock"
                     value={formValues.stock as string}
-                    errorMessage={errors.stock}
-                    isInvalid={!!errors.stock}
+                    errorMessage={formErrors.stock}
+                    isInvalid={!!formErrors.stock}
                   />
                   <Button
                     type="submit"

@@ -6,13 +6,14 @@ import React, { useEffect, useState } from "react";
 export default function useFormBase<T extends FormValuesObject>(
   initializer: T,
   validations: FormValidations,
-): [
-  T,
-  T,
-  (e: React.ChangeEvent<HTMLInputElement>) => void,
-  boolean,
-  () => void,
-] {
+): {
+  formValues: T;
+  formErrors: T;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isButtonDisabled: boolean;
+  clearForm: () => void;
+  changeInitializer: (values: T) => void;
+} {
   const [formValues, setFormValues] = useState<T>(initializer);
   const [formErrors, setFormErrors] = useState<T>(initializer);
   const [isButtonDisabled, setDisablingButton] = useState<boolean>(false);
@@ -45,5 +46,16 @@ export default function useFormBase<T extends FormValuesObject>(
       ),
     );
   }
-  return [formValues, formErrors, handleChange, isButtonDisabled, clearForm];
+
+  function changeInitializer(values: T) {
+    setFormValues(values);
+  }
+  return {
+    formValues,
+    formErrors,
+    handleChange,
+    isButtonDisabled,
+    clearForm,
+    changeInitializer,
+  };
 }

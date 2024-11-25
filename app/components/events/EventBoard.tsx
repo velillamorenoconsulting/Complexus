@@ -98,8 +98,16 @@ export default function EventBoard({
                   <div className="flex flex-col gap-5 w-full">
                     <div className="relative overflow-hidden rounded-lg">
                       <Image
-                        src={getImageUrl(upcomingEvent.images[0])}
-                        alt={upcomingEvent.images[0]}
+                        src={
+                          upcomingEvent.images.length
+                            ? getImageUrl(upcomingEvent.images[0])
+                            : "/events-sample.png"
+                        }
+                        alt={
+                          upcomingEvent.images.length
+                            ? upcomingEvent.images[0]
+                            : "sample_event"
+                        }
                         width={400}
                         height={400}
                         className="w-full max-h-[373px]"

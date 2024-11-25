@@ -21,3 +21,14 @@ export async function GET(): Promise<NextResponse> {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
+
+export async function DELETE(request: NextRequest): Promise<NextResponse> {
+  const body = await request.json();
+  try {
+    const { id, updatedBy } = body;
+    await userService.deleteUser(id, true, updatedBy);
+    return NextResponse.json({ message: id }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}

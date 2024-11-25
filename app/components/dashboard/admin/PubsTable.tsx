@@ -17,12 +17,15 @@ import { convertDate, formatPrice } from "@/app/utils/utils";
 import Image from "next/image";
 import { Item } from "@/app/api/entities/item.entity";
 import CreatePub from "./CreatePub";
-import { FetchState } from "@/app/types/types";
+import { FetchState, TableState } from "@/app/types/types";
+import useEntityDeletion from "../../hooks/useEntityDeletion";
+import { useState } from "react";
+import Confirmation from "../../Confirmation";
 
 type CompProps = {
   state: FetchState<Item[]>;
   isLoading: boolean;
-  forceRefetch: (disp: FetchState<Item[]>) => void;
+  forceRefetch: TableState<Item[]>;
 };
 
 export default function PubsTable({
@@ -30,6 +33,13 @@ export default function PubsTable({
   isLoading,
   forceRefetch,
 }: CompProps) {
+  const {
+    handleDeletion,
+    isLoading: deletionLoading,
+    entityId,
+  } = useEntityDeletion("items", "SYSTEM", forceRefetch);
+  const [isDeletionOpen, setDeletionOpen] = useState<boolean>(false);
+  const [aimedEntity, setAimedEntity] = useState<string | null>(null);
   return (
     <>
       {isLoading ? (
@@ -61,26 +71,37 @@ export default function PubsTable({
                   <TableCell>{entity.stock}</TableCell>
                   <TableCell>{entity.purchases.length}</TableCell>
                   <TableCell>
-                    <Dropdown className="dark">
+                    <Dropdown className="dark" isDisabled={entity.isDeleted}>
                       <DropdownTrigger>
-                        <Chip className="hover:cursor-pointer">
-                          <Image
-                            src="/icons/action.svg"
-                            alt=""
-                            width={20}
-                            height={20}
-                            className="w-4 h-4"
-                          />
-                        </Chip>
+                        {deletionLoading && entityId === entity.itemId ? (
+                          <CompLoading hasText={false} loaderSize="sm" />
+                        ) : (
+                          <Chip
+                            className="hover:cursor-pointer"
+                            variant={entity.isDeleted ? "bordered" : "solid"}
+                          >
+                            <Image
+                              src="/icons/action.svg"
+                              alt=""
+                              width={20}
+                              height={20}
+                              className="w-4 h-4"
+                            />
+                          </Chip>
+                        )}
                       </DropdownTrigger>
                       <DropdownMenu className="dark text-white">
                         <DropdownItem key="review">Ver detalles</DropdownItem>
                         <DropdownItem key="update">Editar</DropdownItem>
-                        {entity.isDeleted ? (
-                          <DropdownItem key="activate">Activar</DropdownItem>
-                        ) : (
-                          <DropdownItem key="delete">Eliminar</DropdownItem>
-                        )}
+                        <DropdownItem
+                          key="delete"
+                          onClick={() => {
+                            setAimedEntity(entity.itemId);
+                            setDeletionOpen(true);
+                          }}
+                        >
+                          Eliminar
+                        </DropdownItem>
                       </DropdownMenu>
                     </Dropdown>
                   </TableCell>
@@ -88,6 +109,15 @@ export default function PubsTable({
               ))}
             </TableBody>
           </Table>
+          <Confirmation
+            closingFunction={setDeletionOpen}
+            isOpen={isDeletionOpen}
+            closeAction={() => setAimedEntity(null)}
+            action={() => handleDeletion(aimedEntity as string)}
+            title="¿Está seguro de eliminar esta publicacion?"
+            text="Aun podrá ver la publicacion en la lista, pero no podrá
+                  reestablecerlo. Deberá crearse de nuevo."
+          />
         </>
       )}
     </>

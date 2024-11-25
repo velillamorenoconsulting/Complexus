@@ -30,3 +30,13 @@ export async function GET(): Promise<NextResponse> {
     );
   }
 }
+
+export async function DELETE(req: NextRequest): Promise<NextResponse> {
+  const body = await req.json();
+  try {
+    await questionService.deleteQuestion(body.id, true, body.updatedBy);
+    return NextResponse.json({ message: body.id }, { status: 200 });
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message }, { status: e.status || 400 });
+  }
+}

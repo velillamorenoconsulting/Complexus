@@ -51,7 +51,7 @@ export default function CreateTestimony() {
   const { setAuthOptions, user } = useStore();
   const { onOpen, onClose, onOpenChange, isOpen } = useDisclosure();
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [formValues, formErrors, handleChange, buttonDisabled] =
+  const { formValues, formErrors, handleChange, isButtonDisabled } =
     useFormBase<TestimonyFormValues>(initializer, validations);
 
   const handleTestimonyCreateButton = () => {
@@ -153,7 +153,7 @@ export default function CreateTestimony() {
                     className="mt-5"
                     color="primary"
                     type="submit"
-                    isDisabled={buttonDisabled}
+                    isDisabled={isButtonDisabled}
                   >
                     Enviar
                   </Button>

@@ -39,7 +39,7 @@ export class RegisterService {
       await sendEmailVerification(userAuth.user);
       fireBaseId = userAuth.user.uid;
     } catch (error: any) {
-      await this.userService.deleteUser(userCreated.userId, false);
+      await this.userService.deleteUser(userCreated.userId, false, "");
       throw new ValidateError([...error.message]);
     }
     const result = await this.userService.updateUser(userCreated.userId, {
@@ -61,7 +61,7 @@ export class RegisterService {
       await sendEmailVerification(userAuth.user);
       fireBaseId = userAuth.user.uid;
     } catch (error: any) {
-      await this.memberService.deleteMember(memberCreated.memberId, false);
+      await this.memberService.deleteMember(memberCreated.memberId, false, "");
       throw new ValidateError([...error.message]);
     }
     const result = await this.memberService.updateMember(

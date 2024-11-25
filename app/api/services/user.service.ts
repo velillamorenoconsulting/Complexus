@@ -56,12 +56,16 @@ export class UserService {
     return this.userRepository.create(userToCreate);
   }
 
-  async deleteUser(userId: string, isSoft: boolean = true): Promise<string> {
+  async deleteUser(
+    userId: string,
+    isSoft: boolean = true,
+    author: string,
+  ): Promise<string> {
     const user = await this.userRepository.findById(userId);
     if (!user) throw new NotFoundError("User");
     let deleted: number;
     if (isSoft) {
-      deleted = await this.userRepository.softDeleteUser(userId);
+      deleted = await this.userRepository.softDeleteUser(userId, author);
     } else {
       deleted = await this.userRepository.deleteUser(userId);
     }

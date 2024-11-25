@@ -7,20 +7,24 @@ import {
   DropdownTrigger,
   Modal,
   ModalContent,
+  TableSlots,
   useDisclosure,
 } from "@nextui-org/react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import UpdateEventForm from "./event/UpdateEventForm";
-import { FetchState } from "@/app/types/types";
+import { FetchState, TableState } from "@/app/types/types";
 import { Event } from "@/app/api/entities/event.entity";
+import useEntityDeletion from "../../hooks/useEntityDeletion";
+import Confirmation from "../../Confirmation";
+import CompLoading from "../../CompLoading";
 
 type Props = {
   entityId: string;
   isDeleted: boolean;
   path: string;
   state: FetchState<Event[]>;
-  forceRefetch: (disp: FetchState<Event[]>) => void;
+  forceRefetch: TableState<Event[]>;
   showDetails?: boolean;
 };
 
@@ -34,28 +38,35 @@ export default function ActionButton({
 }: Props) {
   const [selection, setSelection] = useState<string>();
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
+  const {
+    handleDeletion,
+    isLoading: deletionLoading,
+    entityId: aimedId,
+  } = useEntityDeletion("event", "SYSTEM", forceRefetch);
+  const [isDeletionOpen, setDeletionOpen] = useState<boolean>(false);
 
-  console.log(selection);
   return (
     <>
-      <Dropdown className="dark">
+      <Dropdown className="dark" isDisabled={isDeleted}>
         <DropdownTrigger>
-          <Chip className="hover:cursor-pointer">
-            <Image
-              src="/icons/action.svg"
-              alt=""
-              width={20}
-              height={20}
-              className="w-4 h-4"
-            />
-          </Chip>
+          {deletionLoading ? (
+            <CompLoading hasText={false} loaderSize="sm" />
+          ) : (
+            <Chip
+              className="hover:cursor-pointer"
+              variant={isDeleted ? "bordered" : "solid"}
+            >
+              <Image
+                src="/icons/action.svg"
+                alt=""
+                width={20}
+                height={20}
+                className="w-4 h-4"
+              />
+            </Chip>
+          )}
         </DropdownTrigger>
         <DropdownMenu className="dark text-white">
-          {/* {showDetails ? (
-            <DropdownItem key="review">Ver detalles</DropdownItem>
-          ) : (
-            <></>
-          )} */}
           <DropdownItem
             key="update"
             onClick={(e) => {
@@ -65,13 +76,24 @@ export default function ActionButton({
           >
             Editar
           </DropdownItem>
-          {isDeleted ? (
-            <DropdownItem key="active">Activar</DropdownItem>
-          ) : (
-            <DropdownItem key="delete">Eliminar</DropdownItem>
-          )}
+          <DropdownItem
+            key="delete"
+            onClick={() => {
+              setDeletionOpen(true);
+            }}
+          >
+            Eliminar
+          </DropdownItem>
         </DropdownMenu>
       </Dropdown>
+      <Confirmation
+        title="¿Está seguro de eliminar este evento?"
+        text="Aun podrá ver el evento en la lista, pero no podrá
+                  reestablecerlo. Deberá crearlo nuevamente."
+        isOpen={isDeletionOpen}
+        action={() => handleDeletion(entityId)}
+        closingFunction={setDeletionOpen}
+      />
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}

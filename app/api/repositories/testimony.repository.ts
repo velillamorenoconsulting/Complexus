@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { Repository, UpdateResult } from "typeorm";
 import { Testimony } from "../entities/testimony.entity";
 import { getDataSource } from "../database";
 
@@ -14,7 +14,15 @@ export class TestimonyRepository {
 
   async findAll(priority?: number): Promise<Testimony[]> {
     await this.init();
+    const where = {
+      ...(priority && {
+        priority,
+        isApproved: true,
+        isDeleted: false,
+      }),
+    };
     return this.repo!.find({
+      withDeleted: !priority,
       where: {
         ...(priority && {
           priority,
@@ -26,9 +34,29 @@ export class TestimonyRepository {
     });
   }
 
+  async getTestimony(testimonyId: string): Promise<Testimony | null> {
+    await this.init();
+    return this.repo!.findOneBy({ testimonyId });
+  }
+
   async create(testimony: Testimony): Promise<Testimony> {
     await this.init();
     const result = await this.repo!.save(testimony);
-    return testimony;
+    return result;
+  }
+
+  async delete(testimonyId: string): Promise<boolean> {
+    await this.init();
+    const result = await this.repo!.softDelete({ testimonyId });
+    return !!result.affected;
+  }
+
+  async update(
+    testimonyId: string,
+    updatedFields: Partial<Testimony>,
+  ): Promise<boolean> {
+    await this.init();
+    const result = this.repo!.update({ testimonyId }, updatedFields);
+    return !!result;
   }
 }

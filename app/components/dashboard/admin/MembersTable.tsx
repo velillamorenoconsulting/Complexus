@@ -17,11 +17,14 @@ import { convertDate } from "@/app/utils/utils";
 import Image from "next/image";
 import { Member } from "@/app/api/entities/member.entity";
 import CreateMember from "./CreateMember";
-import { FetchState } from "@/app/types/types";
+import { FetchState, TableState } from "@/app/types/types";
+import useEntityDeletion from "../../hooks/useEntityDeletion";
+import { useState } from "react";
+import Confirmation from "../../Confirmation";
 
 type ComponentProps = {
   isLoading: boolean;
-  forceRefetch: (state: FetchState<Member[]>) => void;
+  forceRefetch: TableState<Member[]>;
   state: FetchState<Member[]>;
 };
 
@@ -30,6 +33,13 @@ export default function MembersTable({
   forceRefetch,
   state,
 }: ComponentProps) {
+  const {
+    handleDeletion,
+    isLoading: deletionLoading,
+    entityId,
+  } = useEntityDeletion("member", "SYSTEM", forceRefetch);
+  const [isDeletionOpen, setDeletionOpen] = useState<boolean>(false);
+  const [aimedEntity, setAimedEntity] = useState<string | null>(null);
   const memberList = state.value;
   return (
     <>
@@ -62,21 +72,36 @@ export default function MembersTable({
                   <TableCell>{convertDate(member.createdAt)}</TableCell>
                   <TableCell>{member.isAdmin ? "SI" : "NO"}</TableCell>
                   <TableCell>
-                    <Dropdown className="dark">
-                      <DropdownTrigger>
-                        <Chip className="hover:cursor-pointer">
-                          <Image
-                            src="/icons/action.svg"
-                            alt=""
-                            width={20}
-                            height={20}
-                            className="w-4 h-4"
-                          />
-                        </Chip>
+                    <Dropdown className="dark" isDisabled={member.isDeleted}>
+                      <DropdownTrigger className="relative">
+                        {deletionLoading && entityId === member.memberId ? (
+                          <CompLoading hasText={false} loaderSize="sm" />
+                        ) : (
+                          <Chip
+                            className="hover:cursor-pointer"
+                            variant={member.isDeleted ? "bordered" : "solid"}
+                          >
+                            <Image
+                              src="/icons/action.svg"
+                              alt=""
+                              width={20}
+                              height={20}
+                              className="w-4 h-4"
+                            />
+                          </Chip>
+                        )}
                       </DropdownTrigger>
                       <DropdownMenu className="dark text-white">
                         <DropdownItem key="update">Editar</DropdownItem>
-                        <DropdownItem key="delete">Eliminar</DropdownItem>
+                        <DropdownItem
+                          key="delete"
+                          onClick={() => {
+                            setAimedEntity(member.memberId);
+                            setDeletionOpen(true);
+                          }}
+                        >
+                          Eliminar
+                        </DropdownItem>
                       </DropdownMenu>
                     </Dropdown>
                   </TableCell>
@@ -84,6 +109,15 @@ export default function MembersTable({
               ))}
             </TableBody>
           </Table>
+          <Confirmation
+            closingFunction={setDeletionOpen}
+            isOpen={isDeletionOpen}
+            closeAction={() => setAimedEntity(null)}
+            action={() => handleDeletion(aimedEntity as string)}
+            title="¿Está seguro de eliminar este miembro?"
+            text="Aun podrá ver el miembro en la lista, pero no podrá
+                  reestablecerlo. Deberá registrarse nuevamente usando otro correo electronico."
+          />
         </>
       )}
     </>

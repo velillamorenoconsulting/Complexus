@@ -18,7 +18,7 @@ const initializer: FooterFormValues = {
 };
 
 export default function ContactForm({ style }: Props) {
-  const [formValues, formErrors, handleChange, isButtonDisabled] = useFormBase(
+  const { formValues, handleChange, isButtonDisabled } = useFormBase(
     initializer,
     footerContactFormValidations,
   );

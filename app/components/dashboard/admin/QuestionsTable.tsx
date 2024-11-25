@@ -4,6 +4,7 @@ import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
+  DropdownSection,
   DropdownTrigger,
   Table,
   TableBody,
@@ -16,13 +17,29 @@ import CompLoading from "../../CompLoading";
 import { convertDate } from "@/app/utils/utils";
 import Image from "next/image";
 import { Question } from "@/app/api/entities/question.entity";
+import useEntityDeletion from "../../hooks/useEntityDeletion";
+import { TableState } from "@/app/types/types";
+import { useState } from "react";
+import Confirmation from "../../Confirmation";
 
 type CompProps = {
   questions: Question[];
   isLoading: boolean;
+  forceRefetch: TableState<Question[]>;
 };
 
-export default function QuestionsTable({ questions, isLoading }: CompProps) {
+export default function QuestionsTable({
+  questions,
+  isLoading,
+  forceRefetch,
+}: CompProps) {
+  const {
+    handleDeletion,
+    isLoading: deletionLoading,
+    entityId: deletingId,
+  } = useEntityDeletion("question", "SYSTEM", forceRefetch);
+  const [aimedEntity, setAimedEntity] = useState<string | null>(null);
+  const [deletionOpen, setDeletionOpen] = useState<boolean>(false);
   return (
     <>
       {isLoading ? (
@@ -57,23 +74,36 @@ export default function QuestionsTable({ questions, isLoading }: CompProps) {
                   <TableCell>
                     <Dropdown className="dark">
                       <DropdownTrigger>
-                        <Chip className="hover:cursor-pointer">
-                          <Image
-                            src="/icons/action.svg"
-                            alt=""
-                            width={20}
-                            height={20}
-                            className="w-4 h-4"
-                          />
-                        </Chip>
+                        {deletionLoading && entity.questionId === deletingId ? (
+                          <CompLoading hasText={false} loaderSize="sm" />
+                        ) : (
+                          <Chip className="hover:cursor-pointer">
+                            <Image
+                              src="/icons/action.svg"
+                              alt=""
+                              width={20}
+                              height={20}
+                              className="w-4 h-4"
+                            />
+                          </Chip>
+                        )}
                       </DropdownTrigger>
                       <DropdownMenu className="dark text-white">
-                        <DropdownItem key="review">Ver detalles</DropdownItem>
-                        <DropdownItem key="update">Editar</DropdownItem>
                         {entity.isDeleted ? (
-                          <DropdownItem key="activate">Activar</DropdownItem>
+                          <DropdownItem key="review">Ver detalles</DropdownItem>
                         ) : (
-                          <DropdownItem key="delete">Eliminar</DropdownItem>
+                          <DropdownSection>
+                            <DropdownItem key="update">Editar</DropdownItem>
+                            <DropdownItem
+                              key="delete"
+                              onClick={() => {
+                                setDeletionOpen(true);
+                                setAimedEntity(entity.questionId);
+                              }}
+                            >
+                              Eliminar
+                            </DropdownItem>
+                          </DropdownSection>
                         )}
                       </DropdownMenu>
                     </Dropdown>
@@ -82,6 +112,15 @@ export default function QuestionsTable({ questions, isLoading }: CompProps) {
               ))}
             </TableBody>
           </Table>
+          <Confirmation
+            closingFunction={setDeletionOpen}
+            isOpen={deletionOpen}
+            closeAction={() => setAimedEntity(null)}
+            action={() => handleDeletion(aimedEntity as string)}
+            title="¿Está seguro de eliminar esta pregunta?"
+            text="Aun podrá ver la pregunta en la lista y sus detalles, pero no podrá
+                  reestablecerla. Deberá crearse nuevamente."
+          />
         </>
       )}
     </>
