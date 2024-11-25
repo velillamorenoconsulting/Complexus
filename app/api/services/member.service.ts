@@ -60,12 +60,13 @@ export class MemberService {
   async deleteMember(
     memberId: string,
     isSoft: boolean = true,
+    author: string,
   ): Promise<string> {
     const member = await this.memberRepository.findById(memberId);
     if (!member) throw new NotFoundError("Member");
     let deleted: number;
     if (isSoft) {
-      deleted = await this.memberRepository.softDeleteMember(memberId);
+      deleted = await this.memberRepository.softDeleteMember(memberId, author);
     } else {
       deleted = await this.memberRepository.deleteMember(memberId);
     }

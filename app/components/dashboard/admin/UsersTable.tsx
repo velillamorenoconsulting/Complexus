@@ -16,13 +16,30 @@ import {
 import CompLoading from "../../CompLoading";
 import { convertDate } from "@/app/utils/utils";
 import Image from "next/image";
+import useEntityDeletion from "../../hooks/useEntityDeletion";
+import { TableState } from "@/app/types/types";
+import { useState } from "react";
+import Confirmation from "../../Confirmation";
 
 type ComponentParams = {
   isLoading: boolean;
   users: User[];
+  forceRefetch: TableState<User[]>;
 };
 
-export default function UsersTable({ isLoading, users }: ComponentParams) {
+export default function UsersTable({
+  isLoading,
+  users,
+  forceRefetch,
+}: ComponentParams) {
+  const {
+    handleDeletion,
+    isLoading: userDeleteLoading,
+    entityId: deletingId,
+  } = useEntityDeletion("user", "SYSTEM", forceRefetch);
+  const [aimedEntity, setAimedEntity] = useState<string | null>(null);
+  const [deletionOpen, setDeletionOpen] = useState<boolean>(false);
+
   return (
     <>
       {isLoading ? (
@@ -52,21 +69,36 @@ export default function UsersTable({ isLoading, users }: ComponentParams) {
                 <TableCell>{convertDate(user.createdAt)}</TableCell>
                 <TableCell>{user.country ?? "-"}</TableCell>
                 <TableCell>
-                  <Dropdown className="dark">
-                    <DropdownTrigger>
-                      <Chip className="hover:cursor-pointer">
-                        <Image
-                          src="/icons/action.svg"
-                          alt=""
-                          width={20}
-                          height={20}
-                          className="w-4 h-4"
-                        />
-                      </Chip>
+                  <Dropdown className="dark" isDisabled={user.isDeleted}>
+                    <DropdownTrigger className="relative">
+                      {userDeleteLoading && deletingId === user.userId ? (
+                        <CompLoading hasText={false} loaderSize="sm" />
+                      ) : (
+                        <Chip
+                          className="hover:cursor-pointer"
+                          variant={user.isDeleted ? "bordered" : "solid"}
+                        >
+                          <Image
+                            src="/icons/action.svg"
+                            alt=""
+                            width={20}
+                            height={20}
+                            className="w-4 h-4"
+                          />
+                        </Chip>
+                      )}
                     </DropdownTrigger>
                     <DropdownMenu className="dark text-white">
                       <DropdownItem key="update">Editar</DropdownItem>
-                      <DropdownItem key="delete">Eliminar</DropdownItem>
+                      <DropdownItem
+                        key="delete"
+                        onClick={() => {
+                          setAimedEntity(user.userId);
+                          setDeletionOpen(true);
+                        }}
+                      >
+                        Eliminar
+                      </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                 </TableCell>
@@ -75,6 +107,15 @@ export default function UsersTable({ isLoading, users }: ComponentParams) {
           </TableBody>
         </Table>
       )}
+      <Confirmation
+        closingFunction={setDeletionOpen}
+        isOpen={deletionOpen}
+        closeAction={() => setAimedEntity(null)}
+        action={() => handleDeletion(aimedEntity as string)}
+        title="¿Está seguro de eliminar este usuario?"
+        text="Aun podrá ver el usuario en la lista, pero no podrá
+                  reestablecerlo. Deberá registrarse nuevamente usando otro correo electronico."
+      />
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { ILike, Repository } from "typeorm";
 import { Question } from "../entities/question.entity";
 import { getDataSource } from "../database";
+import { DatabaseError } from "../utils/errors";
 
 export class QuestionRepository {
   private repository: Repository<Question> | null = null;
@@ -15,6 +16,7 @@ export class QuestionRepository {
   async findAllQuestions(): Promise<Question[]> {
     await this.init();
     return this.repository!.find({
+      withDeleted: true,
       relations: { author: true },
     });
   }
@@ -92,5 +94,26 @@ export class QuestionRepository {
   async create(question: Partial<Question>): Promise<Question> {
     await this.init();
     return this.repository!.save(question);
+  }
+
+  async deleteQuestion(questionId: string): Promise<number> {
+    this.init();
+    const { affected } = await this.repository!.delete({ questionId });
+    if (!affected) throw new DatabaseError();
+    return affected;
+  }
+
+  async softDeleteQuestion(
+    questionId: string,
+    author: string,
+  ): Promise<number> {
+    await this.init();
+    await this.repository!.update(
+      { questionId },
+      { isDeleted: true }, // TODO IMPLEMENT UPDATEDBY ON QUESTIONS
+    );
+    const { affected } = await this.repository!.softDelete({ questionId });
+    if (!affected) throw new DatabaseError();
+    return affected;
   }
 }

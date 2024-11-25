@@ -4,6 +4,7 @@ import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
+  DropdownSection,
   DropdownTrigger,
   Table,
   TableBody,
@@ -13,24 +14,39 @@ import {
   TableRow,
 } from "@nextui-org/react";
 import CompLoading from "../../CompLoading";
-import { convertDate, formatPrice } from "@/app/utils/utils";
+import { convertDate } from "@/app/utils/utils";
 import Image from "next/image";
-import { Question } from "@/app/api/entities/question.entity";
-import { Item } from "@/app/api/entities/item.entity";
 import { Testimony } from "@/app/api/entities/testimony.entity";
+import { FetchState } from "@/app/types/types";
+import useEntityDeletion from "../../hooks/useEntityDeletion";
+import { useState } from "react";
+import Confirmation from "../../Confirmation";
 
 type CompProps = {
   testimonies: Testimony[];
   isLoading: boolean;
+  forceRefetch: React.Dispatch<React.SetStateAction<FetchState<Testimony[]>>>;
 };
 
-export default function TestimonyTable({ testimonies, isLoading }: CompProps) {
+export default function TestimonyTable({
+  testimonies,
+  isLoading,
+  forceRefetch,
+}: CompProps) {
+  const [aimedEntity, setAimedEntity] = useState<string | null>(null);
+  const [deletionOpen, setDeletionOpen] = useState<boolean>(false);
+  const {
+    handleDeletion,
+    isLoading: deletionLoading,
+    entityId,
+  } = useEntityDeletion("testimony", "SYSTEM", forceRefetch);
   const handleContent = (val: string): string => {
     if (val.length > 150) {
       return val.slice(0, 149) + "...";
     }
     return val;
   };
+
   return (
     <>
       {isLoading ? (
@@ -64,24 +80,40 @@ export default function TestimonyTable({ testimonies, isLoading }: CompProps) {
                   <TableCell>{entity.priority}</TableCell>
                   <TableCell>
                     <Dropdown className="dark">
-                      <DropdownTrigger>
-                        <Chip className="hover:cursor-pointer">
-                          <Image
-                            src="/icons/action.svg"
-                            alt=""
-                            width={20}
-                            height={20}
-                            className="w-4 h-4"
-                          />
-                        </Chip>
+                      <DropdownTrigger className="relative">
+                        {deletionLoading && entity.testimonyId === entityId ? (
+                          <CompLoading hasText={false} loaderSize="sm" />
+                        ) : (
+                          <Chip className="hover:cursor-pointer">
+                            <Image
+                              src="/icons/action.svg"
+                              alt=""
+                              width={20}
+                              height={20}
+                              className="w-4 h-4"
+                            />
+                          </Chip>
+                        )}
                       </DropdownTrigger>
                       <DropdownMenu className="dark text-white">
-                        <DropdownItem key="review">Ver detalles</DropdownItem>
-                        <DropdownItem key="update">Editar</DropdownItem>
                         {entity.isDeleted ? (
-                          <DropdownItem key="activate">Activar</DropdownItem>
+                          <DropdownItem key="review">Ver detalles</DropdownItem>
                         ) : (
-                          <DropdownItem key="delete">Eliminar</DropdownItem>
+                          <DropdownSection>
+                            <DropdownItem key="update">Editar</DropdownItem>
+                            <DropdownItem key="review">
+                              Ver detalles
+                            </DropdownItem>
+                            <DropdownItem
+                              key="delete"
+                              onClick={() => {
+                                setDeletionOpen(true);
+                                setAimedEntity(entity.testimonyId);
+                              }}
+                            >
+                              Eliminar
+                            </DropdownItem>
+                          </DropdownSection>
                         )}
                       </DropdownMenu>
                     </Dropdown>
@@ -90,6 +122,15 @@ export default function TestimonyTable({ testimonies, isLoading }: CompProps) {
               ))}
             </TableBody>
           </Table>
+          <Confirmation
+            closingFunction={setDeletionOpen}
+            isOpen={deletionOpen}
+            closeAction={() => setAimedEntity(null)}
+            action={() => handleDeletion(aimedEntity as string)}
+            title="¿Está seguro de eliminar este testimonio?"
+            text="Aun podrá ver el testimonio en la lista y sus detalles, pero no podrá
+                  reestablecerlo. Deberá crearse nuevamente."
+          />
         </>
       )}
     </>

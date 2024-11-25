@@ -1,6 +1,10 @@
 import { EventRepository } from "../repositories/event.repository";
 import { Event } from "../entities/event.entity";
-import { NotFoundError, ValidateError } from "../utils/errors";
+import {
+  ApplicationError,
+  NotFoundError,
+  ValidateError,
+} from "../utils/errors";
 import { validateOrReject, ValidationError } from "class-validator";
 import { plainToInstance } from "class-transformer";
 
@@ -11,8 +15,11 @@ export class EventService {
     this.eventRepository = new EventRepository();
   }
 
-  async getAllEvents(includeRelations?: boolean): Promise<Event[]> {
-    return this.eventRepository.findAll(includeRelations);
+  async getAllEvents(
+    includeRelations?: boolean,
+    validEvents?: boolean,
+  ): Promise<Event[]> {
+    return this.eventRepository.findAll(includeRelations, validEvents);
   }
 
   // TODO Include flag for includes or throw error
@@ -63,5 +70,23 @@ export class EventService {
       throw new NotFoundError("Event");
     }
     return eventId;
+  }
+
+  async deleteEvent(
+    eventId: string,
+    isSoft: boolean = true,
+    author: string,
+  ): Promise<string> {
+    const event = await this.eventRepository.findById(eventId);
+    if (!event) throw new NotFoundError("event");
+    let deleted: number;
+    if (isSoft) {
+      deleted = await this.eventRepository.softDeleteEvent(eventId, author);
+    } else {
+      deleted = await this.eventRepository.deleteEvent(eventId);
+    }
+
+    if (!deleted) throw new ApplicationError("Problem deleting the record");
+    return event.eventId;
   }
 }

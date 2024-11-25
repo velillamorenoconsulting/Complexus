@@ -38,3 +38,21 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 }
+
+export async function DELETE(req: NextRequest): Promise<NextResponse> {
+  const body = await req.json();
+  try {
+    const deleteTestimony = await testimonyService.deleteTestimony(
+      body.id,
+      body.isDeleted,
+    );
+    return NextResponse.json(
+      {
+        message: deleteTestimony.testimonyId,
+      },
+      { status: 200 },
+    );
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message }, { status: e.status ?? 400 });
+  }
+}

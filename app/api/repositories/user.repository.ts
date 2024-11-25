@@ -15,7 +15,7 @@ export class UserRepostitory {
 
   async findAll(): Promise<User[]> {
     await this.init();
-    return this.repository!.find();
+    return this.repository!.find({ withDeleted: true });
   }
 
   /**
@@ -68,9 +68,12 @@ export class UserRepostitory {
     return affected;
   }
 
-  async softDeleteUser(userId: string): Promise<number> {
+  async softDeleteUser(userId: string, author: string): Promise<number> {
     await this.init();
-    await this.repository!.update({ userId }, { isDeleted: true });
+    await this.repository!.update(
+      { userId },
+      { isDeleted: true, updatedBy: author },
+    );
     const { affected } = await this.repository!.softDelete({ userId });
     if (!affected) throw new DatabaseError();
     return affected;

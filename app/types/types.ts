@@ -66,3 +66,5 @@ export interface FetchState<T> {
   refetch: boolean;
   value: T;
 }
+
+export type TableState<T> = React.Dispatch<React.SetStateAction<FetchState<T>>>;

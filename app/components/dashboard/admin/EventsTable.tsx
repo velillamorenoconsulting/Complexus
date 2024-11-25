@@ -16,14 +16,16 @@ import CompLoading from "../../CompLoading";
 import { convertDate } from "@/app/utils/utils";
 import Image from "next/image";
 import { Event } from "@/app/api/entities/event.entity";
-import { FetchState } from "@/app/types/types";
+import { FetchState, TableState } from "@/app/types/types";
 import CreateEvent from "./CreateEvent";
 import ActionButton from "./EventActionButton";
+import useEntityDeletion from "../../hooks/useEntityDeletion";
+import { useState } from "react";
 
 type CompProps = {
   state: FetchState<Event[]>;
   isLoading: boolean;
-  forceRefetch: (disp: FetchState<Event[]>) => void;
+  forceRefetch: TableState<Event[]>;
 };
 
 export default function EventsTable({

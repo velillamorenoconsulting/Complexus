@@ -15,7 +15,7 @@ export class MemberRepository {
 
   async findAll(): Promise<Member[]> {
     await this.init();
-    return this.memberRepository!.find();
+    return this.memberRepository!.find({ withDeleted: true });
   }
 
   async findById(memberId: string): Promise<Member | null> {
@@ -52,9 +52,12 @@ export class MemberRepository {
     return affected;
   }
 
-  async softDeleteMember(memberId: string): Promise<number> {
+  async softDeleteMember(memberId: string, author: string): Promise<number> {
     await this.init();
-    await this.memberRepository!.update({ memberId }, { isDeleted: true });
+    await this.memberRepository!.update(
+      { memberId },
+      { isDeleted: true, updatedBy: author },
+    );
     const { affected } = await this.memberRepository!.softDelete({ memberId });
     if (!affected) throw new DatabaseError();
     return affected;

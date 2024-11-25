@@ -50,4 +50,23 @@ export class QuestionService {
     }
     return this.questionRepository.create(questionToCreate);
   }
+
+  async deleteQuestion(
+    questionId: string,
+    isSoft: boolean = true,
+    author: string,
+  ): Promise<string> {
+    const question = await this.questionRepository.findQuestion(questionId);
+    if (!question) throw new NotFoundError("Question");
+    let deleted: number;
+    if (isSoft) {
+      deleted = await this.questionRepository.softDeleteQuestion(
+        questionId,
+        author,
+      );
+    } else {
+      deleted = await this.questionRepository.deleteQuestion(questionId);
+    }
+    return question.questionId;
+  }
 }

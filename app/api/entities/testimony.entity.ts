@@ -47,7 +47,7 @@ export class Testimony {
   updatedBy!: string;
 
   @DeleteDateColumn({ nullable: true })
-  deletedAt!: Date;
+  deletedAt!: Date | null;
 
   @Column({ default: false })
   @IsOptional()

@@ -20,7 +20,7 @@ export default function EventsA() {
     } else {
       const fetchData = async () => {
         const { data } = await axios.get<EventList>(
-          `${process.env.NEXT_PUBLIC_BE_URL}/event`,
+          `${process.env.NEXT_PUBLIC_BE_URL}/event?valid=true`,
         );
         setEventList(data.message);
         setLocaleList(data.message);
