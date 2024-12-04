@@ -92,7 +92,7 @@ export default function EventBoard({
 
               return (
                 <Card
-                  key={date.toString()}
+                  key={upcomingEvent.eventId}
                   className="flex flex-col justify-evenly gap-7 items-center max-w-[600px] p-5 border-none bg-inherit"
                 >
                   <div className="flex flex-col gap-5 w-full">

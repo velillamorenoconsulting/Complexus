@@ -74,7 +74,7 @@ export default function EventDescription({ event }: ComponentProps) {
                     src={getImageUrl(imgSrc)}
                     width={1200}
                     height={1200}
-                    className="rounded-lg"
+                    className="rounded-lg max-h-[570px] object-cover object-top"
                   />
                 ))}
               />

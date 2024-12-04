@@ -17,7 +17,7 @@ export default function Footer({ style }: Props) {
         <div className="flex flex-col justify-center gap-2">
           <div className="flex flex-row gap-2 justify-center">
             <Image
-              src={`${style === "dark" ? "/logow.svg" : "/logob.svg"}`}
+              src="/logo.svg"
               alt="logo"
               width={50}
               height={50}

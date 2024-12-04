@@ -51,7 +51,7 @@ export default function EventQuestion({ eventId }: ComponentProps) {
         {
           ...formValues,
           isGeneralQuestion: true,
-          author: user.userId,
+          author: user.id,
           event: eventId,
         },
       );

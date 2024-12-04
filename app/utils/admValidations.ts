@@ -40,13 +40,13 @@ export const createMemberValidations: FormValidations = {
 export const eventFormValidations: FormValidations = {
   title: [
     {
-      condition: getValidateLengthFunction(5, 60),
+      condition: getValidateLengthFunction(5, 200),
       failedMessage: "Campo incorrecto",
     },
   ],
   description: [
     {
-      condition: getValidateLengthFunction(20, 200),
+      condition: getValidateLengthFunction(20, 600),
       failedMessage: "Extension muy corta/larga",
     },
   ],

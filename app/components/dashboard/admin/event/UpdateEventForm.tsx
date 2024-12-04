@@ -24,6 +24,7 @@ import { handleRemovingImages } from "@/app/utils/handleRemovingImages";
 import { CreateEventForm } from "../CreateEvent";
 import useFormBase from "@/app/components/hooks/useFormBase";
 import { updateEventValidations } from "@/app/utils/admValidations";
+import EntitySelector from "../common/EntitySelector";
 
 type Props = {
   eventId: string;
@@ -59,6 +60,8 @@ export default function UpdateEventForm({
   const [loading, isLoading] = useState<boolean>(false);
   const { status, data } = useSession();
   const [endDate, setEndDate] = useState<DateValue>();
+  const [sponsors, setSponsors] = useState<string[]>([]);
+  const [supports, setSupports] = useState<string[]>([]);
   const [images, setImages] = useState<string[]>([]);
   const originalImageList = useRef<string[] | null>(null);
   const { formValues, handleChange, clearForm, changeInitializer } =
@@ -79,6 +82,8 @@ export default function UpdateEventForm({
         segments: convertSegments(formValues.details),
         images,
         details: undefined,
+        sponsors: sponsors,
+        supporters: supports,
       });
       sendAlert({
         title: "Publicacion creada",
@@ -134,6 +139,8 @@ export default function UpdateEventForm({
         });
         setImages(data.message.images ?? []);
         originalImageList.current = data.message.images;
+        setSponsors(data.message.sponsors);
+        setSupports(data.message.supporters);
       } catch (e) {
       } finally {
         isLoading(false);
@@ -188,12 +195,20 @@ export default function UpdateEventForm({
             onChange={handleChange}
             id="price"
           />
-          <Input label="Apoya" description="Agregar separado con comas" />
-          <Input
-            label="Patrocinadores"
-            description="Agregar separado con comas"
+          <Divider className="my-2" />
+          <EntitySelector
+            initials={sponsors}
+            valueSetter={setSponsors}
+            type="participants"
+            placeHolder="Patrocinadores"
           />
-          <Input label="Invitan" description="Agregar separado con comas" />
+          <EntitySelector
+            initials={supports}
+            valueSetter={setSupports}
+            type="participants"
+            placeHolder="Invitan"
+          />
+          <Divider className="my-2" />
           <Input
             id="transmissionUrl"
             onChange={handleChange}

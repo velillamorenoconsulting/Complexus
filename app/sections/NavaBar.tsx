@@ -21,7 +21,7 @@ export default function NavaBar({ style }: ComponentProps) {
             <div className="flex flex-row gap-3">
               <Image
                 priority={true}
-                src={`${style === "light" ? "/logow.svg" : "/logob.svg"}`}
+                src="/logo.svg"
                 alt="logo"
                 width={150}
                 height={150}

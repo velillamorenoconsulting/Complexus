@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToMany,
   OneToMany,
   PrimaryColumn,
   Relation,
@@ -21,17 +22,13 @@ import {
 } from "class-validator";
 import { Purchase } from "./purchase.entity";
 import { Question } from "./question.entity";
+import { Member } from "./member.entity";
+import { Participant } from "./participant.entity";
 
 export class Segment {
   title?: string;
   text?: string;
   list?: string[];
-  metadata?: string;
-}
-
-export class Participant {
-  logo?: string;
-  name?: string;
   metadata?: string;
 }
 
@@ -64,15 +61,18 @@ export class Event {
   @IsArray()
   segments!: Segment[];
 
-  @Column("jsonb", { nullable: true, default: [] })
-  @IsOptional()
-  @IsArray()
-  sponsors?: Participant[];
-
   @Column({ nullable: true })
   @IsString()
   @IsOptional()
   transmissionUrl?: string;
+
+  @Column("jsonb", { default: [] })
+  @IsOptional()
+  sponsors!: string[];
+
+  @Column("jsonb", { default: [] })
+  @IsOptional()
+  supporters!: string[];
 
   @Column("jsonb", { nullable: true, default: [] })
   videos?: string[];
@@ -80,16 +80,6 @@ export class Event {
   @Column({ nullable: true })
   @IsString()
   eventType!: "virtual" | "onsite" | "both";
-
-  @Column("jsonb", { nullable: true, default: [] })
-  @IsOptional()
-  @IsArray()
-  supporters?: Participant[];
-
-  @Column("jsonb", { nullable: true, default: [] })
-  @IsOptional()
-  @IsArray()
-  inviters?: Participant[];
 
   @Column({ nullable: true })
   @IsOptional()
@@ -144,4 +134,7 @@ export class Event {
 
   @DeleteDateColumn({ nullable: true })
   deletedAt!: Date;
+
+  @OneToMany(() => Member, (member) => member.event)
+  members!: Relation<Member>[];
 }
