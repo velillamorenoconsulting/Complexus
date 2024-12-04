@@ -18,9 +18,7 @@ export class ParticipantRepository {
     return this.repository!.findOneBy({ participantId });
   }
 
-  async getParticipants(filters?: {
-    eventId?: string;
-  }): Promise<Participant[]> {
+  async getParticipants(): Promise<Participant[]> {
     await this.init();
     return this.repository!.find();
   }
