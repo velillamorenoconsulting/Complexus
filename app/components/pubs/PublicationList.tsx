@@ -2,9 +2,9 @@
 import { Item } from "@/app/api/entities/item.entity";
 import { useStore } from "@/app/store/zustand";
 import { getImageUrl } from "@/app/utils/utils";
-import { Button, Divider } from "@nextui-org/react";
+import { Button, Divider, Pagination } from "@nextui-org/react";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 type Props = {
   items: Item[];
@@ -12,12 +12,14 @@ type Props = {
 
 export default function PublicationList({ items }: Props) {
   const { itemList, setItems } = useStore();
+  const [page, setPage] = useState<number>(1);
+  const totalPages = Math.ceil(itemList.length / 10);
   if (!itemList.length && items.length) {
     setItems(items);
   }
   return (
     <div className="flex flex-col px-10 py-20 justify-center">
-      {items.map((item) => (
+      {items.slice((page - 1) * 10, (page - 1) * 10 + 10).map((item) => (
         <div className="flex flex-col" key={item.itemId}>
           <div className="p-5 flex flex-col lg:flex-row gap-3 justify-evenly">
             <div className="w-full lg:w-[20%] flex items-center justify-center">
@@ -45,6 +47,16 @@ export default function PublicationList({ items }: Props) {
           <Divider className="my-7 dark w-[80%] self-center" />
         </div>
       ))}
+      <div className="flex flex-wrap gap-4 items-center justify-center">
+        <Pagination
+          showControls
+          className="dark"
+          total={totalPages}
+          initialPage={page}
+          size="sm"
+          onChange={setPage}
+        />
+      </div>
     </div>
   );
 }
