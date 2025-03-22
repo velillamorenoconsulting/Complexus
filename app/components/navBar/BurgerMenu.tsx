@@ -27,9 +27,6 @@ export default function BurgerMenu({ style }: ComponentProps) {
   const pathName = usePathname();
   const redirect = useRouter();
   const { setAuthOptions } = useStore();
-  const [isLogged, setLogged] = useState<boolean>(
-    session.status === "authenticated",
-  );
   const [localPage, setLocalPage] = useState<CurrentPage>(
     removePathNameSlash(pathName) as CurrentPage,
   );
@@ -115,7 +112,6 @@ export default function BurgerMenu({ style }: ComponentProps) {
               <p
                 onClick={() => {
                   signOut({ redirect: false });
-                  setLogged(false);
                   Swal.fire({
                     title: "Sesión finalizada",
                     icon: "success",

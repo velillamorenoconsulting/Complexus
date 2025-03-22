@@ -12,7 +12,10 @@ import { weekDays, monthList } from "@/app/utils/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Carousel from "../carousel/Carousel";
+import { Key } from "@react-types/shared";
 import EventBuy from "./EventBuy";
+import * as React from "react";
+import SocialMedia from "@/app/components/footer/SocialMedia";
 
 type EventSelectOptions = "past" | "upcoming";
 
@@ -36,7 +39,7 @@ export default function EventBoard({
       variant="underlined"
       aria-label="Event Options"
       selectedKey={selected}
-      onSelectionChange={setSelected as any}
+      onSelectionChange={setSelected as (key: Key) => void}
     >
       <Tab key="past" title="Eventos Anteriores">
         {pastEvents.map((event) => (
@@ -147,10 +150,17 @@ export default function EventBoard({
                 );
               })
             ) : (
-              <div className="font-raleway text-xl text-center max-w-[90%] lg:max-w-[70%] pt-24 w-full opacity-80">
-                En este momento no hay eventos próximos para fechas cercanas. Te
-                invitamos a seguirnos en redes sociales para enterarte de los
-                eventos que aún están desarrollandose.
+              <div
+                className={
+                  "font-raleway text-xl text-center max-w-[90%] lg:max-w-[70%] pt-24 w-full opacity-80"
+                }
+              >
+                <p>
+                  En este momento no hay eventos próximos para fechas cercanas.
+                  Te invitamos a seguirnos en redes sociales para enterarte de
+                  los eventos que aún están desarrollandose.
+                </p>
+                <SocialMedia style={"light"} />
               </div>
             )}
           </div>

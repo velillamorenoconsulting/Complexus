@@ -3,6 +3,7 @@ import { ThemeType, pageList } from "../types/types";
 import Image from "next/image";
 import Link from "next/link";
 import ContactForm from "../components/footer/ContactForm";
+import SocialMedia from "@/app/components/footer/SocialMedia";
 
 type Props = { style: ThemeType };
 
@@ -27,58 +28,8 @@ export default function Footer({ style }: Props) {
               Corporación Complexus
             </h3>
           </div>
-          <div className="flex flex-row justify-center gap-2">
-            <Link
-              href="https://www.youtube.com/@corporacioncomplexus5557"
-              target="_blank"
-            >
-              <Image
-                src={`/icons/social/${
-                  style === "dark" ? "youtube_dark.svg" : "youtube.svg"
-                }`}
-                alt="youtube"
-                width={50}
-                height={50}
-                className="w-10 opacity-70 hover:cursor-pointer"
-              />
-            </Link>
-            <Link
-              href="https://www.facebook.com/corporacioncomplexus"
-              target="_blank"
-              className="flex items-center"
-            >
-              <Image
-                src={`/icons/social/${
-                  style === "dark" ? "facebookw.svg" : "facebookb.svg"
-                }`}
-                alt="facebook"
-                width={50}
-                height={50}
-                className="w-7 opacity-70"
-              />
-            </Link>
-            <Image
-              src={`/icons/social/${
-                style === "dark" ? "linkedinw.svg" : "linkedinb.svg"
-              }`}
-              alt="linkedin"
-              width={50}
-              height={50}
-              className="w-7 opacity-70"
-            />
-            <Link
-              href="https://twitter.com/corpocomplexus"
-              target="_blank"
-              className="flex items-center"
-            >
-              <Image
-                src={`/icons/social/${style === "dark" ? "xw.svg" : "xb.svg"}`}
-                alt="x"
-                width={50}
-                height={50}
-                className="w-8 opacity-70"
-              />
-            </Link>
+          <div>
+            <SocialMedia style={"dark"} />
           </div>
         </div>
         <div className="flex flex-col lg:hidden 2xl:flex 2xl:flex-row items-center justify-center gap-3 font-raleway pt-5 lg:p-0">
