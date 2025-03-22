@@ -1,5 +1,4 @@
 import Swal from "sweetalert2";
-import { CurrentPage } from "../store/zustand";
 import { ThemeType, ValidPagesList } from "../types/types";
 import { ApplicationError } from "../api/utils/errors";
 

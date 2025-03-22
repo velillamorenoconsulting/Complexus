@@ -5,8 +5,8 @@ export interface ServerResponse<T> {
   message: T;
 }
 
-export interface EventList extends ServerResponse<Event[]> {}
+export type EventList = ServerResponse<Event[]>;
 
-export interface EventResponse extends ServerResponse<Event> {}
+export type EventResponse = ServerResponse<Event>;
 
-export interface TestimonyListResponse extends ServerResponse<Testimony[]> {}
+export type TestimonyListResponse = ServerResponse<Testimony[]>;

@@ -11,7 +11,8 @@ export default async function PublicationsBF() {
       await axios.get<ServerResponse<Item[]>>(`api/items?valid=true`);
 
     return <PublicationList items={data.message} />;
-  } catch (e: any) {
-    return <ErrorComp details={JSON.stringify(e)} />;
+  } catch (e) {
+    console.log(e);
+    return <ErrorComp />;
   }
 }

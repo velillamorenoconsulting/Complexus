@@ -14,7 +14,7 @@
 
 import { FormValidations, FormValuesObject } from "../types/types";
 
-export function validateForm<T extends FormValuesObject = any>(
+export function validateForm<T extends FormValuesObject>(
   values: T,
   initializer: T,
   validations: FormValidations,

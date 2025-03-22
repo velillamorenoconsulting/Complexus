@@ -15,7 +15,7 @@ export default function ServB() {
               height={100}
               className="w-40 hidden lg:block"
             />
-            <p>Proyectos de Integración ​Académico-Empresarial.</p>
+            <p>Proyectos de Integración Académico-Empresarial.</p>
           </div>
           <div className="bg-[#e4cab8] text-[#22302f] p-6 flex flex-row items-center">
             <Image
@@ -26,7 +26,7 @@ export default function ServB() {
               className="w-40 hidden lg:block"
             />
             <p>
-              Creación Administración y Realización de ​Proyectos y Eventos
+              Creación Administración y Realización de Proyectos y Eventos
               culturales.
             </p>
           </div>
@@ -39,11 +39,11 @@ export default function ServB() {
               className="w-40 hidden lg:block"
             />
             <p>
-              Proyectos interdisciplinarios, utilizando ​principios de
-              pensamiento y creando ​puentes entre la academia y las ​personas
-              que pueden influir en ​determinados sectores, para hacer ​avanzar
-              en forma real las mentalidades ​y transformar el modo de pensar
-              ​individual y colectivo.
+              Proyectos interdisciplinarios, utilizando principios de
+              pensamiento y creando puentes entre la academia y las personas que
+              pueden influir en determinados sectores, para hacer avanzar en
+              forma real las mentalidades y transformar el modo de pensar
+              individual y colectivo.
             </p>
           </div>
           <div className="bg-[#e4cab8] lg:bg-[#22302f] p-6 text-[#22302f] lg:text-[#e4cab8] flex flex-row items-center">
@@ -55,7 +55,7 @@ export default function ServB() {
               className="w-40 hidden lg:block"
             />
             <p>
-              Creación Administración y Realización ​de Proyectos y Eventos
+              Creación Administración y Realización de Proyectos y Eventos
               artísticos y editoriales
             </p>
           </div>

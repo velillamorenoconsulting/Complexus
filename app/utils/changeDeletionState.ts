@@ -26,7 +26,7 @@ export async function deleteRecord(
   try {
     await axios.delete(constructUrl, { data: body });
     return { status: 200 };
-  } catch (e: any) {
-    return { status: 400, message: e.message };
+  } catch (e) {
+    return { status: 400, message: (e as Error).message };
   }
 }

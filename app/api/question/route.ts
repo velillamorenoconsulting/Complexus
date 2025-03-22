@@ -37,7 +37,7 @@ export async function GET(): Promise<NextResponse> {
 export async function DELETE(req: NextRequest): Promise<NextResponse> {
   const body = await req.json();
   try {
-    await questionService.deleteQuestion(body.id, true, body.updatedBy);
+    await questionService.deleteQuestion(body.id, true);
     return NextResponse.json({ message: body.id }, { status: 200 });
   } catch (e) {
     const error = e as CustomBaseError;

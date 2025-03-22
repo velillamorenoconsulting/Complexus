@@ -26,7 +26,7 @@ export async function handleRemovingImages(
 
       console.log("Images have been removed with success", result);
     }
-  } catch (error: any) {
+  } catch (error) {
     console.log("There was an error removing the images: ", error);
   }
 }
