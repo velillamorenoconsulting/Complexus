@@ -1,4 +1,3 @@
-"use client";
 import {
   Button,
   Divider,
@@ -45,7 +44,7 @@ export default function CreateMember({ forceRefetch, state }: CompProps) {
   const { formValues, formErrors, handleChange, isButtonDisabled, clearForm } =
     useFormBase<CreateMemberForm>(initializer, createMemberValidations);
   const [loading, isLoading] = useState<boolean>(false);
-  const { data, status } = useSession();
+  const { status } = useSession();
 
   const handleCreation = async () => {
     if (status !== "authenticated") return;
@@ -71,7 +70,7 @@ export default function CreateMember({ forceRefetch, state }: CompProps) {
       onClose();
       clearForm();
       forceRefetch({ ...state, refetch: true });
-    } catch (e: any) {
+    } catch {
       sendAlert({
         title: "Ha ocurrido un error",
         text: "Intenta nuevamente luego. Si el error persiste, contactanos.",
@@ -96,7 +95,7 @@ export default function CreateMember({ forceRefetch, state }: CompProps) {
         size="lg"
       >
         <ModalContent>
-          {(onClose) => (
+          {() => (
             <>
               <ModalHeader className="font-comorant text-3xl font-bold text-center self-center">
                 Crear Miembro

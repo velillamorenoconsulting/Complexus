@@ -1,5 +1,4 @@
-"use client";
-import { Avatar, Select, SelectItem } from "@nextui-org/react";
+import { Avatar, Select, SelectItem, SharedSelection } from "@nextui-org/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { ServerResponse } from "@/app/types/responses";
@@ -65,7 +64,7 @@ export default function EntitySelector({
           ServerResponse<(Member | User | Participant)[]>
         >(`${process.env.NEXT_PUBLIC_BE_URL}/${type}`);
         setEntityList(data.message);
-      } catch (e: any) {
+      } catch (e) {
         console.log("ERROR: ", e);
       } finally {
         isLoading(false);
@@ -89,7 +88,7 @@ export default function EntitySelector({
       items={entityList}
       label={label}
       placeholder={placeHolder}
-      onSelectionChange={setValues as any}
+      onSelectionChange={setValues as (key: SharedSelection) => void}
       description={description}
     >
       {(entity) => (

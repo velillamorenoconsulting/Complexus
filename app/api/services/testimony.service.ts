@@ -1,12 +1,9 @@
 import { plainToInstance } from "class-transformer";
 import { Testimony } from "../entities/testimony.entity";
 import { TestimonyRepository } from "../repositories/testimony.repository";
-import { validateOrReject, ValidationError } from "class-validator";
-import {
-  ApplicationError,
-  NotFoundError,
-  ValidateError,
-} from "../utils/errors";
+import { validateOrReject } from "class-validator";
+import { ApplicationError, NotFoundError } from "../utils/errors";
+import { handleValidationError } from "@/app/utils";
 
 export class TestimonyService {
   private testimonyRepo: TestimonyRepository;
@@ -28,12 +25,8 @@ export class TestimonyService {
     const testimonyToCreate = plainToInstance(Testimony, receivedAttributes);
     try {
       await validateOrReject(testimonyToCreate);
-    } catch (e: any) {
-      const constraints = e.map((error: ValidationError) => {
-        const key = Object.keys(error.constraints as Object)[0];
-        return error.constraints?.[key];
-      });
-      throw new ValidateError(constraints);
+    } catch (e) {
+      handleValidationError(e);
     }
     return this.testimonyRepo.create(testimonyToCreate);
   }

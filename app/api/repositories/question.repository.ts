@@ -105,7 +105,7 @@ export class QuestionRepository {
 
   async softDeleteQuestion(
     questionId: string,
-    author: string,
+    // author: string,
   ): Promise<number> {
     await this.init();
     await this.repository!.update(

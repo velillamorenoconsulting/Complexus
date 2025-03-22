@@ -1,8 +1,9 @@
-import { validateOrReject, ValidationError } from "class-validator";
+import { validateOrReject } from "class-validator";
 import { Purchase } from "../entities/purchase.entity";
 import { PurchaseRepository } from "../repositories/purchase.repository";
-import { NotFoundError, ValidateError } from "../utils/errors";
+import { NotFoundError } from "../utils/errors";
 import { plainToInstance } from "class-transformer";
+import { handleValidationError } from "@/app/utils";
 
 export class PurchaseService {
   private purchaseRepository: PurchaseRepository;
@@ -21,7 +22,7 @@ export class PurchaseService {
     return purchase;
   }
 
-  async createPurchase(purchase: any): Promise<Purchase> {
+  async createPurchase(purchase: Partial<Purchase>): Promise<Purchase> {
     const purchaseReceivedAttributes = {
       ...purchase,
       createdBy: "SYSTEM",
@@ -33,12 +34,8 @@ export class PurchaseService {
     );
     try {
       await validateOrReject(purchaseToCreate);
-    } catch (error: any) {
-      const constraints = error.map((error: ValidationError) => {
-        const key = Object.keys(error.constraints as object)[0];
-        return error.constraints?.[key];
-      });
-      throw new ValidateError(constraints);
+    } catch (error) {
+      handleValidationError(error);
     }
     return this.purchaseRepository.create(purchaseToCreate);
   }

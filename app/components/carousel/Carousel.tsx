@@ -10,8 +10,8 @@ type Props = {
 };
 
 export default function Carousel({
-  width,
-  height,
+  // width,
+  // height,
   items,
   maxVisualItems = 5,
 }: Props) {

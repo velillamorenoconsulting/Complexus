@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { TestimonyService } from "../services/testimony.service";
+import { CustomBaseError } from "@/app/api/utils/errors";
 
 const testimonyService = new TestimonyService();
 
@@ -11,12 +12,13 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       queryParams ? parseInt(queryParams) : undefined,
     );
     return NextResponse.json({ message: allTestimonies }, { status: 200 });
-  } catch (e: any) {
+  } catch (error) {
+    const e = error as CustomBaseError;
     return NextResponse.json(
       {
         error: e.message,
       },
-      { status: e.status ?? 400 },
+      { status: e.statusCode ?? 400 },
     );
   }
 }
@@ -31,10 +33,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       },
       { status: 201 },
     );
-  } catch (error: any) {
+  } catch (e) {
+    const error = e as CustomBaseError;
     return NextResponse.json(
       { error: error.message },
-      { status: error.status ?? 400 },
+      { status: error.statusCode ?? 400 },
     );
   }
 }
@@ -52,7 +55,11 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
       },
       { status: 200 },
     );
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: e.status ?? 400 });
+  } catch (e) {
+    const error = e as CustomBaseError;
+    return NextResponse.json(
+      { error: error.message },
+      { status: error.statusCode ?? 400 },
+    );
   }
 }

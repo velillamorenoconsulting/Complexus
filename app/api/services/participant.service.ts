@@ -1,8 +1,9 @@
 import { plainToInstance } from "class-transformer";
 import { Participant } from "../entities/participant.entity";
 import { ParticipantRepository } from "../repositories/participant.repository";
-import { validateOrReject, ValidationError } from "class-validator";
-import { NotFoundError, ValidateError } from "../utils/errors";
+import { validateOrReject } from "class-validator";
+import { NotFoundError } from "../utils/errors";
+import { handleValidationError } from "@/app/utils";
 
 export class ParticipantService {
   private readonly participantRepository: ParticipantRepository;
@@ -30,12 +31,8 @@ export class ParticipantService {
     );
     try {
       await validateOrReject(participantAttributes);
-    } catch (e: any) {
-      const constraints = e.map((error: ValidationError) => {
-        const key = Object.keys(error.constraints as object)[0];
-        return error.constraints?.[key];
-      });
-      throw new ValidateError(constraints);
+    } catch (e) {
+      handleValidationError(e);
     }
     return this.participantRepository.createParticipant(participantAttributes);
   }

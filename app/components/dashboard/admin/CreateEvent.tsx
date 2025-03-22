@@ -58,7 +58,7 @@ export default function CreateEvent({ state, forceRefetch }: Props) {
     eventFormValidations,
   );
   const [loading, isLoading] = useState<boolean>();
-  const { data, status } = useSession();
+  const { status } = useSession();
 
   const isButtonDisabled: boolean =
     !formValues.title ||
@@ -100,7 +100,7 @@ export default function CreateEvent({ state, forceRefetch }: Props) {
       onClose();
       clearForm();
       forceRefetch({ ...state, refetch: true });
-    } catch (e) {
+    } catch {
       sendAlert({
         title: "Ha ocurrido un error",
         text: "Intenta nuevamente luego. Si el error persiste, contactanos.",
@@ -125,7 +125,7 @@ export default function CreateEvent({ state, forceRefetch }: Props) {
         size="3xl"
       >
         <ModalContent>
-          {(onClose) => (
+          {() => (
             <>
               <ModalHeader className="font-comorant text-3xl font-bold text-center self-center">
                 Crear Evento

@@ -15,7 +15,7 @@ type Props = {
   text?: string;
   width?: string;
   height?: string;
-  action: (...params: any[]) => void;
+  action: (...params: unknown[]) => void;
 };
 
 export default function ButtonComponent({
