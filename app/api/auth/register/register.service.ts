@@ -10,6 +10,7 @@ import { User } from "../../entities/user.entity";
 import { Member } from "../../entities/member.entity";
 import { LoginType } from "../../types/auth.types";
 import { MemberService } from "../../services/member.service";
+import { handleValidationError } from "@/app/utils";
 
 export class RegisterService {
   private readonly userService: UserService;
@@ -20,7 +21,16 @@ export class RegisterService {
   }
 
   async registerUser(userInfo: Record<string, string>): Promise<User> {
-    await validateRegister(userInfo, LoginType.USER);
+    const userToCreate = {
+      ...userInfo,
+      createdBy: "SYSTEM",
+      updatedBy: "SYSTEM",
+    };
+    try {
+      await validateRegister(userToCreate, LoginType.USER);
+    } catch (e) {
+      handleValidationError(e);
+    }
     const existentUser = await this.userService.getUserByEmail(
       userInfo.email,
       false,
