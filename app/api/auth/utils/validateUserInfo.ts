@@ -1,14 +1,19 @@
 import { plainToInstance } from "class-transformer";
 import { UserRegisterBody, MemberRegisterBody } from "../dtos/register.dto";
-import { validateOrReject } from "class-validator";
+import { validateOrReject, ValidationError } from "class-validator";
 import { LoginType } from "../../types/auth.types";
+import { Member } from "@/app/api/entities/member.entity";
+import { User } from "@/app/api/entities/user.entity";
 
-export const validateRegister = (userInfo: any, type: LoginType): void => {
+export const validateRegister = async (
+  userInfo: Partial<Member> | Partial<User>,
+  type: LoginType,
+): Promise<void | ValidationError[]> => {
   let entity: UserRegisterBody | MemberRegisterBody;
   if (type === "member") {
     entity = plainToInstance(MemberRegisterBody, userInfo);
   } else {
     entity = plainToInstance(UserRegisterBody, userInfo);
   }
-  validateOrReject(entity);
+  await validateOrReject(entity);
 };

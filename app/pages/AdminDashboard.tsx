@@ -22,7 +22,6 @@ import { Testimony } from "../api/entities/testimony.entity";
 import QuestionsTable from "../components/dashboard/admin/QuestionsTable";
 import PubsTable from "../components/dashboard/admin/PubsTable";
 import TestimonyTable from "../components/dashboard/admin/TestimonyTable";
-import UploadWidget from "../components/UploadWidget";
 
 const initialState = {
   refetch: true,

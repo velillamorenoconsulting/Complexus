@@ -4,6 +4,7 @@ import { Button, Input, Textarea } from "@nextui-org/react";
 import Image from "next/image";
 import useFormBase from "../hooks/useFormBase";
 import { footerContactFormValidations } from "@/app/utils/userValidations";
+import Link from "next/link";
 
 type Props = { style: ThemeType };
 
@@ -54,15 +55,17 @@ export default function ContactForm({ style }: Props) {
             Enviar
           </Button>
           <p>ó</p>
-          <Image
-            src={`/icons/social/${
-              style === "dark" ? "whatsapp_dark.svg" : "whatsapp.svg"
-            }`}
-            alt="x"
-            width={50}
-            height={50}
-            className="w-7 hover:cursor-pointer"
-          />
+          <Link href="https://w.app/complexus" target="_blank">
+            <Image
+              src={`/icons/social/${
+                style === "dark" ? "whatsapp_dark.svg" : "whatsapp.svg"
+              }`}
+              alt="x"
+              width={50}
+              height={50}
+              className="w-7 hover:cursor-pointer"
+            />
+          </Link>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ItemService } from "../services/item.service";
+import { CustomBaseError } from "@/app/api/utils/errors";
 
 const itemService = new ItemService();
 
@@ -14,10 +15,11 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       },
       { status: 200 },
     );
-  } catch (error: any) {
+  } catch (e) {
+    const error = e as CustomBaseError;
     return NextResponse.json(
       { error: error.message },
-      { status: error.status ?? 400 },
+      { status: error.statusCode ?? 400 },
     );
   }
 }
@@ -27,12 +29,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const itemCreated = await itemService.createItem(body);
     return NextResponse.json({ message: itemCreated.itemId }, { status: 201 });
-  } catch (e: any) {
+  } catch (e) {
+    const error = e as CustomBaseError;
     return NextResponse.json(
       {
-        error: e.message,
+        error: error.message,
       },
-      { status: e.status ?? 400 },
+      { status: error.statusCode ?? 400 },
     );
   }
 }
@@ -42,7 +45,11 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
   try {
     await itemService.deleteItem(body.id, true, body.updatedBy);
     return NextResponse.json({ message: body.id }, { status: 200 });
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: e.status || 400 });
+  } catch (e) {
+    const error = e as CustomBaseError;
+    return NextResponse.json(
+      { error: error.message },
+      { status: error.statusCode || 400 },
+    );
   }
 }

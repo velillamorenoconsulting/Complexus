@@ -1,6 +1,6 @@
 "use client";
 import { Testimony } from "@/app/api/entities/testimony.entity";
-import { Button, Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody } from "@nextui-org/react";
 import Image from "next/image";
 import React from "react";
 import CreateTestimony from "./CreateTestimony";

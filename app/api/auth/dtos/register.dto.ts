@@ -1,4 +1,4 @@
-import { IsEmail, IsString, IsStrongPassword } from "class-validator";
+import { IsStrongPassword } from "class-validator";
 import { User } from "../../entities/user.entity";
 import { Member } from "../../entities/member.entity";
 

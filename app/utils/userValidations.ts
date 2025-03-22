@@ -1,6 +1,8 @@
 import { FormValidations } from "../types/types";
 import { getValidateLengthFunction } from "./functionValidators";
 import { emailRegex, fullNameRegex, nameRegex, passwordRegex } from "./regex";
+import { ValidationError } from "class-validator";
+import { ApplicationError, ValidateError } from "@/app/api/utils/errors";
 
 // ContactForm
 export const contactFormValidations = {
@@ -99,4 +101,19 @@ export const registerFormValidations: FormValidations = {
       failedMessage: "Nombre incorrecto",
     },
   ],
+};
+
+export const handleValidationError = (error: unknown) => {
+  if (
+    Array.isArray(error) &&
+    error.every((e) => e instanceof ValidationError)
+  ) {
+    const constraints = error.map((error: ValidationError) => {
+      const key = Object.keys(error.constraints as object)[0];
+      return error.constraints?.[key];
+    });
+    throw new ValidateError(constraints as string[]);
+  } else {
+    throw new ApplicationError((error as Error).message);
+  }
 };

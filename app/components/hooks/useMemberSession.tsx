@@ -34,7 +34,7 @@ export const useMemberSession = (): MemberData => {
           setMember(data.message);
           setMemberData(data.message);
         }
-      } catch (error: any) {
+      } catch (error) {
         navigation.push("/");
         Swal.fire({
           title: "Sin Acceso",
@@ -48,7 +48,7 @@ export const useMemberSession = (): MemberData => {
             title: "font-raleway",
           },
         });
-        setError(error.message || "An error ocurred");
+        setError((error as Error).message || "An error ocurred");
       } finally {
         setLoading(false);
       }

@@ -1,9 +1,6 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
 import { NextRequest, NextResponse } from "next/server";
-import { UserService } from "../../services/user.service";
 import { RegisterService } from "./register.service";
-import { CustomBaseError, UnauthorizedError } from "../../utils/errors";
+import { CustomBaseError } from "../../utils/errors";
 import { generateToken } from "../utils/jwt";
 
 const registerService = new RegisterService();
@@ -26,7 +23,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         { status: 201 },
       );
     }
-  } catch (error: any) {
+  } catch (error) {
     if (error instanceof CustomBaseError) {
       return NextResponse.json(
         { error: error.message },
@@ -34,7 +31,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
     return NextResponse.json(
-      { error: `Internal Server Error: ${error.message}` },
+      { error: `Internal Server Error: ${(error as Error).message}` },
       { status: 500 },
     );
   }

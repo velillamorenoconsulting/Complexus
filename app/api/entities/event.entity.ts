@@ -4,7 +4,6 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  ManyToMany,
   OneToMany,
   PrimaryColumn,
   Relation,
@@ -23,7 +22,6 @@ import {
 import { Purchase } from "./purchase.entity";
 import { Question } from "./question.entity";
 import { Member } from "./member.entity";
-import { Participant } from "./participant.entity";
 
 export class Segment {
   title?: string;

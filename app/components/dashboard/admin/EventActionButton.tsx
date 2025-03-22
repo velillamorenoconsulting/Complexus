@@ -1,4 +1,3 @@
-"use client";
 import {
   Chip,
   Dropdown,
@@ -7,11 +6,10 @@ import {
   DropdownTrigger,
   Modal,
   ModalContent,
-  TableSlots,
   useDisclosure,
 } from "@nextui-org/react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import UpdateEventForm from "./event/UpdateEventForm";
 import { FetchState, TableState } from "@/app/types/types";
 import { Event } from "@/app/api/entities/event.entity";
@@ -33,15 +31,15 @@ export default function ActionButton({
   isDeleted,
   state,
   forceRefetch,
-  path,
-  showDetails,
+  // path,
+  // showDetails,
 }: Props) {
   const [selection, setSelection] = useState<string>();
-  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     handleDeletion,
     isLoading: deletionLoading,
-    entityId: aimedId,
+    // entityId: aimedId,
   } = useEntityDeletion("event", "SYSTEM", forceRefetch);
   const [isDeletionOpen, setDeletionOpen] = useState<boolean>(false);
 
@@ -69,7 +67,7 @@ export default function ActionButton({
         <DropdownMenu className="dark text-white">
           <DropdownItem
             key="update"
-            onClick={(e) => {
+            onClick={() => {
               setSelection("update");
               onOpen();
             }}

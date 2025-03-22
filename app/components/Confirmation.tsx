@@ -1,4 +1,3 @@
-"use client";
 import {
   Button,
   Modal,
@@ -13,8 +12,8 @@ import React from "react";
 type Props = {
   isOpen: boolean;
   closingFunction: (disp: boolean) => void;
-  action: (...params: any[]) => Promise<void>;
-  closeAction?: (...params: any[]) => void;
+  action: (...params: unknown[]) => Promise<void>;
+  closeAction?: (...params: unknown[]) => void;
   title: string;
   text: string;
 };
@@ -39,7 +38,7 @@ export default function Confirmation({
         closeButton={<></>}
       >
         <ModalContent className="text-white">
-          {(onClose) => (
+          {() => (
             <>
               <ModalHeader>
                 <h4 className="text-xl font-raleway font-bold">{title}</h4>

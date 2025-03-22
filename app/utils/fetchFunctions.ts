@@ -11,7 +11,7 @@ import { Testimony } from "../api/entities/testimony.entity";
 export async function fetchOperation<T>(
   method: "post" | "get",
   path: string,
-  body?: any,
+  body?: unknown,
   params?: string,
 ): Promise<T> {
   const url = `${process.env.NEXT_PUBLIC_BE_URL}/${path}${params ? `/${params}` : ""}`;

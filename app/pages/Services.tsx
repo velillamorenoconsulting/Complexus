@@ -1,14 +1,12 @@
-import React from 'react'
-import ServA from '../sections/services/ServA'
-import ServB from '../sections/services/ServB'
+import React from "react";
+import ServA from "../sections/services/ServA";
+import ServB from "../sections/services/ServB";
 
-type Props = {}
-
-export default function Services({}: Props) {
+export default function Services() {
   return (
     <section>
-        <ServA />
-        <ServB />
+      <ServA />
+      <ServB />
     </section>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import { FormValidations, validEventTypes } from "../types/types";
+import { FormValidations } from "../types/types";
 import { getValidateLengthFunction } from "./functionValidators";
 import {
   countryRegex,
@@ -7,7 +7,6 @@ import {
   fullNameRegex,
   numsOnlyRegex,
   passwordRegex,
-  stringOnlyRegex,
 } from "./regex";
 
 export const createMemberValidations: FormValidations = {

@@ -1,4 +1,4 @@
-import { customAlphabet, nanoid } from "nanoid";
+import { customAlphabet } from "nanoid";
 
 export const usableAlph =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -8,7 +8,7 @@ export function generateNanoId(length: number): string {
   return nanoid();
 }
 
-export const removeNullOrUndefined = <T = Object>(entity: Partial<T>): T => {
+export const removeNullOrUndefined = <T = object>(entity: Partial<T>): T => {
   const allKeys: (keyof T)[] = Object.keys(entity) as Array<keyof T>;
   const baseEntity: Partial<T> = {};
   for (const key of allKeys) {
@@ -17,4 +17,4 @@ export const removeNullOrUndefined = <T = Object>(entity: Partial<T>): T => {
     }
   }
   return baseEntity as T;
-}
+};

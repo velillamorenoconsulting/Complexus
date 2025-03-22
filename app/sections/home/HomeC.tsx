@@ -52,8 +52,8 @@ export default function HomeC() {
               Alto Patronato
             </p>
             <p className="text-justify font-raleway text-lg px-10 pt-3">
-              Filósofo español. Autor de más de 40 ​libros de ensayo, novelas y
-              obras ​dramáticas.
+              Filósofo español. Autor de más de 40 libros de ensayo, novelas y
+              obras dramáticas.
             </p>
             <Divider className="my-8 lg:hidden" />
           </div>
@@ -74,8 +74,8 @@ export default function HomeC() {
               Alto Patronato
             </p>
             <p className="text-justify font-raleway text-lg px-10 pt-3">
-              Ex Presidente de la República. ​Presidente de la Fundación
-              Santillana ​para Iberoamérica.
+              Ex Presidente de la República. Presidente de la Fundación
+              Santillana para Iberoamérica.
             </p>
             <Divider className="my-8 lg:hidden" />
           </div>

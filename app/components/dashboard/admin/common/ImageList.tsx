@@ -1,5 +1,5 @@
 import { getImageUrl, removeStringValueFromArray } from "@/app/utils";
-import { Chip, Image, Listbox, ListboxItem } from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
 import React from "react";
 
 type Props = {
@@ -10,7 +10,6 @@ type Props = {
 export default function ImageList({ imageList, setImageFunction }: Props) {
   const handleRemoval = (removed: string) => {
     setImageFunction([...removeStringValueFromArray(imageList, removed)]);
-    removeStringValueFromArray;
   };
   return (
     <div className="flex flex-row flex-wrap gap-3 py-5 px-3">

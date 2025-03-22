@@ -42,13 +42,15 @@ export default function PurchasesPreview({
         </div>
       ) : purchaseList.length ? (
         <div className="flex flex-col gap-4">
-        {purchaseList.map((item, idx) => {
-          if (item.isConfirmed) {
-            return <PurchaseMiniCard key={item.purchaseId} purchase={item} />;
-          }
-        })}
-        <Divider className="my-1"/>
-        <Link href='#' className="text-center font-bold">Ver más</Link>
+          {purchaseList.map((item) => {
+            if (item.isConfirmed) {
+              return <PurchaseMiniCard key={item.purchaseId} purchase={item} />;
+            }
+          })}
+          <Divider className="my-1" />
+          <Link href="#" className="text-center font-bold">
+            Ver más
+          </Link>
         </div>
       ) : (
         <p className="font-raleway text-md opacity-70">

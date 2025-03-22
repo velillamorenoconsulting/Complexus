@@ -6,7 +6,7 @@ export class PasswordChangeService {
   async resetPassword(email: string) {
     try {
       sendPasswordResetEmail(auth, email);
-    } catch (error: any) {
+    } catch {
       throw new ApplicationError("Authentication service failed");
     }
   }

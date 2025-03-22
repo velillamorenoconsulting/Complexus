@@ -22,7 +22,7 @@ export class EventRepository {
     await this.init();
     return this.repo!.find({
       withDeleted: !valid,
-      order: { startAt: "ASC" },
+      order: { startAt: "DESC" },
       select: {
         eventId: true,
         startAt: true,
@@ -61,10 +61,9 @@ export class EventRepository {
   }
 
   async searchEvent(searchKey: string): Promise<Event[]> {
-    const matchedEvents = await this.repo!.find({
+    return this.repo!.find({
       where: [{ title: Like(searchKey) }, { description: Like(searchKey) }],
     });
-    return matchedEvents;
   }
 
   async findByKey(keys: Partial<ValidEventFilters>): Promise<Event[]> {
@@ -84,8 +83,7 @@ export class EventRepository {
 
   async create(event: Partial<Event>): Promise<Event> {
     await this.init();
-    const result = await this.repo!.save(event);
-    return result;
+    return this.repo!.save(event);
   }
 
   async update(
@@ -105,7 +103,7 @@ export class EventRepository {
   }
 
   async deleteEvent(eventId: string): Promise<number> {
-    this.init();
+    await this.init();
     const { affected } = await this.repo!.delete({ eventId });
     if (!affected) throw new DatabaseError();
     return affected;

@@ -1,11 +1,10 @@
 import { Repository } from "typeorm";
 import { Member } from "../entities/member.entity";
 import { getDataSource } from "../database";
-import { ApplicationError, DatabaseError } from "../utils/errors";
+import { DatabaseError } from "../utils/errors";
 
 export class MemberRepository {
   private memberRepository: Repository<Member> | null = null;
-
   private async init(): Promise<void> {
     if (!this.memberRepository) {
       const dataSource = await getDataSource();
@@ -41,12 +40,11 @@ export class MemberRepository {
 
   async create(member: Member): Promise<Member> {
     await this.init();
-    const result = await this.memberRepository!.save(member);
-    return result;
+    return await this.memberRepository!.save(member);
   }
 
   async deleteMember(memberId: string): Promise<number> {
-    this.init();
+    await this.init();
     const { affected } = await this.memberRepository!.delete({ memberId });
     if (!affected) throw new DatabaseError();
     return affected;

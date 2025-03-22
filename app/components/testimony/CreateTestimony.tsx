@@ -48,7 +48,7 @@ const validations = {
 
 export default function CreateTestimony() {
   const { status, data } = useSession();
-  const { setAuthOptions, user } = useStore();
+  const { setAuthOptions } = useStore();
   const { onOpen, onClose, onOpenChange, isOpen } = useDisclosure();
   const [isLoading, setLoading] = useState<boolean>(false);
   const { formValues, formErrors, handleChange, isButtonDisabled } =
@@ -90,7 +90,7 @@ export default function CreateTestimony() {
         timing: 2500,
       });
       onClose();
-    } catch (e) {
+    } catch {
       sendAlert({
         title: "Ha ocurrido un problema",
         type: "error",
@@ -119,7 +119,7 @@ export default function CreateTestimony() {
         size="lg"
       >
         <ModalContent>
-          {(onClose) => (
+          {() => (
             <>
               <ModalHeader className="font-comorant text-3xl font-bold text-center self-center">
                 Crear Testimonio

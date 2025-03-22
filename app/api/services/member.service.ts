@@ -47,12 +47,19 @@ export class MemberService {
     const memberToCreate = plainToInstance(Member, memberAttributes);
     try {
       await validateOrReject(memberToCreate);
-    } catch (error: any) {
-      const constraints = error.map((error: ValidationError) => {
-        const key = Object.keys(error.constraints as object)[0];
-        return error.constraints?.[key];
-      });
-      throw new ValidateError(constraints);
+    } catch (error) {
+      if (
+        Array.isArray(error) &&
+        error.every((e) => e instanceof ValidationError)
+      ) {
+        const constraints = error.map((error: ValidationError) => {
+          const key = Object.keys(error.constraints as object)[0];
+          return error.constraints?.[key];
+        });
+        throw new ValidateError(constraints as string[]);
+      } else {
+        throw error;
+      }
     }
     return this.memberRepository.create(memberToCreate);
   }
@@ -64,11 +71,10 @@ export class MemberService {
   ): Promise<string> {
     const member = await this.memberRepository.findById(memberId);
     if (!member) throw new NotFoundError("Member");
-    let deleted: number;
     if (isSoft) {
-      deleted = await this.memberRepository.softDeleteMember(memberId, author);
+      await this.memberRepository.softDeleteMember(memberId, author);
     } else {
-      deleted = await this.memberRepository.deleteMember(memberId);
+      await this.memberRepository.deleteMember(memberId);
     }
     return member.memberId;
   }

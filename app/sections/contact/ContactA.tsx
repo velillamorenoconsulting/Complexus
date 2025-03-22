@@ -2,6 +2,7 @@ import ContactForm from "@/app/components/contact/ContactForm";
 import { Divider } from "@nextui-org/react";
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 
 export default function ContactA() {
   return (
@@ -23,13 +24,15 @@ export default function ContactA() {
             <Divider className="dark my-2 lg:my-5" />
             <div className="flex flex-row gap-5 font-raleway text-lg font-light pb-10">
               <p>Escribenos a nuestro whatsapp</p>
-              <Image
-                src="icons/social/whatsapp_dark.svg"
-                alt="whatsapp"
-                width={50}
-                height={50}
-                className="w-10 pr-1"
-              />
+              <Link href="https://w.app/complexus" target="_blank">
+                <Image
+                  src="icons/social/whatsapp_dark.svg"
+                  alt="whatsapp"
+                  width={50}
+                  height={50}
+                  className="w-10 pr-1"
+                />
+              </Link>
               <p>o llena el formulario para enviarnos un mensaje</p>
             </div>
           </div>

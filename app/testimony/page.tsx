@@ -3,9 +3,7 @@ import NavaBar from "../sections/NavaBar";
 import Footer from "../sections/Footer";
 import Testimony from "../pages/Testimony";
 
-type Props = {};
-
-export default function TestimonyPage({}: Props) {
+export default function TestimonyPage() {
   return (
     <main className="h-full">
       <NavaBar style="dark" />

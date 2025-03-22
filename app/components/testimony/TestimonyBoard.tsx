@@ -14,7 +14,7 @@ export default async function TestimonyBoard() {
         <TestimonyCards testimonies={data.message} />
       </div>
     );
-  } catch (e: any) {
-    return <ErrorComp details={e.message || e.error || undefined} />;
+  } catch {
+    return <ErrorComp details="General error" />;
   }
 }

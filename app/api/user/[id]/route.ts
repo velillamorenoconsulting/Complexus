@@ -6,22 +6,22 @@ const userService = new UserService();
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ): Promise<NextResponse> {
   const { id: userId } = params;
   try {
     const user = await userService.getUserById(userId);
     return NextResponse.json({ message: user }, { status: 200 });
-  } catch (error: any) {
+  } catch (error) {
     if (error instanceof CustomBaseError) {
       return NextResponse.json(
         { error: error.message },
-        { status: error.statusCode }
+        { status: error.statusCode },
       );
     }
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

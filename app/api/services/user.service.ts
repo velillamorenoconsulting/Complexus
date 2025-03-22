@@ -1,9 +1,9 @@
 import { plainToInstance } from "class-transformer";
 import { User } from "../entities/user.entity";
 import { UserRepostitory } from "../repositories/user.repository";
-import { ValidationError, validateOrReject } from "class-validator";
+import { validateOrReject } from "class-validator";
 import { NotFoundError } from "../utils/errors";
-import { ValidateError } from "../utils/errors";
+import { handleValidationError } from "@/app/utils";
 
 export class UserService {
   private userRepository: UserRepostitory;
@@ -46,12 +46,8 @@ export class UserService {
     const userToCreate = plainToInstance(User, userReceivedAttributes);
     try {
       await validateOrReject(userToCreate);
-    } catch (error: any) {
-      const constraints = error.map((error: ValidationError) => {
-        const key = Object.keys(error.constraints as object)[0];
-        return error.constraints?.[key];
-      });
-      throw new ValidateError(constraints);
+    } catch (error) {
+      handleValidationError(error);
     }
     return this.userRepository.create(userToCreate);
   }
@@ -63,11 +59,10 @@ export class UserService {
   ): Promise<string> {
     const user = await this.userRepository.findById(userId);
     if (!user) throw new NotFoundError("User");
-    let deleted: number;
     if (isSoft) {
-      deleted = await this.userRepository.softDeleteUser(userId, author);
+      await this.userRepository.softDeleteUser(userId, author);
     } else {
-      deleted = await this.userRepository.deleteUser(userId);
+      await this.userRepository.deleteUser(userId);
     }
     return user.userId;
   }

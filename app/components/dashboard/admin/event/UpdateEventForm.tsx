@@ -1,11 +1,10 @@
-"use client";
 import { Event, Segment } from "@/app/api/entities/event.entity";
 import { SignedAuth } from "@/app/api/types/auth.types";
 import CompLoading from "@/app/components/CompLoading";
 import UploadWidget from "@/app/components/UploadWidget";
 import { ServerResponse } from "@/app/types/responses";
 import { FetchState } from "@/app/types/types";
-import { convertDate, formatPrice, sendAlert } from "@/app/utils";
+import { convertDate, sendAlert } from "@/app/utils";
 import {
   Button,
   DateInput,
@@ -21,7 +20,6 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useRef, useState } from "react";
 import ImageList from "../common/ImageList";
 import { handleRemovingImages } from "@/app/utils/handleRemovingImages";
-import { CreateEventForm } from "../CreateEvent";
 import useFormBase from "@/app/components/hooks/useFormBase";
 import { updateEventValidations } from "@/app/utils/admValidations";
 import EntitySelector from "../common/EntitySelector";
@@ -111,7 +109,7 @@ export default function UpdateEventForm({
   };
 
   const joinSegments = (segments: Segment[]): string => {
-    let full: string[] = [];
+    const full: string[] = [];
     for (const segment of segments) {
       if (segment.text) {
         full.push(segment.text);
@@ -142,6 +140,7 @@ export default function UpdateEventForm({
         setSponsors(data.message.sponsors);
         setSupports(data.message.supporters);
       } catch (e) {
+        console.log(e);
       } finally {
         isLoading(false);
       }

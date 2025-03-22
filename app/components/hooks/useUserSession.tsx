@@ -1,6 +1,6 @@
 "use client";
 import { User } from "@/app/api/entities/user.entity";
-import { SignedAuth, SignedUserResponse } from "@/app/api/types/auth.types";
+import { SignedAuth } from "@/app/api/types/auth.types";
 import { useStore } from "@/app/store/zustand";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -33,8 +33,8 @@ export const useUserSessionStrict = (): UserData => {
           setUser(data.message);
           setUserData(data.message);
         }
-      } catch (error: any) {
-        setError(error.message || "An error ocurred");
+      } catch (error) {
+        setError((error as Error).message || "An error ocurred");
       } finally {
         setLoading(false);
       }

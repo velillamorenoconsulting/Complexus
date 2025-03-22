@@ -1,15 +1,14 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { LoginService } from "../loginService/login.service";
-import { verifyToken } from "../utils/jwt";
-import { NextAuthOptions, Session } from "next-auth";
+import { Session } from "next-auth";
 import NextAuth from "next-auth/next";
 import {
   CustomJWT,
   SignedEntityResponse,
   SignedMemberResponse,
-  SignedUser,
   SignedUserResponse,
 } from "../../types/auth.types";
+import { UnauthorizedError } from "@/app/api/utils/errors";
 
 const handler = NextAuth({
   providers: [
@@ -43,8 +42,8 @@ const handler = NextAuth({
           } else {
             return null;
           }
-        } catch (error: any) {
-          throw new Error(error.message);
+        } catch {
+          throw new UnauthorizedError(`${req.method} Unable to authorize user`);
         }
       },
     }),
@@ -78,8 +77,8 @@ const handler = NextAuth({
           } else {
             return null;
           }
-        } catch (error: any) {
-          throw new Error(error.message);
+        } catch {
+          throw new UnauthorizedError(`${req.method} Unable to authorize user`);
         }
       },
     }),

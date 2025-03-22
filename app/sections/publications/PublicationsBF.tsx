@@ -7,12 +7,12 @@ import React from "react";
 
 export default async function PublicationsBF() {
   try {
-    const { data } = await axios.get<ServerResponse<Item[]>>(
-      `${process.env.NEXT_PUBLIC_BE_URL}/items?valid=true`,
-    );
+    const { data } =
+      await axios.get<ServerResponse<Item[]>>(`api/items?valid=true`);
 
     return <PublicationList items={data.message} />;
   } catch (e) {
+    console.log(e);
     return <ErrorComp />;
   }
 }

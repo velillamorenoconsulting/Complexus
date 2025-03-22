@@ -5,11 +5,12 @@ import {
 import { UserService } from "../../services/user.service";
 import { auth } from "../firebase";
 import { validateRegister } from "../utils/validateUserInfo";
-import { ApplicationError, ValidateError } from "../../utils/errors";
+import { ApplicationError } from "../../utils/errors";
 import { User } from "../../entities/user.entity";
 import { Member } from "../../entities/member.entity";
 import { LoginType } from "../../types/auth.types";
 import { MemberService } from "../../services/member.service";
+import { handleValidationError } from "@/app/utils";
 
 export class RegisterService {
   private readonly userService: UserService;
@@ -19,8 +20,17 @@ export class RegisterService {
     this.memberService = new MemberService();
   }
 
-  async registerUser(userInfo: any): Promise<User> {
-    validateRegister(userInfo, LoginType.USER);
+  async registerUser(userInfo: Record<string, string>): Promise<User> {
+    const userToCreate = {
+      ...userInfo,
+      createdBy: "SYSTEM",
+      updatedBy: "SYSTEM",
+    };
+    try {
+      await validateRegister(userToCreate, LoginType.USER);
+    } catch (e) {
+      handleValidationError(e);
+    }
     const existentUser = await this.userService.getUserByEmail(
       userInfo.email,
       false,
@@ -38,18 +48,19 @@ export class RegisterService {
       );
       await sendEmailVerification(userAuth.user);
       fireBaseId = userAuth.user.uid;
-    } catch (error: any) {
+    } catch (error) {
       await this.userService.deleteUser(userCreated.userId, false, "");
-      throw new ValidateError([...error.message]);
+      throw new ApplicationError((error as Error).message);
     }
-    const result = await this.userService.updateUser(userCreated.userId, {
+    return await this.userService.updateUser(userCreated.userId, {
       fireBaseId,
     });
-    return result;
   }
 
-  async registerMember(memberInfo: any): Promise<Member> {
-    validateRegister(memberInfo, LoginType.MEMBER);
+  async registerMember(
+    memberInfo: Partial<Member> & { password: string },
+  ): Promise<Member> {
+    await validateRegister(memberInfo, LoginType.MEMBER);
     const memberCreated = await this.memberService.createMember(memberInfo);
     let fireBaseId: string = "";
     try {
@@ -60,16 +71,12 @@ export class RegisterService {
       );
       await sendEmailVerification(userAuth.user);
       fireBaseId = userAuth.user.uid;
-    } catch (error: any) {
+    } catch (error) {
       await this.memberService.deleteMember(memberCreated.memberId, false, "");
-      throw new ValidateError([...error.message]);
+      throw new ApplicationError((error as Error).message);
     }
-    const result = await this.memberService.updateMember(
-      memberCreated.memberId,
-      {
-        fireBaseId,
-      },
-    );
-    return result;
+    return await this.memberService.updateMember(memberCreated.memberId, {
+      fireBaseId,
+    });
   }
 }

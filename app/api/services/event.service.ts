@@ -1,13 +1,10 @@
 import { EventRepository } from "../repositories/event.repository";
 import { Event } from "../entities/event.entity";
-import {
-  ApplicationError,
-  NotFoundError,
-  ValidateError,
-} from "../utils/errors";
-import { validateOrReject, ValidationError } from "class-validator";
+import { ApplicationError, NotFoundError } from "../utils/errors";
+import { validateOrReject } from "class-validator";
 import { plainToInstance } from "class-transformer";
 import { deleteImages } from "../cloudinary/cloudinary";
+import { handleValidationError } from "@/app/utils";
 
 export class EventService {
   private eventRepository: EventRepository;
@@ -46,7 +43,7 @@ export class EventService {
   }
 
   // TODO Have JWT userId extracted
-  async createEvent(eventInfo: any): Promise<Event> {
+  async createEvent(eventInfo: Partial<Event>): Promise<Event> {
     const eventReceivedAttributes = {
       ...eventInfo,
       createdBy: "SYSTEM",
@@ -55,12 +52,8 @@ export class EventService {
     const eventToCreate = plainToInstance(Event, eventReceivedAttributes);
     try {
       await validateOrReject(eventToCreate);
-    } catch (error: any) {
-      const constraints = error.map((error: ValidationError) => {
-        const key = Object.keys(error.constraints as object)[0];
-        return error.constraints?.[key];
-      });
-      throw new ValidateError(constraints);
+    } catch (error) {
+      handleValidationError(error);
     }
     return this.eventRepository.create(eventToCreate);
   }

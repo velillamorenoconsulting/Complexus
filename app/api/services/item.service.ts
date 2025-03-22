@@ -1,8 +1,9 @@
 import { plainToInstance } from "class-transformer";
 import { Item } from "../entities/item.entity";
 import { ItemRepository } from "../repositories/item.repository";
-import { validateOrReject, ValidationError } from "class-validator";
-import { NotFoundError, ValidateError } from "../utils/errors";
+import { validateOrReject } from "class-validator";
+import { NotFoundError } from "../utils/errors";
+import { handleValidationError } from "@/app/utils";
 
 export class ItemService {
   private readonly itemRepository: ItemRepository;
@@ -24,12 +25,8 @@ export class ItemService {
     const itemAttributes = plainToInstance(Item, receivedAttributes);
     try {
       await validateOrReject(itemAttributes);
-    } catch (e: any) {
-      const constraints = e.map((error: ValidationError) => {
-        const key = Object.keys(error.constraints as object)[0];
-        return error.constraints?.[key];
-      });
-      throw new ValidateError(constraints);
+    } catch (e) {
+      handleValidationError(e);
     }
     return this.itemRepository.createItem(itemAttributes);
   }
@@ -42,11 +39,10 @@ export class ItemService {
     console.log(itemId);
     const item = await this.itemRepository.getItem(itemId);
     if (!item) throw new NotFoundError("Item");
-    let deleted: number;
     if (isSoft) {
-      deleted = await this.itemRepository.softDeleteItem(itemId, author);
+      await this.itemRepository.softDeleteItem(itemId, author);
     } else {
-      deleted = await this.itemRepository.deleteItem(itemId);
+      await this.itemRepository.deleteItem(itemId);
     }
     return item.itemId;
   }

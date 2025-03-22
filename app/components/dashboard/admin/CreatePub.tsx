@@ -1,4 +1,3 @@
-"use client";
 import { Item } from "@/app/api/entities/item.entity";
 import { FetchState } from "@/app/types/types";
 import {
@@ -45,7 +44,7 @@ export default function CreatePub({ state, forceRefetch }: Props) {
   const { formValues, formErrors, handleChange, isButtonDisabled, clearForm } =
     useFormBase(initializer, createPubValidations);
   const [loading, isLoading] = useState<boolean>();
-  const { data, status } = useSession();
+  const { status } = useSession();
 
   const handleCreation = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -70,7 +69,7 @@ export default function CreatePub({ state, forceRefetch }: Props) {
       onClose();
       clearForm();
       forceRefetch({ ...state, refetch: true });
-    } catch (e) {
+    } catch {
       sendAlert({
         title: "Ha ocurrido un error",
         text: "Intenta nuevamente luego. Si el error persiste, contactanos.",
@@ -95,7 +94,7 @@ export default function CreatePub({ state, forceRefetch }: Props) {
         size="3xl"
       >
         <ModalContent>
-          {(onClose) => (
+          {() => (
             <>
               <ModalHeader className="font-comorant text-3xl font-bold text-center self-center">
                 Crear Publicacion

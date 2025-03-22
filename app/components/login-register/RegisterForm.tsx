@@ -1,10 +1,13 @@
 "use client";
 import { Button, Input } from "@nextui-org/react";
 import React, { useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Image from "next/image";
 import useFormBase from "../hooks/useFormBase";
 import { registerFormValidations } from "@/app/utils/userValidations";
+import CompLoading from "../CompLoading";
+import Swal from "sweetalert2";
+import { useStore } from "@/app/store/zustand";
 
 export type RegisterFormValues = {
   email: string | null;
@@ -25,35 +28,53 @@ type ComponentProps = {
 export default function RegisterForm({ changeSelection }: ComponentProps) {
   const { formValues, formErrors, handleChange, isButtonDisabled } =
     useFormBase(initializer, registerFormValidations);
+  const { setAuthOptions } = useStore();
   const [generalError, setError] = useState<string | null>(null);
+  const [loading, isLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    isLoading(true);
     const splittedName = formValues.name!.split(" ");
     const firstName = splittedName[0];
     const lastName = splittedName.length > 1 ? splittedName[1] : "";
     try {
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/register`,
-        {
-          type: "user",
-          firstName,
-          lastName,
-          email: formValues.email,
-          password: formValues.password,
+      await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/register`, {
+        type: "user",
+        firstName,
+        lastName,
+        email: formValues.email,
+        password: formValues.password,
+      });
+      Swal.fire({
+        title: "¡Registro exitoso!",
+        icon: "success",
+        text: "Revisa tu correo para verificar tu cuenta",
+        timer: 1000,
+        color: "#ffffff",
+        background: "#1E1E1E",
+        showConfirmButton: false,
+        customClass: {
+          title: "font-raleway",
         },
-      );
-    } catch (error: any) {
-      const message =
-        error.response.data?.error === "Email already registered"
-          ? "Este correo ya existe"
-          : "Error. Intenta nuevamente más tarde";
-      setError(message);
+      });
+      setAuthOptions({ isVisible: false });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const message =
+          error.response?.data?.error === "Email already registered"
+            ? "Este correo ya existe"
+            : "Error. Intenta nuevamente más tarde";
+        setError(message);
+      }
+    } finally {
+      isLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col h-full justify-between">
+    <div className="flex flex-col h-full justify-between relative">
+      {loading && <CompLoading />}
       <form
         className="text-white flex flex-col gap-3 h-[80%] justify-evenly"
         onSubmit={handleSubmit}
