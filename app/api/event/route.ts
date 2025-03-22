@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { EventService } from "../services/event.service";
+import { CustomBaseError } from "@/app/api/utils/errors";
 
 const eventService = new EventService();
 
@@ -11,10 +12,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       { message: eventCreated.eventId },
       { status: 201 },
     );
-  } catch (error: any) {
+  } catch (e) {
+    const error = e as CustomBaseError;
     return NextResponse.json(
       { error: error.message },
-      { status: error.status ?? 400 },
+      { status: error.statusCode ?? 400 },
     );
   }
 }
@@ -26,12 +28,13 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const valid = url.searchParams.get("valid");
     const eventList = await eventService.getAllEvents(!!relations, !!valid);
     return NextResponse.json({ message: eventList }, { status: 200 });
-  } catch (error: any) {
+  } catch (e) {
+    const error = e as CustomBaseError;
     return NextResponse.json(
       {
         error: error.message,
       },
-      { status: error.status ?? 400 },
+      { status: error.statusCode ?? 400 },
     );
   }
 }
@@ -41,10 +44,11 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
   try {
     await eventService.deleteEvent(body.id, true, body.updatedBy);
     return NextResponse.json({ message: body.id }, { status: 201 });
-  } catch (error: any) {
+  } catch (e) {
+    const error = e as CustomBaseError;
     return NextResponse.json(
       { error: error.message },
-      { status: error.status ?? 400 },
+      { status: error.statusCode ?? 400 },
     );
   }
 }

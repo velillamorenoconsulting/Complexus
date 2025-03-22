@@ -1,4 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
+import { ApplicationError } from "@/app/api/utils/errors";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -8,9 +9,10 @@ cloudinary.config({
 
 export const deleteImages = async (publicIds: string[]) => {
   try {
-    const result = await cloudinary.api.delete_resources(publicIds);
-    return result;
+    return await cloudinary.api.delete_resources(publicIds);
   } catch (e) {
-    console.error(e);
+    throw new ApplicationError(
+      `Error deleting images: ${(e as Error).message}`,
+    );
   }
 };

@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsString, IsStrongPassword } from "class-validator";
+import { IsEmail, IsEnum, IsStrongPassword } from "class-validator";
 import { LoginType } from "../../types/auth.types";
 
 export class LoginDTO {

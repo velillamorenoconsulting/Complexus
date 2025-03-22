@@ -68,7 +68,7 @@ export default function ServB() {
               className="w-40 hidden lg:block"
             />
             <p>
-              Creación, Administración y ​Realización de Proyectos y ​Eventos
+              Creación, Administración y Realización de Proyectos y Eventos
               académicos.
             </p>
           </div>
@@ -81,8 +81,8 @@ export default function ServB() {
               className="w-40 hidden lg:block"
             />
             <p>
-              Consultorías y Asesorías Interdisciplinarias ​a Empresas y
-              Organizaciones Públicas y ​Privadas, Nacionales e Internacional.
+              Consultorías y Asesorías Interdisciplinarias a Empresas y
+              Organizaciones Públicas y Privadas, Nacionales e Internacional.
             </p>
           </div>
         </div>

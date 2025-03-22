@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ParticipantService } from "../services/participant.service";
+import { CustomBaseError } from "@/app/api/utils/errors";
 
 const participantService = new ParticipantService();
 
@@ -12,10 +13,11 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       },
       { status: 200 },
     );
-  } catch (error: any) {
+  } catch (e) {
+    const error = e as CustomBaseError;
     return NextResponse.json(
-      { error: error.message },
-      { status: error.status ?? 400 },
+      { error: error.message + " " + req.method },
+      { status: error.statusCode ?? 400 },
     );
   }
 }
@@ -28,12 +30,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       { message: participantCreated.participantId },
       { status: 201 },
     );
-  } catch (e: any) {
+  } catch (e) {
+    const error = e as CustomBaseError;
     return NextResponse.json(
       {
-        error: e.message,
+        error: error.message,
       },
-      { status: e.status ?? 400 },
+      { status: error.statusCode ?? 400 },
     );
   }
 }
@@ -43,7 +46,11 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
   try {
     await participantService.deleteParticipant(body.id, body.updatedBy);
     return NextResponse.json({ message: body.id }, { status: 200 });
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: e.status || 400 });
+  } catch (e) {
+    const error = e as CustomBaseError;
+    return NextResponse.json(
+      { error: error.message },
+      { status: error.statusCode || 400 },
+    );
   }
 }

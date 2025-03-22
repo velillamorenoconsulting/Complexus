@@ -16,7 +16,7 @@ export async function GET(
   try {
     const event = await memberService.getMemberById(memberId);
     return NextResponse.json({ message: event }, { status: 200 });
-  } catch (error: any) {
+  } catch (error) {
     if (error instanceof CustomBaseError) {
       return NextResponse.json(
         { error: error.message },
@@ -24,7 +24,7 @@ export async function GET(
       );
     }
     return NextResponse.json(
-      { error: "Internal server error: " + error.message },
+      { error: "Internal server error: " + (error as Error).message },
       { status: 500 },
     );
   }

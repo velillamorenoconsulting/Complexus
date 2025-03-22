@@ -4,7 +4,7 @@ import { UnauthorizedError } from "../../utils/errors";
 
 const secret = process.env.JWT_SECRET ?? "";
 
-export function generateToken(payload: any): string {
+export function generateToken(payload: Record<string, string>): string {
   const user = {
     userId: payload.userId ?? undefined,
     memberId: payload.memberId ?? undefined,
@@ -12,15 +12,14 @@ export function generateToken(payload: any): string {
     name: payload.firstName + " " + payload.lastName,
     email: payload.email,
   };
-  const token = jwt.sign(user, secret, { expiresIn: "1h" });
-  return token;
+  return jwt.sign(user, secret, { expiresIn: "1h" });
 }
 
 export function verifyToken(token: string): User {
   try {
     const decoded = jwt.verify(token, secret);
     return decoded as User;
-  } catch (error) {
+  } catch {
     throw new UnauthorizedError("Invalid token");
   }
 }

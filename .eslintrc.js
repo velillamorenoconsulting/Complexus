@@ -7,7 +7,12 @@ module.exports = {
   ],
   plugins: ["react", "@typescript-eslint", "prettier"],
   rules: {
-    "prettier/prettier": "error", // Ensure Prettier formatting
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto",
+      },
+    ], // Ensure Prettier formatting
     "react/react-in-jsx-scope": "off", // React 17 doesn't require importing React
   },
 };

@@ -13,18 +13,18 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     await passwordService.resetPassword(user.email);
     return NextResponse.json(
       { message: "Password email sent" },
-      { status: 200 }
+      { status: 200 },
     );
-  } catch (error: any) {
+  } catch (error) {
     if (error instanceof CustomBaseError) {
       return NextResponse.json(
         { error: error.message },
-        { status: error.statusCode }
+        { status: error.statusCode },
       );
     }
     return NextResponse.json(
-      { error: `Internal Server Error: ${error.message}` },
-      { status: 500 }
+      { error: `Internal Server Error: ${(error as Error).message}` },
+      { status: 500 },
     );
   }
 }
