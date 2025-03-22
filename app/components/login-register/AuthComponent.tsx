@@ -12,7 +12,7 @@ type ComponentProps = {
 
 export default function AuthComponent({ type }: ComponentProps) {
   const [selected, setSelected] = useState<"login" | "register">(type);
-  const { setAuthOptions, authOptions } = useStore();
+  const { setAuthOptions } = useStore();
   const changeForm = (selection: "login" | "register") => {
     setSelected(selection);
   };

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
 import { useMemberSession } from "../components/hooks/useMemberSession";
 import { useRouter } from "next/navigation";
 import ButtonComponent from "../components/base/Button";
@@ -7,12 +7,12 @@ import ButtonComponent from "../components/base/Button";
 export default function MemberDashboard() {
   const member = useMemberSession();
   const redirect = useRouter();
-  const [isLoading, setLoading] = useState<boolean>(true);
-  useEffect(() => {
-    if (!member.loading && member.member) {
-      setLoading(false);
-    }
-  }, [member]);
+  // const [isLoading, setLoading] = useState<boolean>(true);
+  // useEffect(() => {
+  //   if (!member.loading && member.member) {
+  //     setLoading(false);
+  //   }
+  // }, [member]);
 
   console.log(member);
   return (

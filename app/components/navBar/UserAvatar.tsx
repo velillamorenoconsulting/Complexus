@@ -26,7 +26,7 @@ export default function UserAvatar({ style }: ComponentProps) {
   const redirect = useRouter();
 
   const handleRedirect = () => {
-    if ((data?.user as any).type === "user") {
+    if ((data?.user as Record<string, string>).type === "user") {
       redirect.push("/dashboard");
     } else {
       redirect.push("/memberDashboard");
@@ -52,7 +52,10 @@ export default function UserAvatar({ style }: ComponentProps) {
           aria-label="Desktop Auth Context Menu"
           onAction={(key) => {
             if (authPaths.includes(key as string))
-              setAuthOptions({ isVisible: true, type: key as any });
+              setAuthOptions({
+                isVisible: true,
+                type: key as "login" | "register",
+              });
           }}
         >
           {status !== "authenticated" ? (

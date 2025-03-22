@@ -62,7 +62,7 @@ export default function BurgerMenu({ style }: ComponentProps) {
             <DropdownItem textValue="user">
               <User
                 onClick={() =>
-                  (session.data.user as any).type === "user"
+                  (session.data.user as Record<string, string>).type === "user"
                     ? redirect.push("/dashboard")
                     : redirect.push("/memberDashboard")
                 }

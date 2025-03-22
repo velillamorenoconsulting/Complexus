@@ -64,7 +64,7 @@ export default function EventQuestion({ eventId }: ComponentProps) {
         type: "success",
         timing: 2000,
       });
-    } catch (e: any) {
+    } catch {
       setLoading(false);
       sendAlert({
         title: "Ha ocurrido un error",
@@ -104,7 +104,7 @@ export default function EventQuestion({ eventId }: ComponentProps) {
         size="lg"
       >
         <ModalContent>
-          {(onClose) => (
+          {() => (
             <>
               <ModalHeader className="font-comorant text-3xl font-bold text-center self-center">
                 Crea tu pregunta

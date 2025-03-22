@@ -1,6 +1,5 @@
 "use client";
 import { Button, Input } from "@nextui-org/react";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import CompLoading from "./CompLoading";
 import useFileUpload from "./hooks/useFileUpload";

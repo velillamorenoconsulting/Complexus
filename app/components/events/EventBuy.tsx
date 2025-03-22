@@ -60,7 +60,7 @@ export default function EventBuy({ event }: Props) {
         timing: 2000,
       });
       onClose();
-    } catch (e: any) {
+    } catch {
       setLoading(false);
       sendAlert({
         title: "Hubo un error",

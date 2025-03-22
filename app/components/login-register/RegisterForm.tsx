@@ -1,7 +1,7 @@
 "use client";
 import { Button, Input } from "@nextui-org/react";
 import React, { useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Image from "next/image";
 import useFormBase from "../hooks/useFormBase";
 import { registerFormValidations } from "@/app/utils/userValidations";
@@ -33,22 +33,21 @@ export default function RegisterForm({ changeSelection }: ComponentProps) {
     const firstName = splittedName[0];
     const lastName = splittedName.length > 1 ? splittedName[1] : "";
     try {
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/register`,
-        {
-          type: "user",
-          firstName,
-          lastName,
-          email: formValues.email,
-          password: formValues.password,
-        },
-      );
-    } catch (error: any) {
-      const message =
-        error.response.data?.error === "Email already registered"
-          ? "Este correo ya existe"
-          : "Error. Intenta nuevamente más tarde";
-      setError(message);
+      await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/register`, {
+        type: "user",
+        firstName,
+        lastName,
+        email: formValues.email,
+        password: formValues.password,
+      });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const message =
+          error.response?.data?.error === "Email already registered"
+            ? "Este correo ya existe"
+            : "Error. Intenta nuevamente más tarde";
+        setError(message);
+      }
     }
   };
 
