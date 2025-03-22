@@ -22,15 +22,23 @@ type ComponentProps = {
 export default function UserAvatar({ style }: ComponentProps) {
   const authPaths = ["login", "register"];
   const { setAuthOptions } = useStore();
-  const session = useSession();
+  const { data, status } = useSession();
   const redirect = useRouter();
+
+  const handleRedirect = () => {
+    if ((data?.user as any).type === "user") {
+      redirect.push("/dashboard");
+    } else {
+      redirect.push("/memberDashboard");
+    }
+  };
   return (
     <div>
       <Dropdown className="dark text-white font-raleway" radius="sm">
         <DropdownTrigger>
           <Image
             src={
-              session.data?.user?.image ?? isDarkTheme(style)
+              (data?.user?.image ?? isDarkTheme(style))
                 ? "/icons/user-defaultb.svg"
                 : "/icons/user-default.svg"
             }
@@ -47,7 +55,7 @@ export default function UserAvatar({ style }: ComponentProps) {
               setAuthOptions({ isVisible: true, type: key as any });
           }}
         >
-          {session.status !== "authenticated" ? (
+          {status !== "authenticated" ? (
             <DropdownSection>
               <DropdownItem key="login">
                 <p>Iniciar sesión</p>
@@ -58,15 +66,16 @@ export default function UserAvatar({ style }: ComponentProps) {
             </DropdownSection>
           ) : (
             <DropdownSection>
-              <DropdownItem onClick={() => redirect.push("/dashboard")}>
+              <DropdownItem onClick={() => handleRedirect()}>
                 <User
-                  name={session.data?.user?.name}
-                  description={session.data?.user?.email}
+                  name={data?.user?.name}
+                  description={data?.user?.email}
                   avatarProps={{
-                    src: session.data?.user?.image ?? "/icons/user-default.svg",
+                    src: data?.user?.image ?? "/icons/user-default.svg",
                   }}
                 />
               </DropdownItem>
+              <DropdownItem>Salir</DropdownItem>
             </DropdownSection>
           )}
         </DropdownMenu>

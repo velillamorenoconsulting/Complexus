@@ -64,7 +64,11 @@ export default function BurgerMenu({ style }: ComponentProps) {
           {session.status === "authenticated" ? (
             <DropdownItem textValue="user">
               <User
-                onClick={() => redirect.push("/dashboard")}
+                onClick={() =>
+                  (session.data.user as any).type === "user"
+                    ? redirect.push("/dashboard")
+                    : redirect.push("/memberDashboard")
+                }
                 name={session.data.user?.name}
                 description={session.data.user?.email}
                 avatarProps={{

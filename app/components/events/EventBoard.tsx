@@ -86,63 +86,73 @@ export default function EventBoard({
       </Tab>
       <Tab key="upcoming" title="Próximos Eventos">
         <div className="min-h-screen flex flex-col p-0 pt-5 md:pt-7 pb-16">
-          <div className="flex flex-row flex-wrap gap-16 p-0 lg:p-10 justify-center 2xl:justify-start">
-            {upcomingEvents.map((upcomingEvent) => {
-              const date = new Date(upcomingEvent.startAt);
+          <div className="flex flex-row flex-wrap gap-16 p-0 lg:p-10 justify-center">
+            {upcomingEvents.length ? (
+              upcomingEvents.map((upcomingEvent) => {
+                const date = new Date(upcomingEvent.startAt);
 
-              return (
-                <Card
-                  key={upcomingEvent.eventId}
-                  className="flex flex-col justify-evenly gap-7 items-center max-w-[600px] p-5 border-none bg-inherit"
-                >
-                  <div className="flex flex-col gap-5 w-full">
-                    <div className="relative overflow-hidden rounded-lg">
-                      <Image
-                        src={
-                          upcomingEvent.images.length
-                            ? getImageUrl(upcomingEvent.images[0])
-                            : "/events-sample.png"
-                        }
-                        alt={
-                          upcomingEvent.images.length
-                            ? upcomingEvent.images[0]
-                            : "sample_event"
-                        }
-                        width={400}
-                        height={400}
-                        className="w-full max-h-[373px]"
-                      />
-                    </div>
-                    <div className="flex flex-row px-3 justify-center gap-5">
-                      <div className="rounded-2xl bg-black text-white">
-                        <div className="flex flex-col gap-1 w-20 lg:w-28 font-raleway items-center justify-center p-3">
-                          <p className="">{weekDays[date.getDay()]}</p>
-                          <p className="text-2xl font-bold">{date.getDate()}</p>
-                          <p className="text-center">{`${monthList[date.getMonth()]} ${date.getFullYear()}`}</p>
+                return (
+                  <Card
+                    key={upcomingEvent.eventId}
+                    className="flex flex-col justify-evenly gap-7 items-center max-w-[600px] p-5 border-none bg-inherit"
+                  >
+                    <div className="flex flex-col gap-5 w-full">
+                      <div className="relative overflow-hidden rounded-lg">
+                        <Image
+                          src={
+                            upcomingEvent.images.length
+                              ? getImageUrl(upcomingEvent.images[0])
+                              : "/events-sample.png"
+                          }
+                          alt={
+                            upcomingEvent.images.length
+                              ? upcomingEvent.images[0]
+                              : "sample_event"
+                          }
+                          width={400}
+                          height={400}
+                          className="w-full max-h-[373px]"
+                        />
+                      </div>
+                      <div className="flex flex-row px-3 justify-center gap-5">
+                        <div className="rounded-2xl bg-black text-white">
+                          <div className="flex flex-col gap-1 w-20 lg:w-28 font-raleway items-center justify-center p-3">
+                            <p className="">{weekDays[date.getDay()]}</p>
+                            <p className="text-2xl font-bold">
+                              {date.getDate()}
+                            </p>
+                            <p className="text-center">{`${monthList[date.getMonth()]} ${date.getFullYear()}`}</p>
+                          </div>
+                        </div>
+                        <div className="flex flex-col w-[150px] lg:w-[300px] gap-1 font-raleway justify-center items-center">
+                          <p className="text-xl font-light text-center">
+                            {eventTypePicker(upcomingEvent.eventType)}
+                          </p>
+                          <p className="text-xl font-bold text-center">
+                            {`Precio: ${upcomingEvent.price ? `${formatPrice(upcomingEvent.price)}` : "GRATIS"}`}
+                          </p>
+                          <EventBuy event={upcomingEvent} />
                         </div>
                       </div>
-                      <div className="flex flex-col w-[150px] lg:w-[300px] gap-1 font-raleway justify-center items-center">
-                        <p className="text-xl font-light text-center">
-                          {eventTypePicker(upcomingEvent.eventType)}
-                        </p>
-                        <p className="text-xl font-bold text-center">
-                          {`Precio: ${upcomingEvent.price ? `${formatPrice(upcomingEvent.price)}` : "GRATIS"}`}
-                        </p>
-                        <EventBuy event={upcomingEvent} />
-                      </div>
                     </div>
-                  </div>
-                  <div className="flex flex-col max-w-[600px] gap-5">
-                    <h3 className="font-comorant text-3xl font-semibold">
-                      {upcomingEvent.title}
-                    </h3>
-                    <p className="font-raleway text-lg text-justify">
-                      {upcomingEvent.description}
-                    </p>
-                  </div>
-                </Card>
-              );
-            })}
+                    <div className="flex flex-col max-w-[600px] gap-5">
+                      <h3 className="font-comorant text-3xl font-semibold">
+                        {upcomingEvent.title}
+                      </h3>
+                      <p className="font-raleway text-lg text-justify">
+                        {upcomingEvent.description}
+                      </p>
+                    </div>
+                  </Card>
+                );
+              })
+            ) : (
+              <div className="font-raleway text-xl text-center max-w-[90%] lg:max-w-[70%] pt-24 w-full opacity-80">
+                En este momento no hay eventos próximos para fechas cercanas. Te
+                invitamos a seguirnos en redes sociales para enterarte de los
+                eventos que aún están desarrollandose.
+              </div>
+            )}
           </div>
         </div>
       </Tab>

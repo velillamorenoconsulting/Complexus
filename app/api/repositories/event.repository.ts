@@ -22,7 +22,7 @@ export class EventRepository {
     await this.init();
     return this.repo!.find({
       withDeleted: !valid,
-      order: { startAt: "ASC" },
+      order: { startAt: "DESC" },
       select: {
         eventId: true,
         startAt: true,
